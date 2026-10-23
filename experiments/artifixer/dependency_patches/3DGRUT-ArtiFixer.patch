@@ -1,0 +1,511 @@
+diff --git a/configs/apps/colmap_3dgut_sparse_lpips.yaml b/configs/apps/colmap_3dgut_sparse_lpips.yaml
+index 6e9dc8e..8e40df6 100644
+--- a/configs/apps/colmap_3dgut_sparse_lpips.yaml
++++ b/configs/apps/colmap_3dgut_sparse_lpips.yaml
+@@ -14,3 +14,6 @@ loss:
+   lambda_ssim_override: 0.2
+   lambda_l1_override: 0.8
+   lambda_reconlosses_override: 0.0
++  normalize_recon_to_foreground: false
++  foreground_rgb_threshold: 0.02
++  foreground_crop_pad: 8
+diff --git a/configs/apps/colmap_3dgut_sparse_mcmc_lpips.yaml b/configs/apps/colmap_3dgut_sparse_mcmc_lpips.yaml
+index dcc35b6..298d5db 100644
+--- a/configs/apps/colmap_3dgut_sparse_mcmc_lpips.yaml
++++ b/configs/apps/colmap_3dgut_sparse_mcmc_lpips.yaml
+@@ -15,3 +15,6 @@ loss:
+   lambda_ssim_override: 0.2
+   lambda_l1_override: 0.8
+   lambda_reconlosses_override: 0.0
++  normalize_recon_to_foreground: false
++  foreground_rgb_threshold: 0.02
++  foreground_crop_pad: 8
+diff --git a/configs/base_gs.yaml b/configs/base_gs.yaml
+index 6d9165f..da2cbfc 100644
+--- a/configs/base_gs.yaml
++++ b/configs/base_gs.yaml
+@@ -11,6 +11,11 @@ path: ???
+ experiment_name: ""
+ resume: ""
+ out_dir: "./runs"
++selected_indices_file: null
++train_test_split_file: null
++image_path_override: null
++num_selected_indices: null
++novel_path: null
+ n_iterations: 30000
+ with_gui: false
+ gui_update_from_device: true
+@@ -40,6 +45,12 @@ import_ingp:
+   path: ""
+   init_global_step: 0
+ 
++local_refinement:
++  enabled: false
++  gaussian_weights_path: ""
++  freeze_threshold: 0.1
++  densify_threshold: 0.8
++
+ export_ply:
+   enabled: false
+   path: ""
+diff --git a/threedgrut/datasets/dataset_colmap.py b/threedgrut/datasets/dataset_colmap.py
+index aaff6c9..a726680 100644
+--- a/threedgrut/datasets/dataset_colmap.py
++++ b/threedgrut/datasets/dataset_colmap.py
+@@ -591,6 +591,7 @@ class ColmapDataset(Dataset, BoundedMultiViewDataset, DatasetVisualization):
+             "pose": torch.tensor(self.poses[idx]).unsqueeze(0),
+             "intr": self.get_intrinsics_idx(idx),
+             "is_override": bool(self.is_override_flags[idx]),
++            "image_name": os.path.basename(image_path),
+         }
+ 
+         # Only add mask to dictionary if it exists
+@@ -625,6 +626,7 @@ class ColmapDataset(Dataset, BoundedMultiViewDataset, DatasetVisualization):
+             "T_to_world": pose,
+             f"intrinsics_{camera_name}": camera_params_dict,
+             "is_override": is_override,
++            "image_name": batch["image_name"][0] if "image_name" in batch else None,
+         }
+         if data is not None:
+             sample["rgb_gt"] = data
+diff --git a/threedgrut/datasets/protocols.py b/threedgrut/datasets/protocols.py
+index 0b11a41..721d42d 100644
+--- a/threedgrut/datasets/protocols.py
++++ b/threedgrut/datasets/protocols.py
+@@ -31,6 +31,7 @@ class Batch:
+     intrinsics_OpenCVPinholeCameraModelParameters: Optional[dict] = None
+     intrinsics_OpenCVFisheyeCameraModelParameters: Optional[dict] = None
+     is_override: bool = False  # True if image comes from override path (distilled)
++    image_name: Optional[str] = None  # Stable source identifier for opt-in region supervision
+ 
+     def __post_init__(self):
+         batch_size = self.T_to_world.shape[0]
+diff --git a/threedgrut/strategy/gs.py b/threedgrut/strategy/gs.py
+index 970a34b..fbd008d 100644
+--- a/threedgrut/strategy/gs.py
++++ b/threedgrut/strategy/gs.py
+@@ -15,6 +15,7 @@
+ 
+ from typing import Optional
+ 
++import numpy as np
+ import torch
+ 
+ from threedgrut.model.model import MixtureOfGaussians
+@@ -39,6 +40,61 @@ class GSStrategy(BaseStrategy):
+         self.densify_grad_norm_accum = torch.empty([0, 1])
+         self.densify_grad_norm_denom = torch.empty([0, 1])
+ 
++        self.local_refinement_enabled = bool(self.conf.local_refinement.enabled)
++        self.gaussian_edit_weights: Optional[torch.Tensor] = None
++        self.local_freeze_threshold = float(self.conf.local_refinement.freeze_threshold)
++        self.local_densify_threshold = float(self.conf.local_refinement.densify_threshold)
++
++    def init_local_refinement_weights(self) -> None:
++        if not self.local_refinement_enabled:
++            return
++        path = str(self.conf.local_refinement.gaussian_weights_path)
++        if not path:
++            raise ValueError("local_refinement.gaussian_weights_path is required when local refinement is enabled")
++        weights = np.load(path, allow_pickle=False)
++        if weights.ndim != 1 or len(weights) != self.model.num_gaussians:
++            raise ValueError(
++                f"local Gaussian weights must have shape ({self.model.num_gaussians},), got {weights.shape}"
++            )
++        if not np.isfinite(weights).all() or np.any(weights < 0.0) or np.any(weights > 1.0):
++            raise ValueError("local Gaussian weights must be finite values in [0, 1]")
++        self.gaussian_edit_weights = torch.from_numpy(weights.astype(np.float32)).to(self.model.device)
++        logger.info(
++            f"Local refinement: {(self.gaussian_edit_weights >= self.local_densify_threshold).sum().item()} "
++            f"editable Gaussians, {(self.gaussian_edit_weights < self.local_freeze_threshold).sum().item()} frozen"
++        )
++
++    def mask_parameter_gradients(self) -> None:
++        if self.gaussian_edit_weights is None:
++            return
++        if self.gaussian_edit_weights.shape[0] != self.model.num_gaussians:
++            raise RuntimeError("local Gaussian weights lost alignment with model topology")
++        for param in (
++            self.model.positions,
++            self.model.rotation,
++            self.model.scale,
++            self.model.density,
++            self.model.features_albedo,
++            self.model.features_specular,
++        ):
++            if param.grad is not None:
++                shape = (self.gaussian_edit_weights.shape[0],) + (1,) * (param.grad.ndim - 1)
++                param.grad.mul_(self.gaussian_edit_weights.reshape(shape).to(param.grad.dtype))
++
++    def _editable_for_densification(self) -> torch.Tensor:
++        if self.gaussian_edit_weights is None:
++            return torch.ones(self.model.num_gaussians, dtype=torch.bool, device=self.model.device)
++        return self.gaussian_edit_weights >= self.local_densify_threshold
++
++    def _protected_from_pruning(self) -> torch.Tensor:
++        if self.gaussian_edit_weights is None:
++            return torch.zeros(self.model.num_gaussians, dtype=torch.bool, device=self.model.device)
++        return self.gaussian_edit_weights < self.local_freeze_threshold
++
++    def _filter_local_weights(self, mask: torch.Tensor) -> None:
++        if self.gaussian_edit_weights is not None:
++            self.gaussian_edit_weights = self.gaussian_edit_weights[mask]
++
+     def get_strategy_parameters(self) -> dict:
+         params = {}
+ 
+@@ -59,6 +115,7 @@ class GSStrategy(BaseStrategy):
+     def post_backward(self, step: int, scene_extent: float, train_dataset, batch=None, writer=None) -> bool:
+         """Callback function to be executed after the `loss.backward()` call."""
+ 
++        self.mask_parameter_gradients()
+         # Update densification buffer:
+         if check_step_condition(step, 0, self.conf.strategy.densify.end_iteration, 1):
+             with torch.cuda.nvtx.range(f"train_{step}_grad_buffer"):
+@@ -164,6 +221,7 @@ class GSStrategy(BaseStrategy):
+         mask = torch.logical_and(
+             mask, torch.max(self.model.get_scale(), dim=1).values > self.relative_size_threshold * scene_extent
+         )
++        mask = torch.logical_and(mask, self._editable_for_densification())
+ 
+         stds = self.model.get_scale()[mask].repeat(self.split_n_gaussians, 1)
+         means = torch.zeros((stds.size(0), 3), device="cuda")
+@@ -196,6 +254,11 @@ class GSStrategy(BaseStrategy):
+             return torch.cat([v[~mask], v_split])
+ 
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn)
++        if self.gaussian_edit_weights is not None:
++            old_weights = self.gaussian_edit_weights
++            self.gaussian_edit_weights = torch.cat(
++                [old_weights[~mask], old_weights[mask].repeat(self.split_n_gaussians)]
++            )
+         self.reset_densification_buffers()
+ 
+     @torch.cuda.nvtx.range("clone_gaussians")
+@@ -208,6 +271,7 @@ class GSStrategy(BaseStrategy):
+         mask = torch.logical_and(
+             mask, torch.max(self.model.get_scale(), dim=1).values <= self.relative_size_threshold * scene_extent
+         )
++        mask = torch.logical_and(mask, self._editable_for_densification())
+ 
+         # stats
+         if self.conf.strategy.print_stats:
+@@ -223,11 +287,16 @@ class GSStrategy(BaseStrategy):
+             return torch.cat([v, torch.zeros((int(mask.sum()), *v.shape[1:]), device=v.device)])
+ 
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn)
++        if self.gaussian_edit_weights is not None:
++            self.gaussian_edit_weights = torch.cat(
++                [self.gaussian_edit_weights, self.gaussian_edit_weights[mask]]
++            )
+         self.reset_densification_buffers()
+ 
+     def prune_gaussians_weight(self):
+         # Prune the Gaussians based on their weight
+         mask = self.model.rolling_weight_contrib[:, 0] >= self.conf.strategy.prune_weight.weight_threshold
++        mask = torch.logical_or(mask, self._protected_from_pruning())
+         if self.conf.strategy.print_stats:
+             n_before = mask.shape[0]
+             n_prune = n_before - mask.sum()
+@@ -240,6 +309,7 @@ class GSStrategy(BaseStrategy):
+             return v[mask]
+ 
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn)
++        self._filter_local_weights(mask)
+         self.prune_densification_buffers(mask)
+ 
+     def prune_gaussians_scale(self, dataset):
+@@ -250,6 +320,7 @@ class GSStrategy(BaseStrategy):
+ 
+         # Prune the Gaussians based on their weight
+         mask = ratio >= self.conf.strategy.prune_scale.threshold
++        mask = torch.logical_or(mask, self._protected_from_pruning())
+         if self.conf.strategy.print_stats:
+             n_before = mask.shape[0]
+             n_prune = n_before - mask.sum()
+@@ -262,11 +333,13 @@ class GSStrategy(BaseStrategy):
+             return v[mask]
+ 
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn)
++        self._filter_local_weights(mask)
+         self.prune_densification_buffers(mask)
+ 
+     def prune_gaussians_opacity(self):
+         # Prune the Gaussians based on their opacity
+         mask = self.model.get_density().squeeze() >= self.prune_density_threshold
++        mask = torch.logical_or(mask, self._protected_from_pruning())
+ 
+         if self.conf.strategy.print_stats:
+             n_before = mask.shape[0]
+@@ -280,6 +353,7 @@ class GSStrategy(BaseStrategy):
+             return v[mask]
+ 
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn)
++        self._filter_local_weights(mask)
+         self.prune_densification_buffers(mask)
+ 
+     def reset_densification_buffers(self) -> None:
+@@ -308,6 +382,9 @@ class GSStrategy(BaseStrategy):
+                 self.model.get_density() * self.conf.strategy.density_decay.gamma
+             )
+ 
++            if self.gaussian_edit_weights is not None:
++                weight = self.gaussian_edit_weights[:, None].to(param.dtype)
++                decayed_densities = decayed_densities * weight + param * (1.0 - weight)
+             return torch.nn.Parameter(decayed_densities, requires_grad=param.requires_grad)
+ 
+         self._update_param_with_optimizer(update_param_fn, None, names=["density"])
+@@ -319,10 +396,18 @@ class GSStrategy(BaseStrategy):
+                 param,
+                 max=self.model.density_activation_inv(torch.tensor(self.new_max_density)).item(),
+             )
++            if self.gaussian_edit_weights is not None:
++                weight = self.gaussian_edit_weights[:, None].to(param.dtype)
++                densities = densities * weight + param * (1.0 - weight)
+             return torch.nn.Parameter(densities)
+ 
+         def update_optimizer_fn(key: str, v: torch.Tensor) -> torch.Tensor:
+-            return torch.zeros_like(v)
++            if self.gaussian_edit_weights is None:
++                return torch.zeros_like(v)
++            weight = self.gaussian_edit_weights.reshape(
++                (self.gaussian_edit_weights.shape[0],) + (1,) * (v.ndim - 1)
++            ).to(v.dtype)
++            return v * (1.0 - weight)
+ 
+         # update the parameters and the state in the optimizers
+         self._update_param_with_optimizer(update_param_fn, update_optimizer_fn, names=["density"])
+diff --git a/threedgrut/trainer.py b/threedgrut/trainer.py
+index 8648e92..81f753b 100644
+--- a/threedgrut/trainer.py
++++ b/threedgrut/trainer.py
+@@ -118,6 +118,12 @@ class Trainer3DGRUT:
+         self.val_frequency = conf.val_frequency
+         """ Validation frequency, in terms on global steps """
+ 
++        self.region_supervision = None
++        region_conf = conf.get("region_supervision", {})
++        if bool(region_conf.get("enabled", False)):
++            from threedgrut.model.region_supervision import RegionSupervision
++            self.region_supervision = RegionSupervision(region_conf, conf)
++
+         # Setup the trainer and components
+         logger.log_rule("Load Datasets")
+         self.init_dataloaders(conf)
+@@ -135,6 +141,8 @@ class Trainer3DGRUT:
+         from threedgrut.datasets.utils import configure_dataloader_for_platform
+ 
+         train_dataset, val_dataset = datasets.make(name=conf.dataset.type, config=conf, ray_jitter=None)
++        if self.region_supervision is not None:
++            self.region_supervision.validate_training_dataset(train_dataset)
+         train_dataloader_kwargs = configure_dataloader_for_platform(
+             {
+                 "num_workers": conf.num_workers,
+@@ -281,6 +289,16 @@ class Trainer3DGRUT:
+             model.setup_optimizer()
+             global_step = 0
+ 
++        if conf.local_refinement.enabled:
++            if conf.resume:
++                raise ValueError(
++                    "local refinement does not support resume because saved checkpoints "
++                    "do not contain aligned local Gaussian weights"
++                )
++            if not hasattr(self.strategy, "init_local_refinement_weights"):
++                raise ValueError("local refinement currently requires strategy.method=GSStrategy")
++            self.strategy.init_local_refinement_weights()
++
+         self.global_step = global_step
+         self.n_epochs = int((conf.n_iterations + len(train_dataset) - 1) / len(train_dataset))
+ 
+@@ -407,18 +425,44 @@ class Trainer3DGRUT:
+         rgb_gt = gpu_batch.rgb_gt
+         rgb_pred = outputs["pred_rgb"]
+         mask = gpu_batch.mask
++        is_override = getattr(gpu_batch, "is_override", False)
++
++        if self.region_supervision is not None:
++            return self.region_supervision.losses(
++                rgb_pred, rgb_gt, gpu_batch.image_name, lpips=self.criterions["lpips"], mask=mask
++            )
+ 
+         # Mask out the invalid pixels if the mask is provided
+         if mask is not None:
+             rgb_gt = rgb_gt * mask
+             rgb_pred = rgb_pred * mask
+ 
++        fg_mask = None
++        fg_crop = None
++        if bool(self.conf.loss.get("normalize_recon_to_foreground", False)) and is_override:
++            thresh = float(self.conf.loss.get("foreground_rgb_threshold", 0.02))
++            fg = rgb_gt.amax(dim=-1, keepdim=True) > thresh
++            if fg.any():
++                fg_mask = fg
++                pad = int(self.conf.loss.get("foreground_crop_pad", 8))
++                ys, xs = torch.where(fg[0, :, :, 0])
++                height, width = rgb_gt.shape[1], rgb_gt.shape[2]
++                y0 = max(int(ys.min().item()) - pad, 0)
++                y1 = min(int(ys.max().item()) + pad + 1, height)
++                x0 = max(int(xs.min().item()) - pad, 0)
++                x1 = min(int(xs.max().item()) + pad + 1, width)
++                if (y1 - y0) >= 11 and (x1 - x0) >= 11:
++                    fg_crop = (y0, y1, x0, x1)
++
+         # L1 loss
+         loss_l1 = torch.zeros(1, device=self.device)
+         lambda_l1 = 0.0
+         if self.conf.loss.use_l1:
+             with torch.cuda.nvtx.range(f"loss-l1"):
+-                loss_l1 = torch.abs(rgb_pred - rgb_gt).mean()
++                if fg_mask is not None:
++                    loss_l1 = torch.abs(rgb_pred - rgb_gt)[fg_mask.expand_as(rgb_pred)].mean()
++                else:
++                    loss_l1 = torch.abs(rgb_pred - rgb_gt).mean()
+                 lambda_l1 = self.conf.loss.lambda_l1
+ 
+         # L2 loss
+@@ -434,8 +478,13 @@ class Trainer3DGRUT:
+         lambda_ssim = 0.0
+         if self.conf.loss.use_ssim:
+             with torch.cuda.nvtx.range(f"loss-ssim"):
+-                rgb_gt_full = torch.permute(rgb_gt, (0, 3, 1, 2))
+-                pred_rgb_full = torch.permute(rgb_pred, (0, 3, 1, 2))
++                if fg_crop is not None:
++                    y0, y1, x0, x1 = fg_crop
++                    rgb_gt_full = torch.permute(rgb_gt[:, y0:y1, x0:x1], (0, 3, 1, 2))
++                    pred_rgb_full = torch.permute(rgb_pred[:, y0:y1, x0:x1], (0, 3, 1, 2))
++                else:
++                    rgb_gt_full = torch.permute(rgb_gt, (0, 3, 1, 2))
++                    pred_rgb_full = torch.permute(rgb_pred, (0, 3, 1, 2))
+                 loss_ssim = 1.0 - ssim(pred_rgb_full, rgb_gt_full)
+                 lambda_ssim = self.conf.loss.lambda_ssim
+ 
+@@ -458,7 +507,6 @@ class Trainer3DGRUT:
+         # LPIPS loss for override (distilled) images
+         loss_lpips = torch.zeros(1, device=self.device)
+         lambda_lpips = 0.0
+-        is_override = getattr(gpu_batch, 'is_override', False)
+         if self.conf.loss.get('use_lpips_override', False) and is_override:
+             with torch.cuda.nvtx.range(f"loss-lpips"):
+                 rgb_gt_full = torch.permute(rgb_gt, (0, 3, 1, 2))
+diff --git a/threedgrut/model/region_supervision.py b/threedgrut/model/region_supervision.py
+new file mode 100644
+--- /dev/null
++++ b/threedgrut/model/region_supervision.py
+@@ -0,0 +1,115 @@
++"""Opt-in trusted-pixel supervision with strict local perceptual support."""
++from pathlib import Path
++import hashlib
++import json
++import re
++import numpy as np
++import torch
++import torch.nn.functional as F
++
++
++def weighted_terms(pred, target, weight, lpips=None, patch_size=32, max_patches=8):
++    """NHWC RGB. Unknown pixels are never used as RGB or perceptual inputs."""
++    if pred.shape != target.shape or pred.ndim != 4 or pred.shape[-1] != 3:
++        raise ValueError('RGB must be matching NHWC tensors')
++    if weight.shape != pred.shape[:-1] or not torch.isfinite(weight).all() or (weight < 0).any():
++        raise ValueError('Weights must be finite nonnegative NHW')
++    valid = weight > 0
++    zero = pred.reshape(-1)[:0].sum()
++    if not valid.any():
++        return dict(l1=zero, l2=zero, ssim=zero, lpips=zero, trusted_patches=0)
++    selected_pred, selected_target = pred[valid], target[valid]
++    if not torch.isfinite(selected_pred).all() or not torch.isfinite(selected_target).all():
++        raise ValueError('Nonfinite trusted RGB')
++    w = weight[valid]
++    l1 = ((selected_pred-selected_target).abs().mean(-1)*w).sum()/w.sum()
++    l2 = ((selected_pred-selected_target).square().mean(-1)*w).sum()/w.sum()
++    # Select crops only if every pixel is trusted. Do not black out unknown pixels.
++    ss, perceptual, crop_weights = [], [], []
++    stride=max(1,patch_size//2)
++    for b in range(pred.shape[0]):
++        for y in range(0,pred.shape[1]-patch_size+1,stride):
++            for x in range(0,pred.shape[2]-patch_size+1,stride):
++                v=valid[b,y:y+patch_size,x:x+patch_size]
++                if not v.all():continue
++                a=pred[b:b+1,y:y+patch_size,x:x+patch_size].permute(0,3,1,2)
++                t=target[b:b+1,y:y+patch_size,x:x+patch_size].permute(0,3,1,2)
++                ma=F.avg_pool2d(a,11,1);mt=F.avg_pool2d(t,11,1)
++                va=(F.avg_pool2d(a*a,11,1)-ma*ma).clamp_min(0)
++                vt=(F.avg_pool2d(t*t,11,1)-mt*mt).clamp_min(0)
++                cov=F.avg_pool2d(a*t,11,1)-ma*mt
++                similarity=((2*ma*mt+.01**2)*(2*cov+.03**2))/((ma*ma+mt*mt+.01**2)*(va+vt+.03**2))
++                ss.append(1-similarity.mean())
++                if lpips is not None:perceptual.append(lpips(a.clamp(0,1),t.clamp(0,1)).mean())
++                crop_weights.append(weight[b,y:y+patch_size,x:x+patch_size].mean())
++                if len(crop_weights)>=max_patches:break
++            if len(crop_weights)>=max_patches:break
++        if len(crop_weights)>=max_patches:break
++    if crop_weights:
++        cw=torch.stack(crop_weights)
++        ssim=(torch.stack(ss)*cw).sum()/cw.sum()
++        perceptual_loss=(torch.stack(perceptual)*cw).sum()/cw.sum() if perceptual else zero
++    else:ssim=perceptual_loss=zero
++    return dict(l1=l1,l2=l2,ssim=ssim,lpips=perceptual_loss,trusted_patches=len(crop_weights))
++
++
++class RegionSupervision:
++    def __init__(self, config, trainer_config):
++        self.config=config
++        self.path=Path(config['manifest']).resolve()
++        self.root=self.path.parent
++        self.manifest=json.loads(self.path.read_text())
++        self.rows={int(r['frame']):r for r in self.manifest['frames']}
++        self.allowed=set(self.manifest['training_eligible_frames'])
++        self.cache={}
++        provenance=json.loads((self.root/'initialization/provenance.json').read_text())
++        if trainer_config.get('resume'):
++            raise ValueError('Region supervision requires original PLY initialization; resume is forbidden')
++        imp=trainer_config['import_ply']
++        if not imp['enabled'] or int(imp.get('init_global_step',0))!=0 or trainer_config['import_ingp']['enabled']:
++            raise ValueError('Original PLY at step zero is required')
++        initial=Path(imp['path'])
++        if hashlib.sha256(initial.read_bytes()).hexdigest()!=provenance['sha256']:
++            raise ValueError('Initialization hash does not match original object_local.ply')
++        if trainer_config.get('image_path_override') is not None:
++            raise ValueError('Use an explicit target dataset with image_path_override=null; legacy override splits can include holdouts')
++
++    @staticmethod
++    def frame_id(name):
++        m=re.fullmatch(r'(?:frame_)?(\d+)',Path(name).stem)
++        if not m:raise ValueError(f'Unknown supervision image identifier: {name}')
++        return int(m.group(1))
++
++    def validate_training_dataset(self, dataset):
++        seen=set()
++        camera_doc=json.loads((self.root/'cameras/transforms.json').read_text())
++        for index,path in enumerate(dataset.image_paths):
++            frame=self.frame_id(path)
++            if frame not in self.allowed or self.rows[frame]['split']!='train':
++                raise ValueError(f'Unapproved or held-out frame {frame} present in training dataset')
++            row=self.rows[frame]
++            expected_pose=np.asarray(camera_doc['frames'][frame]['transform_matrix'],dtype=np.float64).copy()
++            expected_pose[:3,1:3]*=-1
++            if not np.allclose(dataset.poses[index],expected_pose,atol=1e-5,rtol=0):
++                raise ValueError(f'Camera changed from original: frame {frame}')
++            expected=self.root/row['supervision_target']
++            if hashlib.sha256(Path(path).read_bytes()).digest()!=hashlib.sha256(expected.read_bytes()).digest():
++                raise ValueError(f'Target pixels do not match accepted supervision: frame {frame}')
++            seen.add(frame)
++        if seen!=self.allowed:raise ValueError(f'Training dataset must exactly match approved frames: {seen} vs {self.allowed}')
++
++    def losses(self, pred, target, image_name, lpips=None, mask=None):
++        frame=self.frame_id(image_name)
++        row=self.rows[frame]
++        if frame not in self.cache:
++            self.cache[frame]=np.load(self.root/row['effective_weight']).astype(np.float32)
++        weights=torch.as_tensor(self.cache[frame],device=pred.device,dtype=pred.dtype)
++        if tuple(weights.shape)!=tuple(pred.shape[1:3]):raise ValueError('RGB and supervision resolution must match; no implicit mask resizing')
++        weights=weights[None].expand(pred.shape[0],-1,-1)
++        if mask is not None:weights=weights*(mask.squeeze(-1)>0.5)
++        terms=weighted_terms(pred,target,weights,lpips=lpips if float(self.config.get('lambda_lpips',.02)) else None)
++        l1=float(self.config.get('lambda_l1',.8))*terms['l1']
++        ssim=float(self.config.get('lambda_ssim',.2))*terms['ssim']
++        perceptual=float(self.config.get('lambda_lpips',.02))*terms['lpips']
++        zero=pred.reshape(-1)[:0].sum()
++        return dict(total_loss=l1+ssim+perceptual,l1_loss=l1,l2_loss=zero,ssim_loss=ssim,lpips_loss=perceptual,opacity_loss=zero,scale_loss=zero)

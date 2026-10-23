@@ -1,0 +1,17 @@
+{
+  "cpu_tests": {
+    "experiment_tests": 45,
+    "migration_and_source_index_tests": 7,
+    "runtime_tests": 12,
+    "unique_total": 64
+  },
+  "source_files_verified": 200,
+  "dependency_patches_checked": [
+    "3DGRUT-ArtiFixer",
+    "map-anything"
+  ],
+  "latest_abc_help_import": "passed",
+  "all_python_compile": "passed",
+  "cuda_generation_on_destination": "not_run",
+  "data_and_weights_in_git": false
+}

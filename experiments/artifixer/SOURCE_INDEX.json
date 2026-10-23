@@ -1,0 +1,1415 @@
+{
+  "source_runtime_commit": "5b70e4cae0aef1ae347cd75701365b36a90e6e4f",
+  "source_runtime_remote": "https://github.com/chenkangjie1123/VGGT-Diff.git",
+  "runtime_includes_local_nvs_fixes": true,
+  "files": [
+    {
+      "source": "data_processing/__init__.py",
+      "destination": "workspace/data_processing/__init__.py",
+      "source_sha256": "39b67a3543de12fbe919327958818a53222b223688ef8ece33a12bc1e46d1f14",
+      "export_sha256": "39b67a3543de12fbe919327958818a53222b223688ef8ece33a12bc1e46d1f14",
+      "model_path_adapter": false
+    },
+    {
+      "source": "data_processing/camera_trajectories.py",
+      "destination": "workspace/data_processing/camera_trajectories.py",
+      "source_sha256": "cb09c8ec9812b6dd7be9986b4eff94aa30487e9e396899b37eab0b24b2d2ffb8",
+      "export_sha256": "cb09c8ec9812b6dd7be9986b4eff94aa30487e9e396899b37eab0b24b2d2ffb8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "data_processing/threedgrut_training.py",
+      "destination": "workspace/data_processing/threedgrut_training.py",
+      "source_sha256": "44213e58d8c73e1a3634cae386c122cd406c9cee29b3a1a49a97caba2a78902c",
+      "export_sha256": "44213e58d8c73e1a3634cae386c122cd406c9cee29b3a1a49a97caba2a78902c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/analyze_batch08_real_anchor_results.py",
+      "destination": "workspace/scripts/analyze_batch08_real_anchor_results.py",
+      "source_sha256": "0a40f973c010f82ca2e7da15cfc00f26f8976b873f53f313ac809d84646c90bf",
+      "export_sha256": "0a40f973c010f82ca2e7da15cfc00f26f8976b873f53f313ac809d84646c90bf",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/analyze_batch678_ablation.py",
+      "destination": "workspace/scripts/analyze_batch678_ablation.py",
+      "source_sha256": "942fff4aaa6a6acf7644d5bd17f2396025e438c4faf44039f2c9a7ac925e252b",
+      "export_sha256": "942fff4aaa6a6acf7644d5bd17f2396025e438c4faf44039f2c9a7ac925e252b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/analyze_batch678_reconstruction.py",
+      "destination": "workspace/scripts/analyze_batch678_reconstruction.py",
+      "source_sha256": "b0fce048945673772ec89a72cb0c19ffd3096d3a4b7261def3bf779cc7a98c98",
+      "export_sha256": "b0fce048945673772ec89a72cb0c19ffd3096d3a4b7261def3bf779cc7a98c98",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/audit_batch678_ablation.py",
+      "destination": "workspace/scripts/audit_batch678_ablation.py",
+      "source_sha256": "c0ddb617401f12e9be4fdb92222776bb39ff175c96a4f672f787cc10f140b939",
+      "export_sha256": "c0ddb617401f12e9be4fdb92222776bb39ff175c96a4f672f787cc10f140b939",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/audit_realvideo_batch08_coverage.py",
+      "destination": "workspace/scripts/audit_realvideo_batch08_coverage.py",
+      "source_sha256": "26c2cc8d5fb0d8a17a39ec740245ee789e7feaf3132a3c896b4f589364545f28",
+      "export_sha256": "26c2cc8d5fb0d8a17a39ec740245ee789e7feaf3132a3c896b4f589364545f28",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/audit_realvideo_trajectory_coverage.py",
+      "destination": "workspace/scripts/audit_realvideo_trajectory_coverage.py",
+      "source_sha256": "50d86fc402f56fa87a1db9125da388ff7cf7432e4516e18d447e881562fd473b",
+      "export_sha256": "50d86fc402f56fa87a1db9125da388ff7cf7432e4516e18d447e881562fd473b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/audit_vggtdiff_white_car.py",
+      "destination": "workspace/scripts/audit_vggtdiff_white_car.py",
+      "source_sha256": "a2a1c2fdd872c95e96ed96d0c69a9dc04adda8b10362d67c4536864eaace7b30",
+      "export_sha256": "6a5c97502b9518714ae83ab60e11b64dc02a27258cbb2f22db6e8cef50a2bed1",
+      "model_path_adapter": true,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/build_vggtdiff_batch678_setup_assets.py",
+      "destination": "workspace/scripts/build_vggtdiff_batch678_setup_assets.py",
+      "source_sha256": "51846bca27fc184a97ed403d08579eaed74bf955e1f6021a0615652b3bee5219",
+      "export_sha256": "51846bca27fc184a97ed403d08579eaed74bf955e1f6021a0615652b3bee5219",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/build_vggtdiff_weekly_20261023.py",
+      "destination": "workspace/scripts/build_vggtdiff_weekly_20261023.py",
+      "source_sha256": "88ceab17cc51615e9cc217b3acf1d042ff4ad7a00ba499b8f508d25c2ffbc4b8",
+      "export_sha256": "88ceab17cc51615e9cc217b3acf1d042ff4ad7a00ba499b8f508d25c2ffbc4b8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/car15_balanced_silhouette.py",
+      "destination": "workspace/scripts/car15_balanced_silhouette.py",
+      "source_sha256": "37825ba7b9b397c040083da667c5a67fab6c3d60bf4aa8817335b7812a730cc7",
+      "export_sha256": "37825ba7b9b397c040083da667c5a67fab6c3d60bf4aa8817335b7812a730cc7",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/car15_gsplat_2dgs_backend.py",
+      "destination": "workspace/scripts/car15_gsplat_2dgs_backend.py",
+      "source_sha256": "00e641dbcc8fbbac30f7e6a2da69f006bfd14d7ab6e066969bae87a913f155dd",
+      "export_sha256": "00e641dbcc8fbbac30f7e6a2da69f006bfd14d7ab6e066969bae87a913f155dd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/car15_gsplat_backend.py",
+      "destination": "workspace/scripts/car15_gsplat_backend.py",
+      "source_sha256": "b33858184d301402c31a30191f3f2657cf5bfe6dcfd1278c87d6d17e6de544c1",
+      "export_sha256": "b33858184d301402c31a30191f3f2657cf5bfe6dcfd1278c87d6d17e6de544c1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/car15_object_loss.py",
+      "destination": "workspace/scripts/car15_object_loss.py",
+      "source_sha256": "12b6b333828004afd1734f99d4f70a83279e699e3b15c3909a0b75da008fd914",
+      "export_sha256": "12b6b333828004afd1734f99d4f70a83279e699e3b15c3909a0b75da008fd914",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/check_batch08_real6_inputs.py",
+      "destination": "workspace/scripts/check_batch08_real6_inputs.py",
+      "source_sha256": "1cffb27d63bc8bfef505f5b73689847009c5624c30a867494acaf471df2a6252",
+      "export_sha256": "1cffb27d63bc8bfef505f5b73689847009c5624c30a867494acaf471df2a6252",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/check_batch08_real_anchor_inputs.py",
+      "destination": "workspace/scripts/check_batch08_real_anchor_inputs.py",
+      "source_sha256": "b3a2c12cea873d542b7d6605b893fb5cf8f73883f91ea1b6f3b97beca4c148e1",
+      "export_sha256": "b3a2c12cea873d542b7d6605b893fb5cf8f73883f91ea1b6f3b97beca4c148e1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/crossview_geometry_batch67.py",
+      "destination": "workspace/scripts/crossview_geometry_batch67.py",
+      "source_sha256": "db51350cebd39b186c107ee669fdb685343434053ed7fc9529366730d1466436",
+      "export_sha256": "db51350cebd39b186c107ee669fdb685343434053ed7fc9529366730d1466436",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/crossview_geometry_batch67_report.py",
+      "destination": "workspace/scripts/crossview_geometry_batch67_report.py",
+      "source_sha256": "eaf4f56cc421598e8e67b800bcdde8b475a04bbafa6dfdff3369b858e0e91ef8",
+      "export_sha256": "eaf4f56cc421598e8e67b800bcdde8b475a04bbafa6dfdff3369b858e0e91ef8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/crossview_geometry_dense_gt.py",
+      "destination": "workspace/scripts/crossview_geometry_dense_gt.py",
+      "source_sha256": "a603f12516cccddc67184acfe17ab12ebebefa59187a9c68ba591fe407df488b",
+      "export_sha256": "a603f12516cccddc67184acfe17ab12ebebefa59187a9c68ba591fe407df488b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/crossview_geometry_eval.py",
+      "destination": "workspace/scripts/crossview_geometry_eval.py",
+      "source_sha256": "7c69e898c8b856afca3b6f69aef850cd540b37789043716f134a739f62340d5d",
+      "export_sha256": "7c69e898c8b856afca3b6f69aef850cd540b37789043716f134a739f62340d5d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/crossview_geometry_matched_eval.py",
+      "destination": "workspace/scripts/crossview_geometry_matched_eval.py",
+      "source_sha256": "99a93fdec8a4a353c1f20c58fb7bd9c8b12aeb7c9bfeabdd67bb7852aeb79687",
+      "export_sha256": "99a93fdec8a4a353c1f20c58fb7bd9c8b12aeb7c9bfeabdd67bb7852aeb79687",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/diagnose_batch678_ghost_gaussians.py",
+      "destination": "workspace/scripts/diagnose_batch678_ghost_gaussians.py",
+      "source_sha256": "ffad8432fe90cd5d47fef76f2bc882f23f7f2b5be90e7ff71c567dccc7de3c3b",
+      "export_sha256": "ffad8432fe90cd5d47fef76f2bc882f23f7f2b5be90e7ff71c567dccc7de3c3b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/evaluate_batch07_two_sided_bridge.py",
+      "destination": "workspace/scripts/evaluate_batch07_two_sided_bridge.py",
+      "source_sha256": "5ee50975244ba77ccb7d47fadc4b599fb70753712d3838cb53c8f4fe28568bd5",
+      "export_sha256": "5ee50975244ba77ccb7d47fadc4b599fb70753712d3838cb53c8f4fe28568bd5",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/evaluate_batch08_real6_control.py",
+      "destination": "workspace/scripts/evaluate_batch08_real6_control.py",
+      "source_sha256": "171fb2fc261a3a266a83e9c871ce5bb907bcb30e452d0097b924f02854536fdf",
+      "export_sha256": "171fb2fc261a3a266a83e9c871ce5bb907bcb30e452d0097b924f02854536fdf",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/export_vggtdiff_batch678_outputs.py",
+      "destination": "workspace/scripts/export_vggtdiff_batch678_outputs.py",
+      "source_sha256": "630eef847345baedbff8d32f6182f1c4029e5b4d0db751f25a597a7e5c86e917",
+      "export_sha256": "630eef847345baedbff8d32f6182f1c4029e5b4d0db751f25a597a7e5c86e917",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/finalize_vggtdiff_car15_artifixer.py",
+      "destination": "workspace/scripts/finalize_vggtdiff_car15_artifixer.py",
+      "source_sha256": "8580b57feae9ed992d2a13e0f8c5f5556e9a578500aeb00a1bfa649cb7e31c46",
+      "export_sha256": "8580b57feae9ed992d2a13e0f8c5f5556e9a578500aeb00a1bfa649cb7e31c46",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/generate_artifixer_full_tank_roi.py",
+      "destination": "workspace/scripts/generate_artifixer_full_tank_roi.py",
+      "source_sha256": "cbd08e9b5e111c85714bc5144473af8b2f9cfaae476365f29f512abab6e334f2",
+      "export_sha256": "cbd08e9b5e111c85714bc5144473af8b2f9cfaae476365f29f512abab6e334f2",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/ghost_cpu_rasterizer.cpp",
+      "destination": "workspace/scripts/ghost_cpu_rasterizer.cpp",
+      "source_sha256": "cdc4dd1621be741d2995bd09674231f2d5a9e694ee55fa52f0f1d3706a8ac76a",
+      "export_sha256": "cdc4dd1621be741d2995bd09674231f2d5a9e694ee55fa52f0f1d3706a8ac76a",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/ghost_cpu_reference.py",
+      "destination": "workspace/scripts/ghost_cpu_reference.py",
+      "source_sha256": "190e736999d67888a51c90df0b213401eb5a848c07181eca6eb8cee70ceb005c",
+      "export_sha256": "190e736999d67888a51c90df0b213401eb5a848c07181eca6eb8cee70ceb005c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/h_composited_2dgs_train.py",
+      "destination": "workspace/scripts/h_composited_2dgs_train.py",
+      "source_sha256": "272f8638a8f8192693999b77d6b78563f19817ee60e227384f0bea6e19ef3531",
+      "export_sha256": "272f8638a8f8192693999b77d6b78563f19817ee60e227384f0bea6e19ef3531",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/h_composited_angles_train.py",
+      "destination": "workspace/scripts/h_composited_angles_train.py",
+      "source_sha256": "cf97f2f87b67df361ab8fce0df25fab15ad4175c11450cd1fd1ddcc947bcb606",
+      "export_sha256": "cf97f2f87b67df361ab8fce0df25fab15ad4175c11450cd1fd1ddcc947bcb606",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/plan_realvideo_near_targets.py",
+      "destination": "workspace/scripts/plan_realvideo_near_targets.py",
+      "source_sha256": "a5425d223d88fc7168deeed5446bd3ef7cb0cff8d662405dd3114fe04a84ce09",
+      "export_sha256": "a5425d223d88fc7168deeed5446bd3ef7cb0cff8d662405dd3114fe04a84ce09",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/preview_realvideo_car_references.py",
+      "destination": "workspace/scripts/preview_realvideo_car_references.py",
+      "source_sha256": "e37941d3710d6a236b6d29687f33a50cdee5f46c013590a1c3f183ee96d3d452",
+      "export_sha256": "e37941d3710d6a236b6d29687f33a50cdee5f46c013590a1c3f183ee96d3d452",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/report_batch678_ghost_projection.py",
+      "destination": "workspace/scripts/report_batch678_ghost_projection.py",
+      "source_sha256": "4c31052d3090b1d4b46ee3ce6ec4d55b406dcb0b6536f079adf4dbe1f5bb25d3",
+      "export_sha256": "4c31052d3090b1d4b46ee3ce6ec4d55b406dcb0b6536f079adf4dbe1f5bb25d3",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/review_vggtdiff_car15_artifixer.py",
+      "destination": "workspace/scripts/review_vggtdiff_car15_artifixer.py",
+      "source_sha256": "50afb4876306f24b97f9e146b31fc6dd0e78bb89f96c20fd0077592d06615ae8",
+      "export_sha256": "50afb4876306f24b97f9e146b31fc6dd0e78bb89f96c20fd0077592d06615ae8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/review_vggtdiff_controlled.py",
+      "destination": "workspace/scripts/review_vggtdiff_controlled.py",
+      "source_sha256": "79665e77fd179e527c593a0dbe9e9521265639d85f9fc445b96aeebfd597e978",
+      "export_sha256": "79665e77fd179e527c593a0dbe9e9521265639d85f9fc445b96aeebfd597e978",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/review_vggtdiff_realvideo360.py",
+      "destination": "workspace/scripts/review_vggtdiff_realvideo360.py",
+      "source_sha256": "8796b5948901566a7d37f9c6ccb234302ca64714b475c130d4eda02aced74656",
+      "export_sha256": "8796b5948901566a7d37f9c6ccb234302ca64714b475c130d4eda02aced74656",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/run_artifixer_front_views_pipeline.sh",
+      "destination": "workspace/scripts/run_artifixer_front_views_pipeline.sh",
+      "source_sha256": "22e77f880a16b6de4eed3773e463de725ebad8cfe1a6ffd50b391f84fec23af1",
+      "export_sha256": "eee099333149ad4b7c5a61883762cb51370824fdfc6598410f9648e8827fe09e",
+      "model_path_adapter": false,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/run_tank.sh",
+      "destination": "workspace/scripts/run_tank.sh",
+      "source_sha256": "7d41c5817155d5d240db1dc529c620320c4b263e1e5de934021ce8ae275b033c",
+      "export_sha256": "c403c413e183fd5a3620f1501bf4b446195d4a76dac5e172c73d7c0992d3d9d4",
+      "model_path_adapter": false,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/run_vggtdiff_car15_artifixer.sh",
+      "destination": "workspace/scripts/run_vggtdiff_car15_artifixer.sh",
+      "source_sha256": "8afd2f5041929f2f5c0f98f9abf6b9a36ae5ff1b83b7cb557762c0160d948b67",
+      "export_sha256": "a4128b0eea788e89b6c96a8472ee56bb468f2eb5abf96e8fece8d9dc00e98b5f",
+      "model_path_adapter": false,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/vggtdiff_batch06_08_to_batch07_continuous.py",
+      "destination": "workspace/scripts/vggtdiff_batch06_08_to_batch07_continuous.py",
+      "source_sha256": "3c562f1c6cc44f945fec95fb61d64cb1ec79d72d526492f2a483ced03ba3b3da",
+      "export_sha256": "3c562f1c6cc44f945fec95fb61d64cb1ec79d72d526492f2a483ced03ba3b3da",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch07_continuous.py",
+      "destination": "workspace/scripts/vggtdiff_batch07_continuous.py",
+      "source_sha256": "347d8261917e44494fd68a27a1bb30eaa6abc67d1086520600808a21438c4af8",
+      "export_sha256": "347d8261917e44494fd68a27a1bb30eaa6abc67d1086520600808a21438c4af8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch08_mixed_continuous.py",
+      "destination": "workspace/scripts/vggtdiff_batch08_mixed_continuous.py",
+      "source_sha256": "fa84b149885ee73acaa70ee04c4dcd5e931334bd52ffcecda0afff270b1495d0",
+      "export_sha256": "fa84b149885ee73acaa70ee04c4dcd5e931334bd52ffcecda0afff270b1495d0",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch08_real6_continuous.py",
+      "destination": "workspace/scripts/vggtdiff_batch08_real6_continuous.py",
+      "source_sha256": "de9f74f87942da73bb58aa8b097acb9647119bdda497f9d7a1060be790676b1f",
+      "export_sha256": "de9f74f87942da73bb58aa8b097acb9647119bdda497f9d7a1060be790676b1f",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch08_real_anchors.py",
+      "destination": "workspace/scripts/vggtdiff_batch08_real_anchors.py",
+      "source_sha256": "ee905537ed0c393ec11eee077a9e7454bf53691cc2ee43c3411d54015aae3fda",
+      "export_sha256": "ee905537ed0c393ec11eee077a9e7454bf53691cc2ee43c3411d54015aae3fda",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch678_reconstruct.py",
+      "destination": "workspace/scripts/vggtdiff_batch678_reconstruct.py",
+      "source_sha256": "06596b2abe9633b136e7e673a8524660ab1cac04215a961a3f3750d6fd888dc7",
+      "export_sha256": "06596b2abe9633b136e7e673a8524660ab1cac04215a961a3f3750d6fd888dc7",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_batch678_regularization_ablation.py",
+      "destination": "workspace/scripts/vggtdiff_batch678_regularization_ablation.py",
+      "source_sha256": "6fdf6bc04855a6edeffa2f42f490c1632ce3b2aa8d95017be166a22584b619fe",
+      "export_sha256": "6fdf6bc04855a6edeffa2f42f490c1632ce3b2aa8d95017be166a22584b619fe",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_artifixer.py",
+      "destination": "workspace/scripts/vggtdiff_car15_artifixer.py",
+      "source_sha256": "84801394c3646f71d3fe0a528c6da35dcf9eb686a77c3b8c1affd2a4f31efd9b",
+      "export_sha256": "84801394c3646f71d3fe0a528c6da35dcf9eb686a77c3b8c1affd2a4f31efd9b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_evaluate.py",
+      "destination": "workspace/scripts/vggtdiff_car15_evaluate.py",
+      "source_sha256": "3dd587cfe9c1a9b14a15db4677ef8be117e1b514d374a4344d23e4a712307405",
+      "export_sha256": "3dd587cfe9c1a9b14a15db4677ef8be117e1b514d374a4344d23e4a712307405",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_groupa_evaluate.py",
+      "destination": "workspace/scripts/vggtdiff_car15_groupa_evaluate.py",
+      "source_sha256": "cadafac4c99c76cb875b64db7b8112f7e877cf732dc4ba3f3f073933b17b9537",
+      "export_sha256": "cadafac4c99c76cb875b64db7b8112f7e877cf732dc4ba3f3f073933b17b9537",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_groupa_prepare.py",
+      "destination": "workspace/scripts/vggtdiff_car15_groupa_prepare.py",
+      "source_sha256": "bc6e2c10a3d4188d6e73cf6e973d4c666494b9bf6e42f800f6ad1fd9d8d4e2cf",
+      "export_sha256": "bc6e2c10a3d4188d6e73cf6e973d4c666494b9bf6e42f800f6ad1fd9d8d4e2cf",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_groupa_tight_evaluate.py",
+      "destination": "workspace/scripts/vggtdiff_car15_groupa_tight_evaluate.py",
+      "source_sha256": "260d6d4234266a6c7c9e76113dc9bec80c21223b57c526ef23b8e9b2ce2298ba",
+      "export_sha256": "260d6d4234266a6c7c9e76113dc9bec80c21223b57c526ef23b8e9b2ce2298ba",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_groupa_tight_train.py",
+      "destination": "workspace/scripts/vggtdiff_car15_groupa_tight_train.py",
+      "source_sha256": "8db6210cc0d06ac676e4c72b87f4c319476acb0c6ef37a4a12d9720227615d63",
+      "export_sha256": "8db6210cc0d06ac676e4c72b87f4c319476acb0c6ef37a4a12d9720227615d63",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_groupa_train.py",
+      "destination": "workspace/scripts/vggtdiff_car15_groupa_train.py",
+      "source_sha256": "b9f39437cb0e2dd27acde61961a48840fcf7045de9ef28c24857414162429c99",
+      "export_sha256": "b9f39437cb0e2dd27acde61961a48840fcf7045de9ef28c24857414162429c99",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_keep6.py",
+      "destination": "workspace/scripts/vggtdiff_car15_keep6.py",
+      "source_sha256": "96c915e20814835654b957f5443c728b2a78a5bacd010011bb30f2880914fc9c",
+      "export_sha256": "96c915e20814835654b957f5443c728b2a78a5bacd010011bb30f2880914fc9c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_prepare.py",
+      "destination": "workspace/scripts/vggtdiff_car15_prepare.py",
+      "source_sha256": "81b44e4aef9fddb00fe31d55c94973cef6184cdba1ce53eb760757b949863d75",
+      "export_sha256": "81b44e4aef9fddb00fe31d55c94973cef6184cdba1ce53eb760757b949863d75",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_rear5.py",
+      "destination": "workspace/scripts/vggtdiff_car15_rear5.py",
+      "source_sha256": "0881ac1cf50b122c8c37e7ea0bd258f444ed86468c301555f3544b8bb9311d33",
+      "export_sha256": "0881ac1cf50b122c8c37e7ea0bd258f444ed86468c301555f3544b8bb9311d33",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_report.py",
+      "destination": "workspace/scripts/vggtdiff_car15_report.py",
+      "source_sha256": "91e1325c0d190e7709cb3ad57e60918e7d36c5c3d0a379a4c4c6f7108e403c66",
+      "export_sha256": "91e1325c0d190e7709cb3ad57e60918e7d36c5c3d0a379a4c4c6f7108e403c66",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_train.py",
+      "destination": "workspace/scripts/vggtdiff_car15_train.py",
+      "source_sha256": "17fbc4eb7d70369fb20aa10e4ee96eb1fc9aaa368071d05d988abf1394797615",
+      "export_sha256": "17fbc4eb7d70369fb20aa10e4ee96eb1fc9aaa368071d05d988abf1394797615",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_car15_validation.py",
+      "destination": "workspace/scripts/vggtdiff_car15_validation.py",
+      "source_sha256": "2adb9b71a04ee87cab47cff032dd7e3c5df31e09f0fb8750006b3eb2e8dfeb20",
+      "export_sha256": "2adb9b71a04ee87cab47cff032dd7e3c5df31e09f0fb8750006b3eb2e8dfeb20",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_consistency_abc.py",
+      "destination": "workspace/scripts/vggtdiff_consistency_abc.py",
+      "source_sha256": "18e4509474597019d5636f1558146d61291796b4a83503a62f4f28b80b5da0df",
+      "export_sha256": "18e4509474597019d5636f1558146d61291796b4a83503a62f4f28b80b5da0df",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_controlled_context.py",
+      "destination": "workspace/scripts/vggtdiff_controlled_context.py",
+      "source_sha256": "4f636cd4a5ea0ecf104d2adf8a6991c1bdea23d2a9bac5b2878fd2b70e43778d",
+      "export_sha256": "4f636cd4a5ea0ecf104d2adf8a6991c1bdea23d2a9bac5b2878fd2b70e43778d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_factorial.py",
+      "destination": "workspace/scripts/vggtdiff_factorial.py",
+      "source_sha256": "eab09bd7e99fa6042ee9c89136748d736fccb0fdefc774a757d80e42b504fc1f",
+      "export_sha256": "5d34adddd666ced636181fe2dfa27d9a2ec87a153f50957a0f741802fd3001cd",
+      "model_path_adapter": true,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/vggtdiff_generated_batch_chain.py",
+      "destination": "workspace/scripts/vggtdiff_generated_batch_chain.py",
+      "source_sha256": "5a9194fb306269ea2d7e89e5c5a691551106783bc3e1bafaabb8173fd762d2db",
+      "export_sha256": "5a9194fb306269ea2d7e89e5c5a691551106783bc3e1bafaabb8173fd762d2db",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_latest_coverage_ab.py",
+      "destination": "workspace/scripts/vggtdiff_latest_coverage_ab.py",
+      "source_sha256": "7dd1854f8b45a8c347867368b7f8fc667a6dd47a383d38b5b558147b74a2eddd",
+      "export_sha256": "7dd1854f8b45a8c347867368b7f8fc667a6dd47a383d38b5b558147b74a2eddd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_latest_coverage_depth_c.py",
+      "destination": "workspace/scripts/vggtdiff_latest_coverage_depth_c.py",
+      "source_sha256": "6a2810bf9465479c7b64909c48fa4be4cdf77510676fdb8481af21f85c5d09e5",
+      "export_sha256": "6a2810bf9465479c7b64909c48fa4be4cdf77510676fdb8481af21f85c5d09e5",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_matched_gt.py",
+      "destination": "workspace/scripts/vggtdiff_matched_gt.py",
+      "source_sha256": "af4e16a368072ebf067f3819bf454f0f7aad01fce884586f6a10a8a643cd11b4",
+      "export_sha256": "af4e16a368072ebf067f3819bf454f0f7aad01fce884586f6a10a8a643cd11b4",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_matched_spatial_diagnostics.py",
+      "destination": "workspace/scripts/vggtdiff_matched_spatial_diagnostics.py",
+      "source_sha256": "36c0cfb36387c50d0e7083ba4742dee5984da08a585b0f26267b0448064d1f3b",
+      "export_sha256": "36c0cfb36387c50d0e7083ba4742dee5984da08a585b0f26267b0448064d1f3b",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_noise_control.py",
+      "destination": "workspace/scripts/vggtdiff_noise_control.py",
+      "source_sha256": "0052bc16db82c43ed2d49b39cc32cb23fab54c33edf09464108b55c014151cd2",
+      "export_sha256": "0052bc16db82c43ed2d49b39cc32cb23fab54c33edf09464108b55c014151cd2",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_orbit360_latest_refs.py",
+      "destination": "workspace/scripts/vggtdiff_orbit360_latest_refs.py",
+      "source_sha256": "ea9f5f20eeac2ceafdfe2ff10d88a40f9838be87ae35495104cfe63ec6f7ae01",
+      "export_sha256": "ea9f5f20eeac2ceafdfe2ff10d88a40f9838be87ae35495104cfe63ec6f7ae01",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_prepare_real_targets.py",
+      "destination": "workspace/scripts/vggtdiff_prepare_real_targets.py",
+      "source_sha256": "9f1951c02db00748bad5620015ba20207b55010be6ba657c9a1b3b7ba303f6b6",
+      "export_sha256": "9f1951c02db00748bad5620015ba20207b55010be6ba657c9a1b3b7ba303f6b6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real6_batch.py",
+      "destination": "workspace/scripts/vggtdiff_real6_batch.py",
+      "source_sha256": "3b34307a801161b54dc828957ac2efaac326b5ec83194dbd592aca257e5aa5e7",
+      "export_sha256": "3b34307a801161b54dc828957ac2efaac326b5ec83194dbd592aca257e5aa5e7",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real8_generated8_reconstruct.py",
+      "destination": "workspace/scripts/vggtdiff_real8_generated8_reconstruct.py",
+      "source_sha256": "dcf4851bf504539bdd221b1609fe16d0d72a4ab5fed26afa2c21e24b8dfb385d",
+      "export_sha256": "dcf4851bf504539bdd221b1609fe16d0d72a4ab5fed26afa2c21e24b8dfb385d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real8_generated8_report.py",
+      "destination": "workspace/scripts/vggtdiff_real8_generated8_report.py",
+      "source_sha256": "81ba61585ac16dda4a2e7445728469427fb3b94cf9e83a491e0fd68cf24b36a6",
+      "export_sha256": "81ba61585ac16dda4a2e7445728469427fb3b94cf9e83a491e0fd68cf24b36a6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real_front_anchor_calibration.py",
+      "destination": "workspace/scripts/vggtdiff_real_front_anchor_calibration.py",
+      "source_sha256": "1f5ee346444e3973cea7c50609ab27e8e15768b538e13a2e422f092199b56139",
+      "export_sha256": "1f5ee346444e3973cea7c50609ab27e8e15768b538e13a2e422f092199b56139",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real_front_references.py",
+      "destination": "workspace/scripts/vggtdiff_real_front_references.py",
+      "source_sha256": "97dc64aec8df799c307d184d074c0437aba62219b2531bd06ea706fae6e345f6",
+      "export_sha256": "97dc64aec8df799c307d184d074c0437aba62219b2531bd06ea706fae6e345f6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_real_front_sfm_bridge.py",
+      "destination": "workspace/scripts/vggtdiff_real_front_sfm_bridge.py",
+      "source_sha256": "d43da5ac06b9432a1943aa0a2e71df57c34cf25e7a1dc4f9aebbd70e96e14614",
+      "export_sha256": "d43da5ac06b9432a1943aa0a2e71df57c34cf25e7a1dc4f9aebbd70e96e14614",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_realvideo360.py",
+      "destination": "workspace/scripts/vggtdiff_realvideo360.py",
+      "source_sha256": "ffb890c5901e8da0b5ceb97506904a9eabfb70cf4a0db9f16da190a12573111e",
+      "export_sha256": "ffb890c5901e8da0b5ceb97506904a9eabfb70cf4a0db9f16da190a12573111e",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_realvideo360_8.py",
+      "destination": "workspace/scripts/vggtdiff_realvideo360_8.py",
+      "source_sha256": "92bdfa9257d2f7757dd9f9566c761b3c2e0f9c2bf722dfadffb896f5c8fb3aa6",
+      "export_sha256": "92bdfa9257d2f7757dd9f9566c761b3c2e0f9c2bf722dfadffb896f5c8fb3aa6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_realvideo64.py",
+      "destination": "workspace/scripts/vggtdiff_realvideo64.py",
+      "source_sha256": "a8fcd804625a2412676702780bf3ffa780f58886d406e673a144d37e992a0e25",
+      "export_sha256": "a8fcd804625a2412676702780bf3ffa780f58886d406e673a144d37e992a0e25",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_realvideo_unseen.py",
+      "destination": "workspace/scripts/vggtdiff_realvideo_unseen.py",
+      "source_sha256": "25bb1f15ed34343c9f4f75eff2acc41e6b99529b3a06e2808c3241e0c4ecb987",
+      "export_sha256": "6917229c7f9247cd2e9f89600d5247d422d249b9122d77750e3efb173949e018",
+      "model_path_adapter": true,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/vggtdiff_rear_iter1.py",
+      "destination": "workspace/scripts/vggtdiff_rear_iter1.py",
+      "source_sha256": "8979d7265a65bdef8ea5c9ad0322081e4824d2c0d262df6abd832d9b9ac3d446",
+      "export_sha256": "8979d7265a65bdef8ea5c9ad0322081e4824d2c0d262df6abd832d9b9ac3d446",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_refined_car.py",
+      "destination": "workspace/scripts/vggtdiff_refined_car.py",
+      "source_sha256": "5c77fea340bad8ec36963fb77ff9dec3d52b7edd0cd75f3e8cd2fbe40193a522",
+      "export_sha256": "96a8b60e3520edaa77382376a2ce2df3c8245043f8f0560d46eb94fc4ab4673d",
+      "model_path_adapter": true,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/vggtdiff_selfconsistent_silhouette.py",
+      "destination": "workspace/scripts/vggtdiff_selfconsistent_silhouette.py",
+      "source_sha256": "3266b5faf6781912bab9fca22125d79cf4e6f491c2ad0e8fb4dfed615c40d2ab",
+      "export_sha256": "3266b5faf6781912bab9fca22125d79cf4e6f491c2ad0e8fb4dfed615c40d2ab",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_shared_context_short.py",
+      "destination": "workspace/scripts/vggtdiff_shared_context_short.py",
+      "source_sha256": "9f24241ac714669d891bcdea509df282ebaca3d11809eb935a234dd49a069d64",
+      "export_sha256": "9f24241ac714669d891bcdea509df282ebaca3d11809eb935a234dd49a069d64",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/vggtdiff_white_car.py",
+      "destination": "workspace/scripts/vggtdiff_white_car.py",
+      "source_sha256": "b1862a007eda9debe57e9052e8956e7b9a6d5c568efababe362175cc4be82a88",
+      "export_sha256": "c7d2eb6b9323e41acaabecd4f5fd00f020d9aea80bd5be068589f9f6d0078021",
+      "model_path_adapter": true,
+      "adaptation": "Portable model defaults or shell workspace/Python defaults; original source remains unchanged."
+    },
+    {
+      "source": "scripts/visualize_artifixer_texture_disorder.py",
+      "destination": "workspace/scripts/visualize_artifixer_texture_disorder.py",
+      "source_sha256": "26834eaca26a931599dc08a1c8db36cabd885722fcf1902dfc260bc2cdb5944c",
+      "export_sha256": "26834eaca26a931599dc08a1c8db36cabd885722fcf1902dfc260bc2cdb5944c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "scripts/visualize_gaussian_direction_consistency.py",
+      "destination": "workspace/scripts/visualize_gaussian_direction_consistency.py",
+      "source_sha256": "c37aa2d6310e27b30176f212087b14d5482156c6aa068a458ededcf643f095a8",
+      "export_sha256": "c37aa2d6310e27b30176f212087b14d5482156c6aa068a458ededcf643f095a8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/__init__.py",
+      "destination": "workspace/tests/__init__.py",
+      "source_sha256": "39b67a3543de12fbe919327958818a53222b223688ef8ece33a12bc1e46d1f14",
+      "export_sha256": "39b67a3543de12fbe919327958818a53222b223688ef8ece33a12bc1e46d1f14",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_car15_balanced_silhouette.py",
+      "destination": "workspace/tests/test_car15_balanced_silhouette.py",
+      "source_sha256": "f197b51cf0fff75686167f92e864ce1e80edf6ca42d8fbd31ebcc79dc2aecd8c",
+      "export_sha256": "f197b51cf0fff75686167f92e864ce1e80edf6ca42d8fbd31ebcc79dc2aecd8c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_car15_object_loss.py",
+      "destination": "workspace/tests/test_car15_object_loss.py",
+      "source_sha256": "7778d612aea9e4235f6c7d439373d50be2ac380275b72c135fa953a8c576efcd",
+      "export_sha256": "7778d612aea9e4235f6c7d439373d50be2ac380275b72c135fa953a8c576efcd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_crossview_geometry_dense_gt.py",
+      "destination": "workspace/tests/test_crossview_geometry_dense_gt.py",
+      "source_sha256": "e43fea3294fd6c2ce551499b66d02b41d006f3e1f8eb7789b5393f6fd99ec087",
+      "export_sha256": "e43fea3294fd6c2ce551499b66d02b41d006f3e1f8eb7789b5393f6fd99ec087",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_crossview_geometry_eval.py",
+      "destination": "workspace/tests/test_crossview_geometry_eval.py",
+      "source_sha256": "29ad8f1b6e6cbf92b3ed7ebe07559f599206f9109202bfb08ecd30f81fb12bcc",
+      "export_sha256": "29ad8f1b6e6cbf92b3ed7ebe07559f599206f9109202bfb08ecd30f81fb12bcc",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_crossview_geometry_matched_eval.py",
+      "destination": "workspace/tests/test_crossview_geometry_matched_eval.py",
+      "source_sha256": "cfbf481ca16cd0db22117e138de6434f3962b17280650957485a069e34212d8c",
+      "export_sha256": "cfbf481ca16cd0db22117e138de6434f3962b17280650957485a069e34212d8c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_vggtdiff_batch07_continuous.py",
+      "destination": "workspace/tests/test_vggtdiff_batch07_continuous.py",
+      "source_sha256": "354872ae9e65fff6f8f097964e94410d6ef4a7799241ad4247d90b055b6fb6e7",
+      "export_sha256": "354872ae9e65fff6f8f097964e94410d6ef4a7799241ad4247d90b055b6fb6e7",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_vggtdiff_consistency_abc.py",
+      "destination": "workspace/tests/test_vggtdiff_consistency_abc.py",
+      "source_sha256": "4d2de5336b812eb375d45800e2074b020efe8365591dc3daeb0fb4591e29e0f1",
+      "export_sha256": "4d2de5336b812eb375d45800e2074b020efe8365591dc3daeb0fb4591e29e0f1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "tests/test_vggtdiff_noise_control.py",
+      "destination": "workspace/tests/test_vggtdiff_noise_control.py",
+      "source_sha256": "68afb0a3ed6bddf9c8194a6ccad78b5f56a1d250ee8be71a5cb14ef88149997c",
+      "export_sha256": "68afb0a3ed6bddf9c8194a6ccad78b5f56a1d250ee8be71a5cb14ef88149997c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/.gitignore",
+      "destination": "workspace/thirdparty/VGGT-Diff/.gitignore",
+      "source_sha256": "da4b1ad53de14115a7dd38f3fef42183c47794b9eef4bf35df62c57b312d1935",
+      "export_sha256": "da4b1ad53de14115a7dd38f3fef42183c47794b9eef4bf35df62c57b312d1935",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/LICENSE",
+      "destination": "workspace/thirdparty/VGGT-Diff/LICENSE",
+      "source_sha256": "fbc981505dc45eb86ee153244592447d508f52e385ffb5fa177a5a03d26e1c4c",
+      "export_sha256": "fbc981505dc45eb86ee153244592447d508f52e385ffb5fa177a5a03d26e1c4c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/NOTICE",
+      "destination": "workspace/thirdparty/VGGT-Diff/NOTICE",
+      "source_sha256": "d72383660492adaa9ea27a1e102b1e37407e8a0dfa918f8a4dfb77585a56fc0e",
+      "export_sha256": "d72383660492adaa9ea27a1e102b1e37407e8a0dfa918f8a4dfb77585a56fc0e",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/README.md",
+      "destination": "workspace/thirdparty/VGGT-Diff/README.md",
+      "source_sha256": "2aed45bb276de18bc3b75cee55d44d027f9439be639d2f1efe6814b9c9814bd1",
+      "export_sha256": "2aed45bb276de18bc3b75cee55d44d027f9439be639d2f1efe6814b9c9814bd1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/THIRD_PARTY_LICENSES/Apache-2.0.txt",
+      "destination": "workspace/thirdparty/VGGT-Diff/THIRD_PARTY_LICENSES/Apache-2.0.txt",
+      "source_sha256": "040944093a337dd216b47f5a4ee5188c39a8432d1b9184086070b57b0cd4b2ff",
+      "export_sha256": "040944093a337dd216b47f5a4ee5188c39a8432d1b9184086070b57b0cd4b2ff",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/__init__.py",
+      "source_sha256": "2b490dcb6e959ba03ed55e65493de2972eb256c34b51b8aa93a0190c59b69c92",
+      "export_sha256": "2b490dcb6e959ba03ed55e65493de2972eb256c34b51b8aa93a0190c59b69c92",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/configs/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/configs/__init__.py",
+      "source_sha256": "1453aa3d029724c18c36e381f2e973af85026f3078c28630288af1f020acc182",
+      "export_sha256": "1453aa3d029724c18c36e381f2e973af85026f3078c28630288af1f020acc182",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/configs/model_configs.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/configs/model_configs.py",
+      "source_sha256": "96905361af773bc7cd860b95d60aef1ae57856cb84fd9cdc58fdfb44c99aa30d",
+      "export_sha256": "96905361af773bc7cd860b95d60aef1ae57856cb84fd9cdc58fdfb44c99aa30d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/configs/vram_management_module_maps.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/configs/vram_management_module_maps.py",
+      "source_sha256": "94510ac4e222eb18abb5da8fe0521179be49c3a11404107ea950bdf0d35b86eb",
+      "export_sha256": "94510ac4e222eb18abb5da8fe0521179be49c3a11404107ea950bdf0d35b86eb",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/__init__.py",
+      "source_sha256": "729c430d719be7d180645f716faa3865a20812238f8440870a2283c187e9973a",
+      "export_sha256": "729c430d719be7d180645f716faa3865a20812238f8440870a2283c187e9973a",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/attention/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/attention/__init__.py",
+      "source_sha256": "558e2a638ecbd3b7287bb9ab74d0e7e70b098da59bb8127163a494c39ec24190",
+      "export_sha256": "558e2a638ecbd3b7287bb9ab74d0e7e70b098da59bb8127163a494c39ec24190",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/attention/attention.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/attention/attention.py",
+      "source_sha256": "0cba66d6a36d0526bb51506b3bc73778852d000724a939898daf479d9e5994b6",
+      "export_sha256": "0cba66d6a36d0526bb51506b3bc73778852d000724a939898daf479d9e5994b6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/device/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/device/__init__.py",
+      "source_sha256": "5edc96aa7e96b17b394706bff9ede0a018b527f04a3712e02453209688f66122",
+      "export_sha256": "5edc96aa7e96b17b394706bff9ede0a018b527f04a3712e02453209688f66122",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/device/npu_compatible_device.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/device/npu_compatible_device.py",
+      "source_sha256": "f58a8746443e2558629c2d214a1e8f0edca3b7344b280e48239abfd6938da75f",
+      "export_sha256": "f58a8746443e2558629c2d214a1e8f0edca3b7344b280e48239abfd6938da75f",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/gradient/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/gradient/__init__.py",
+      "source_sha256": "e8db9f67a95741bcb4619b0cf8392152b9204ba16308b4dc7af943d8b7f22999",
+      "export_sha256": "e8db9f67a95741bcb4619b0cf8392152b9204ba16308b4dc7af943d8b7f22999",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/gradient/gradient_checkpoint.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/gradient/gradient_checkpoint.py",
+      "source_sha256": "5c641446c35fa726f81a2ddd86549e0a05ab89ff730faccab7bb440a33eec874",
+      "export_sha256": "5c641446c35fa726f81a2ddd86549e0a05ab89ff730faccab7bb440a33eec874",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/loader/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/loader/__init__.py",
+      "source_sha256": "f678e318bd3ae323a7878c644911afa26d18758effff7cca37ecc695d1cdaf52",
+      "export_sha256": "f678e318bd3ae323a7878c644911afa26d18758effff7cca37ecc695d1cdaf52",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/loader/config.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/loader/config.py",
+      "source_sha256": "f6e5755852a27e9b8744a6263916d2707d01c4d1ead7c0d882ab4c67b07e91fb",
+      "export_sha256": "f6e5755852a27e9b8744a6263916d2707d01c4d1ead7c0d882ab4c67b07e91fb",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/loader/file.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/loader/file.py",
+      "source_sha256": "3f3c7e65d66f35436af7e996865a387e228a7f38b022adb509aabc2013d6c48d",
+      "export_sha256": "3f3c7e65d66f35436af7e996865a387e228a7f38b022adb509aabc2013d6c48d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/loader/model.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/loader/model.py",
+      "source_sha256": "a591c137cdcd71e667e884a9dc2d04f383dd999b6a801962924bd61bde495fd9",
+      "export_sha256": "a591c137cdcd71e667e884a9dc2d04f383dd999b6a801962924bd61bde495fd9",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/vram/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/vram/__init__.py",
+      "source_sha256": "3fc422826dd95a5f058ff5bec9d8b48e883b641ef0f5e32010743394002bb5f5",
+      "export_sha256": "3fc422826dd95a5f058ff5bec9d8b48e883b641ef0f5e32010743394002bb5f5",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/vram/disk_map.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/vram/disk_map.py",
+      "source_sha256": "0685ca0adc0bfa5f911e1dd94df5372c6cecb58e3c0d3616dfda06c2e44d34dc",
+      "export_sha256": "0685ca0adc0bfa5f911e1dd94df5372c6cecb58e3c0d3616dfda06c2e44d34dc",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/vram/initialization.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/vram/initialization.py",
+      "source_sha256": "a5541a038db28b2290e0bc1078ed3b78d1f45db84ce66a3d6b46ea68b98bbb22",
+      "export_sha256": "a5541a038db28b2290e0bc1078ed3b78d1f45db84ce66a3d6b46ea68b98bbb22",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/core/vram/layers.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/core/vram/layers.py",
+      "source_sha256": "67a1a7782ce82caacc91365eddfbf4e21db7c9b207db0ae8ee5c3d8deaf8e9de",
+      "export_sha256": "67a1a7782ce82caacc91365eddfbf4e21db7c9b207db0ae8ee5c3d8deaf8e9de",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/diffusion/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/diffusion/__init__.py",
+      "source_sha256": "b292308b8dd1e668d7fc754a490d11a6f8e0fb11cab42d5eb2a7959f92ddeece",
+      "export_sha256": "b292308b8dd1e668d7fc754a490d11a6f8e0fb11cab42d5eb2a7959f92ddeece",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/diffusion/base_pipeline.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/diffusion/base_pipeline.py",
+      "source_sha256": "4148f8ed6a0f06f9d3370fd8b77189c674056891d7c8a2b28feb2a057a1982c9",
+      "export_sha256": "4148f8ed6a0f06f9d3370fd8b77189c674056891d7c8a2b28feb2a057a1982c9",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/diffusion/flow_match.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/diffusion/flow_match.py",
+      "source_sha256": "02be70a84f7beab95904fb447769f6bf0ccac0f27c9929c5f084330f54972ca6",
+      "export_sha256": "02be70a84f7beab95904fb447769f6bf0ccac0f27c9929c5f084330f54972ca6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/diffusion/logger.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/diffusion/logger.py",
+      "source_sha256": "dfa48a2340e8aeb3c53d2e9373aa56bdb8282c0c754e76d52075a2a98dc00c14",
+      "export_sha256": "dfa48a2340e8aeb3c53d2e9373aa56bdb8282c0c754e76d52075a2a98dc00c14",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/diffusion/training_module.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/diffusion/training_module.py",
+      "source_sha256": "ae3ba741890fcbf3dd3c4d985847a9d645141230bdd85ac2e26e62e80865fc95",
+      "export_sha256": "ae3ba741890fcbf3dd3c4d985847a9d645141230bdd85ac2e26e62e80865fc95",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/model_loader.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/model_loader.py",
+      "source_sha256": "f66d8928c5876b1b32f7b50fb21d6cc57f58e58a3e62f17d1f7f0387f593add8",
+      "export_sha256": "f66d8928c5876b1b32f7b50fb21d6cc57f58e58a3e62f17d1f7f0387f593add8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/omega_condition.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/omega_condition.py",
+      "source_sha256": "c9743c52e7cb448de1d3e55e8d36a26cbc2b359b54bbd03704b6c9df6608e247",
+      "export_sha256": "c9743c52e7cb448de1d3e55e8d36a26cbc2b359b54bbd03704b6c9df6608e247",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/omega_geometry.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/omega_geometry.py",
+      "source_sha256": "0429595fb70a448c52b8edae0b3dadde2c87b6dc874248193dd2657455330b8d",
+      "export_sha256": "0429595fb70a448c52b8edae0b3dadde2c87b6dc874248193dd2657455330b8d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/wan_video_dit.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/wan_video_dit.py",
+      "source_sha256": "4721ad6920999062a733afe1c0fff9c17a1dc6ae682932d32fd9bc42e4d3ad79",
+      "export_sha256": "4721ad6920999062a733afe1c0fff9c17a1dc6ae682932d32fd9bc42e4d3ad79",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/wan_video_image_encoder.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/wan_video_image_encoder.py",
+      "source_sha256": "77a6f63125512975486c9af8c795350c7b2799062887e424e8d589f366135b3d",
+      "export_sha256": "77a6f63125512975486c9af8c795350c7b2799062887e424e8d589f366135b3d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/wan_video_text_encoder.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/wan_video_text_encoder.py",
+      "source_sha256": "c82c5ed4308e1e72a6bf36fa9f521577d717a234b48d62db101dd4b8d889a3df",
+      "export_sha256": "c82c5ed4308e1e72a6bf36fa9f521577d717a234b48d62db101dd4b8d889a3df",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/models/wan_video_vae.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/models/wan_video_vae.py",
+      "source_sha256": "1678b8e66311a9cf08f95df980b00dc84c497cee7bb99d13146388415967b8ae",
+      "export_sha256": "1678b8e66311a9cf08f95df980b00dc84c497cee7bb99d13146388415967b8ae",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/pipelines/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/pipelines/__init__.py",
+      "source_sha256": "1a996a02c1e05bb41a100083f5006f10528fefd55f9945afd94a52f17aee2783",
+      "export_sha256": "1a996a02c1e05bb41a100083f5006f10528fefd55f9945afd94a52f17aee2783",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/pipelines/wan_video.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/pipelines/wan_video.py",
+      "source_sha256": "2f7645ce99a53cf58de6e79ef413695f9e215540b290ea69f9e5584f86b52729",
+      "export_sha256": "2f7645ce99a53cf58de6e79ef413695f9e215540b290ea69f9e5584f86b52729",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/utils/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/utils/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_dit.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_dit.py",
+      "source_sha256": "992dfbb368b2e850aaadb346a857ce7593d85d4fc0fbf66b3f68f1bfddd1b61a",
+      "export_sha256": "992dfbb368b2e850aaadb346a857ce7593d85d4fc0fbf66b3f68f1bfddd1b61a",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_image_encoder.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_image_encoder.py",
+      "source_sha256": "cce0bd4d5123488240c5e941dfeb96dc604fccfffd12b5d41837204856d05438",
+      "export_sha256": "cce0bd4d5123488240c5e941dfeb96dc604fccfffd12b5d41837204856d05438",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_vae.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/diffsynth/utils/state_dict_converters/wan_video_vae.py",
+      "source_sha256": "3b1b98e5a06c984455bbde6560abb09cd79cc4d4403b79805835637eced472df",
+      "export_sha256": "3b1b98e5a06c984455bbde6560abb09cd79cc4d4403b79805835637eced472df",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_00.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_00.png",
+      "source_sha256": "416b412fec85a4cc0f557e55951e8556d47568e7efdd753d08e9b705d0acc627",
+      "export_sha256": "416b412fec85a4cc0f557e55951e8556d47568e7efdd753d08e9b705d0acc627",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_01.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_01.png",
+      "source_sha256": "0b6e0ab4f9c4581ea19a87628682b0e51a332f925e53326bf9b90c96c3bd8b65",
+      "export_sha256": "0b6e0ab4f9c4581ea19a87628682b0e51a332f925e53326bf9b90c96c3bd8b65",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_02.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_02.png",
+      "source_sha256": "ca72afe709201c11a1cebe1258151fae4deb2d40c2421db98a64e8dbadb0fd48",
+      "export_sha256": "ca72afe709201c11a1cebe1258151fae4deb2d40c2421db98a64e8dbadb0fd48",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_03.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_03.png",
+      "source_sha256": "535995850b9239e089443994a96eeead86d617c1902365da3641d60a30eff729",
+      "export_sha256": "535995850b9239e089443994a96eeead86d617c1902365da3641d60a30eff729",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_04.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_04.png",
+      "source_sha256": "b675b3ba509b56b28697c4723ae4174ab09a06e9fa055350724e728e4c8879d6",
+      "export_sha256": "b675b3ba509b56b28697c4723ae4174ab09a06e9fa055350724e728e4c8879d6",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/source_views/source_05.png",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/source_views/source_05.png",
+      "source_sha256": "88cef286dee5262d0e8515c2f36f52a2c90e11c36576c7a39cd7e10f2dab9122",
+      "export_sha256": "88cef286dee5262d0e8515c2f36f52a2c90e11c36576c7a39cd7e10f2dab9122",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/examples/garden/trajectory.json",
+      "destination": "workspace/thirdparty/VGGT-Diff/examples/garden/trajectory.json",
+      "source_sha256": "5066c2da7c954afde7aa0880d17118226fd6beec6435fa8a5b45295b3471c397",
+      "export_sha256": "5066c2da7c954afde7aa0880d17118226fd6beec6435fa8a5b45295b3471c397",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/pyproject.toml",
+      "destination": "workspace/thirdparty/VGGT-Diff/pyproject.toml",
+      "source_sha256": "75db2db3fd8004b0f1ce6de706fbd27f328dd8b9f8d0b190557575494ea6b70d",
+      "export_sha256": "75db2db3fd8004b0f1ce6de706fbd27f328dd8b9f8d0b190557575494ea6b70d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/scripts/infer.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/scripts/infer.py",
+      "source_sha256": "03e20c384b57d1e6f163cca9ca1deff797ebd16b5daa7396026cb2b5984b51ed",
+      "export_sha256": "03e20c384b57d1e6f163cca9ca1deff797ebd16b5daa7396026cb2b5984b51ed",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/scripts/infer_pose_free.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/scripts/infer_pose_free.py",
+      "source_sha256": "b10aa541fefb9ef38d52eafa7bb4357cc333c88626738dbe913bfa4e6c68e00e",
+      "export_sha256": "b10aa541fefb9ef38d52eafa7bb4357cc333c88626738dbe913bfa4e6c68e00e",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/scripts/prepare_omega_cache.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/scripts/prepare_omega_cache.py",
+      "source_sha256": "2c0b3dbb453270e340a77c1ef40422401c01c2af6c533bdf0047ff1541d8f51f",
+      "export_sha256": "2c0b3dbb453270e340a77c1ef40422401c01c2af6c533bdf0047ff1541d8f51f",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/scripts/train.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/scripts/train.py",
+      "source_sha256": "269ccc38353046fc459a655c3eef955b85f1df269a8457a49b7510cd7b31a528",
+      "export_sha256": "269ccc38353046fc459a655c3eef955b85f1df269a8457a49b7510cd7b31a528",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/tests/test_camera.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/tests/test_camera.py",
+      "source_sha256": "2847fb51f8fa0f1d974092528706cb9c19128df8203897737b5be48b4e00cfb1",
+      "export_sha256": "2847fb51f8fa0f1d974092528706cb9c19128df8203897737b5be48b4e00cfb1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/tests/test_nvs_inference.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/tests/test_nvs_inference.py",
+      "source_sha256": "14277d496bd9ed5d3d5c56358c79aee5cdc4a8c8d57e7d3e7712d1bcea6545fd",
+      "export_sha256": "14277d496bd9ed5d3d5c56358c79aee5cdc4a8c8d57e7d3e7712d1bcea6545fd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/tests/test_pose_free.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/tests/test_pose_free.py",
+      "source_sha256": "9997ebb00b2462c6bb118e73191de708441c5d3d8b6c4ae7998552fa83c6d139",
+      "export_sha256": "9997ebb00b2462c6bb118e73191de708441c5d3d8b6c4ae7998552fa83c6d139",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/tests/test_temporal_packing.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/tests/test_temporal_packing.py",
+      "source_sha256": "da269d550510396c3f57bf8fdeef79472cf6c9b5cd6289c11076c0c608461e73",
+      "export_sha256": "da269d550510396c3f57bf8fdeef79472cf6c9b5cd6289c11076c0c608461e73",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/tests/test_training_modes.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/tests/test_training_modes.py",
+      "source_sha256": "6c324abfa01a50563df8201268f7dd253736d00f1991efb8c2091fb2065c935e",
+      "export_sha256": "6c324abfa01a50563df8201268f7dd253736d00f1991efb8c2091fb2065c935e",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/__init__.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/__init__.py",
+      "source_sha256": "1c399a73b59cfdd34bf3593a6149ca38a80e467c8ae048c1fe1e2d969f3987a1",
+      "export_sha256": "1c399a73b59cfdd34bf3593a6149ca38a80e467c8ae048c1fe1e2d969f3987a1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/camera.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/camera.py",
+      "source_sha256": "ec01eeac695041e2f685e74074d2b12d106da94bdab3b4469d7f2065573d3a52",
+      "export_sha256": "ec01eeac695041e2f685e74074d2b12d106da94bdab3b4469d7f2065573d3a52",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/checkpoint.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/checkpoint.py",
+      "source_sha256": "df0a2426b16203af17fdde83eaec225a7c3dfb2952565bd7050acceeb597a5a8",
+      "export_sha256": "df0a2426b16203af17fdde83eaec225a7c3dfb2952565bd7050acceeb597a5a8",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/data.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/data.py",
+      "source_sha256": "ebf71a8d6be0c1999851aa952cc62f6dce2b06dd82d7a0e1298fe2b9a56932b9",
+      "export_sha256": "ebf71a8d6be0c1999851aa952cc62f6dce2b06dd82d7a0e1298fe2b9a56932b9",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/loss.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/loss.py",
+      "source_sha256": "ed5b60acd763614c66c0b3eb657e8518c9a1e430596e1e9b027e719e0d6dac7e",
+      "export_sha256": "ed5b60acd763614c66c0b3eb657e8518c9a1e430596e1e9b027e719e0d6dac7e",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/model.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/model.py",
+      "source_sha256": "8a02b3d4d937d0b73441e7948f99c32f87084436ec9c5b4d7a1f8094cfa5f45c",
+      "export_sha256": "8a02b3d4d937d0b73441e7948f99c32f87084436ec9c5b4d7a1f8094cfa5f45c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/omega.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/omega.py",
+      "source_sha256": "966c86e5d755c2f2bf514432c9a0356278727d7cf775474ad185aea9a5b9d9c7",
+      "export_sha256": "966c86e5d755c2f2bf514432c9a0356278727d7cf775474ad185aea9a5b9d9c7",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/pose_free.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/pose_free.py",
+      "source_sha256": "009df2ab494d30c2bd7da047eca02c8332aff3f257eb7e1cfc4505cb610923dc",
+      "export_sha256": "009df2ab494d30c2bd7da047eca02c8332aff3f257eb7e1cfc4505cb610923dc",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/training.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/training.py",
+      "source_sha256": "751af1842df2677590b4a3a6865f6c47cb3773c82607a8e5b193ede3503977ed",
+      "export_sha256": "751af1842df2677590b4a3a6865f6c47cb3773c82607a8e5b193ede3503977ed",
+      "model_path_adapter": false
+    },
+    {
+      "source": "thirdparty/VGGT-Diff/vggtdiff/trajectory_visualization.py",
+      "destination": "workspace/thirdparty/VGGT-Diff/vggtdiff/trajectory_visualization.py",
+      "source_sha256": "a4f4e5195066c4cdd74a011ad2c119abf7b6b5be84422b1ab38be8d577bde7c9",
+      "export_sha256": "a4f4e5195066c4cdd74a011ad2c119abf7b6b5be84422b1ab38be8d577bde7c9",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/__init__.py",
+      "destination": "workspace/worldact/worldact/__init__.py",
+      "source_sha256": "acb29ea4c51ffc3a7220f9eff6b5df0e31e0838adb9e19519cc71fdf0583f808",
+      "export_sha256": "acb29ea4c51ffc3a7220f9eff6b5df0e31e0838adb9e19519cc71fdf0583f808",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/config.py",
+      "destination": "workspace/worldact/worldact/config.py",
+      "source_sha256": "29379272b64fa5aec998c054775388fcee2d24c1d6009e7627a27b1b27f90f2f",
+      "export_sha256": "29379272b64fa5aec998c054775388fcee2d24c1d6009e7627a27b1b27f90f2f",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/__init__.py",
+      "destination": "workspace/worldact/worldact/data/__init__.py",
+      "source_sha256": "39f16179983b7842ac7e23ea0e727013149e5b2f4e64b9cf85726130f5ad55e0",
+      "export_sha256": "39f16179983b7842ac7e23ea0e727013149e5b2f4e64b9cf85726130f5ad55e0",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/gaussians.py",
+      "destination": "workspace/worldact/worldact/data/gaussians.py",
+      "source_sha256": "f043e460d584b858a02193fb7f6c0fc20fe00ae3f44a706266a83ba3239f35eb",
+      "export_sha256": "f043e460d584b858a02193fb7f6c0fc20fe00ae3f44a706266a83ba3239f35eb",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/masks.py",
+      "destination": "workspace/worldact/worldact/data/masks.py",
+      "source_sha256": "16b7b733be1007335c4c7f0a97bb9e9eb02ab42a010d11a0113c1b48318bd638",
+      "export_sha256": "16b7b733be1007335c4c7f0a97bb9e9eb02ab42a010d11a0113c1b48318bd638",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/objects.py",
+      "destination": "workspace/worldact/worldact/data/objects.py",
+      "source_sha256": "39b285638f1e5be14557c54c32146ef956f0b05f1d06ce5546001a95932616cd",
+      "export_sha256": "39b285638f1e5be14557c54c32146ef956f0b05f1d06ce5546001a95932616cd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/poses.py",
+      "destination": "workspace/worldact/worldact/data/poses.py",
+      "source_sha256": "763957a713b600d4fd9aa1ed89275388352e7c9a917ff6ba525b3f73d46f7a2c",
+      "export_sha256": "763957a713b600d4fd9aa1ed89275388352e7c9a917ff6ba525b3f73d46f7a2c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/data/scene.py",
+      "destination": "workspace/worldact/worldact/data/scene.py",
+      "source_sha256": "19e749e1497a3d4d5215e58b8201859f6b1284a4c172c46383d7ad60b3b8c470",
+      "export_sha256": "19e749e1497a3d4d5215e58b8201859f6b1284a4c172c46383d7ad60b3b8c470",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/rendering/__init__.py",
+      "destination": "workspace/worldact/worldact/rendering/__init__.py",
+      "source_sha256": "08409df84418ccb05d4c4535c92f0b60997048ddf1df77c406b740776bed1819",
+      "export_sha256": "08409df84418ccb05d4c4535c92f0b60997048ddf1df77c406b740776bed1819",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/rendering/camera.py",
+      "destination": "workspace/worldact/worldact/rendering/camera.py",
+      "source_sha256": "a99a1a56774baab48c09074b2aaa404926504524a774abbc424f06de0909437a",
+      "export_sha256": "a99a1a56774baab48c09074b2aaa404926504524a774abbc424f06de0909437a",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/rendering/camera_planning.py",
+      "destination": "workspace/worldact/worldact/rendering/camera_planning.py",
+      "source_sha256": "179c9ab2ae88f0e045e4731131b9ac53f82cf1e594d95b2b6d8dda63de736a38",
+      "export_sha256": "179c9ab2ae88f0e045e4731131b9ac53f82cf1e594d95b2b6d8dda63de736a38",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/rendering/rasterizer.py",
+      "destination": "workspace/worldact/worldact/rendering/rasterizer.py",
+      "source_sha256": "ac78b7605186909e6f6314709285cce3d9fac8e0260bb82df48b1cd71a75cf5c",
+      "export_sha256": "ac78b7605186909e6f6314709285cce3d9fac8e0260bb82df48b1cd71a75cf5c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/__init__.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/__init__.py",
+      "source_sha256": "2a4ab8ce1f18e70e052df951ce1b2dedada728519c93dbd08fff194d592485ed",
+      "export_sha256": "2a4ab8ce1f18e70e052df951ce1b2dedada728519c93dbd08fff194d592485ed",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/agent.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/agent.py",
+      "source_sha256": "5234c04de4eca6ae738e4d9bf318539b0270408d4f3df17fdf91502052ddbd65",
+      "export_sha256": "5234c04de4eca6ae738e4d9bf318539b0270408d4f3df17fdf91502052ddbd65",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/binarize.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/binarize.py",
+      "source_sha256": "47f07c3cf6593b24b866eb110f68cd5a51737269e0bacea58ce763b57bfe6953",
+      "export_sha256": "47f07c3cf6593b24b866eb110f68cd5a51737269e0bacea58ce763b57bfe6953",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/candidate_support.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/candidate_support.py",
+      "source_sha256": "1cb7f75d7b61285c77be85636f8588c1a237ab80ba3d323ec3b5b422b485605c",
+      "export_sha256": "1cb7f75d7b61285c77be85636f8588c1a237ab80ba3d323ec3b5b422b485605c",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/chunking.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/chunking.py",
+      "source_sha256": "24d4059b4639841e8b2c7a013f7b3a92834e232869dd4a4c3d70d76861b1cdfd",
+      "export_sha256": "24d4059b4639841e8b2c7a013f7b3a92834e232869dd4a4c3d70d76861b1cdfd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/feature_field_assignment.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/feature_field_assignment.py",
+      "source_sha256": "99a34991b665e432a4406accefed1939194bd7dc31907e3f03d42277a6efcd93",
+      "export_sha256": "99a34991b665e432a4406accefed1939194bd7dc31907e3f03d42277a6efcd93",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/memory.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/memory.py",
+      "source_sha256": "cc5d720fdd1136e35a4b589f1bac1d0a618ade9c1420b9de82f2e87f772428a5",
+      "export_sha256": "cc5d720fdd1136e35a4b589f1bac1d0a618ade9c1420b9de82f2e87f772428a5",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/prefilter.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/prefilter.py",
+      "source_sha256": "ceea04ecc6ab1dc7a3d5846c96a2deaaa77ed13dbc286f076db033e7c7f5dbf0",
+      "export_sha256": "ceea04ecc6ab1dc7a3d5846c96a2deaaa77ed13dbc286f076db033e7c7f5dbf0",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/roi_guidance.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/roi_guidance.py",
+      "source_sha256": "ca113cd71a70dd093752a26101bb29127bbf352b9a26a1285e1b809804f41ca1",
+      "export_sha256": "ca113cd71a70dd093752a26101bb29127bbf352b9a26a1285e1b809804f41ca1",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/runner.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/runner.py",
+      "source_sha256": "cb9b07c2a52482f045be87bbdb075fb117cd177a928021b51caaf8d16e26ea98",
+      "export_sha256": "cb9b07c2a52482f045be87bbdb075fb117cd177a928021b51caaf8d16e26ea98",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/sam3_segmenter.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/sam3_segmenter.py",
+      "source_sha256": "2d607784549e009dcd37b8cc7b26d40c481e05e1e32795316c6c5ab857e435c0",
+      "export_sha256": "2d607784549e009dcd37b8cc7b26d40c481e05e1e32795316c6c5ab857e435c0",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/soft_assignment.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/soft_assignment.py",
+      "source_sha256": "5836354a4217dfc623843c51626135d079577398570cf41d176e94f62650e11d",
+      "export_sha256": "5836354a4217dfc623843c51626135d079577398570cf41d176e94f62650e11d",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/view_graph_propagation.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/view_graph_propagation.py",
+      "source_sha256": "c86fe69979f6e85ed3e121de48b357689c9d01433a6b078f407de9d183155dfd",
+      "export_sha256": "c86fe69979f6e85ed3e121de48b357689c9d01433a6b078f407de9d183155dfd",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/stage1_decomposition/vlm.py",
+      "destination": "workspace/worldact/worldact/stage1_decomposition/vlm.py",
+      "source_sha256": "97fd53f4425d18a575124e4d93781e7493666175f927ccc13ab6a9e6f50b5e64",
+      "export_sha256": "97fd53f4425d18a575124e4d93781e7493666175f927ccc13ab6a9e6f50b5e64",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/utils/__init__.py",
+      "destination": "workspace/worldact/worldact/utils/__init__.py",
+      "source_sha256": "cf8a4f42ff54b1358bf8472c6ee081711627f4a0d4fc62f049c0dd6735c50cef",
+      "export_sha256": "cf8a4f42ff54b1358bf8472c6ee081711627f4a0d4fc62f049c0dd6735c50cef",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/utils/io.py",
+      "destination": "workspace/worldact/worldact/utils/io.py",
+      "source_sha256": "4ec5c719f0a2007f92a8abf6a96f508c31f7194af5adb469673ae9d3e590a6c5",
+      "export_sha256": "4ec5c719f0a2007f92a8abf6a96f508c31f7194af5adb469673ae9d3e590a6c5",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/utils/logging.py",
+      "destination": "workspace/worldact/worldact/utils/logging.py",
+      "source_sha256": "a4c0bd4bdb4e07dcab3bdd6427c7be698f2eb5c40e12683ccb7c098bea1a3850",
+      "export_sha256": "a4c0bd4bdb4e07dcab3bdd6427c7be698f2eb5c40e12683ccb7c098bea1a3850",
+      "model_path_adapter": false
+    },
+    {
+      "source": "worldact/worldact/utils/visualization.py",
+      "destination": "workspace/worldact/worldact/utils/visualization.py",
+      "source_sha256": "f735da1a3088507da6dec6a444cdbcb384ee94785c63a8c3ae690f1d7d4541d8",
+      "export_sha256": "f735da1a3088507da6dec6a444cdbcb384ee94785c63a8c3ae690f1d7d4541d8",
+      "model_path_adapter": false
+    }
+  ]
+}

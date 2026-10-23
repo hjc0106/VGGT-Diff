@@ -1,0 +1,26 @@
+[
+  {
+    "name": "3DGRUT-ArtiFixer",
+    "remote": "https://github.com/nv-tlabs/3DGRUT-ArtiFixer.git",
+    "commit": "62e1038b74b2edc01440fd4ddf5f080109b6faba",
+    "patch": "dependency_patches/3DGRUT-ArtiFixer.patch"
+  },
+  {
+    "name": "sam3",
+    "remote": "https://github.com/facebookresearch/sam3.git",
+    "commit": "96914d2425f90a64f45ca977c2b5165418099543",
+    "patch": null
+  },
+  {
+    "name": "vggt-omega",
+    "remote": "https://github.com/facebookresearch/vggt-omega.git",
+    "commit": "48b23c8ce72c9a8fcf987f0d7f43d8e4870759f6",
+    "patch": null
+  },
+  {
+    "name": "map-anything",
+    "remote": "https://github.com/facebookresearch/map-anything.git",
+    "commit": "3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9",
+    "patch": "dependency_patches/map-anything.patch"
+  }
+]

@@ -1,0 +1,3 @@
+
+# Patch context lines contain significant whitespace.
+experiments/artifixer/dependency_patches/*.patch -whitespace

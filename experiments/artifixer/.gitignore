@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.venv*/
+workspace/pipeline_exp/
+workspace/models/
+workspace/.env
+workspace/migration_backups/
+workspace/thirdparty/*
+!workspace/thirdparty/VGGT-Diff/
+*.bundle
+# The destination repository ignores every models/ directory; these are source.
+!workspace/thirdparty/VGGT-Diff/diffsynth/models/
+!workspace/thirdparty/VGGT-Diff/diffsynth/models/**

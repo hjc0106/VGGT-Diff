@@ -214,3 +214,8 @@ This project builds on [Wan2.1](https://github.com/Wan-Video/Wan2.1), [VGGT-Omeg
 ## License
 
 VGGT-Diff is released under the [VGGT-Diff Research License](LICENSE) for non-commercial research and educational use. Third-party components and dependencies remain subject to their respective licenses and terms; see [NOTICE](NOTICE).
+
+
+## ArtiFixer white-car experiments
+
+The generation, geometry evaluation, reconstruction, diagnostics, tests, and server migration guide are archived in [experiments/artifixer](experiments/artifixer/README.md). Private scene data and model weights must be transferred separately.
