@@ -131,12 +131,109 @@ python scripts/infer.py \
   --output outputs/my_scene
 ```
 
-### Trajectory orbit and E1 reconstruction
+### Trajectory 生成与 E1 重建
 
-`scripts/generate_trajectory.py` writes the frozen orbit: Trajectory checkpoint, 832×480, 50 steps, seed `20261030`. Frames are `00.png`, `01.png`, and so on. `scripts/reconstruct_e1.py` then trains the E1 3DGS recipe on the 79 unique views (the closure frame of an 80-view orbit is held out): 625 updates per view, outside-opacity weight 0.5, anisotropy weight 0.03, and a 100k Gaussian cap. Masks are a separate directory, indexed the same way as the frames. Reconstruction needs [gsplat](https://github.com/nerfstudio-project/gsplat) and a 3DGRUT checkout; pass that checkout with `--threedgrut`. The initialization ply must contain 17112 surface points followed by 4000 volume seeds.
+这条流程先用 Trajectory 权重生成 80 帧轨道，再用其中 79 个不重复视角做物体 3DGS 重建。生成和重建分两个环境：生成环境安装本仓库，重建环境安装 gsplat 和 3DGRUT 的 Python 依赖。光栅化走 gsplat，不调用 3DGRUT 的 Slang 光线追踪核。
+
+已完成的阶段会直接跳过。`outputs/traj_e1/trajectory/result.json` 存在就不再生成；`e1/experiment.json`、`e1/training/result.json`、`e1/evaluation/metrics.json` 存在就跳过对应步骤。训练中途失败后会留下 `e1/training/initial_state.json`，再次运行会拒绝覆盖，需要删掉整个 `e1/` 再重跑重建。
+
+#### 环境配置
+
+在 Linux 和带 CUDA 的 NVIDIA GPU 上运行。本流程在 Python 3.12、PyTorch 2.11（CUDA 12.8）、gsplat 1.4.0 上跑通。生成阶段默认把约 46 GiB 权重留在 GPU 上；显存更小的卡把 `--vram-limit-gib` 改成 `0`，权重会按块从 CPU 调入。
+
+| 环境 | 用途 | 关键包 |
+| --- | --- | --- |
+| `.venv-gen` | 生成 80 帧 | 本仓库、`huggingface_hub`、VGGT-Omega |
+| `.venv-e1` | E1 重建 | 与生成环境同一套 PyTorch、`gsplat`、3DGRUT 的 Python 依赖 |
+
+两个环境使用同一主版本的 PyTorch 和 CUDA，避免 gsplat 对着另一套 CUDA 重新编译。
+
+#### 安装
+
+```bash
+git clone https://github.com/hjc0106/VGGT-Diff.git
+cd VGGT-Diff
+git checkout vggt-gen
+
+python -m venv .venv-gen
+source .venv-gen/bin/activate
+pip install -U pip
+pip install -e .
+pip install -U huggingface_hub
+pip install git+https://github.com/facebookresearch/vggt-omega.git@399d4d62935deb71cedb1e1c35b7a90413a6bee4
+deactivate
+
+python -m venv .venv-e1
+source .venv-e1/bin/activate
+pip install -U pip
+pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+pip install gsplat==1.4.0
+pip install plyfile omegaconf hydra-core addict rich torchmetrics \
+  "opencv-python<4.12" imageio numpy pillow tensorboard scikit-learn tqdm polyscope
+deactivate
+```
+
+3DGRUT 只需要源码在 `--threedgrut` 指向的目录里，该目录下应能看到 `threedgrut/` 和 `threedgut_tracer/`。使用 [3DGRUT](https://github.com/nv-tlabs/3dgrut) 或 ArtiFixer 维护的 3DGRUT 分支都可以。`requirements.txt` 里的 `slangtorch` 和 `fused-ssim` 是原版光线追踪和融合 SSIM，这条 E1 路径不调用它们。
+
+权重：
+
+```bash
+source .venv-gen/bin/activate
+hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
+  vggt-diff.safetensors config.json LICENSE README.md \
+  --local-dir checkpoints/VGGT-Diff-Trajectory-480x832
+```
+
+另外准备 `vggt_omega_1b_512.pt`。需要先申请 [VGGT-Omega](https://huggingface.co/facebook/VGGT-Omega) 的访问权限。Wan2.1 可以在第一次生成时自动下载，也可以用 `--base-model-dir` 指向本地的 `Wan2.1-I2V-14B-480P` 目录。
+
+#### 环境测试
+
+生成环境确认 CUDA 和包可以导入：
+
+```bash
+source .venv-gen/bin/activate
+python -c "import torch; from vggtdiff import VGGTDiff; assert torch.cuda.is_available(); print('gen', torch.__version__, torch.cuda.get_device_name(0))"
+python tests/test_e1_recipe.py
+```
+
+`tests/test_e1_recipe.py` 不加载模型。它检查 80 帧闭合轨道会留出最后一帧、训练步数是 49375，并用一张假图把数据集准备跑一遍。打印 `OK` 即通过。
+
+重建环境确认 gsplat 和 3DGRUT 可以导入。把下面的路径换成自己的 3DGRUT 检出目录：
+
+```bash
+source .venv-e1/bin/activate
+export THREEDGRUT=/path/to/3DGRUT
+python -c "import sys; sys.path.insert(0, '$THREEDGRUT'); import torch, gsplat, threedgut_tracer, threedgrut.trainer; assert torch.cuda.is_available(); print('e1', torch.__version__, gsplat.__version__)"
+```
+
+#### 数据准备
+
+场景目录要有 6 张参考图和相机文件。参考图按文件名排序后正好 6 张：
+
+```text
+my_scene/
+├── source_views/
+│   ├── 00.png
+│   ├── 01.png
+│   ├── 02.png
+│   ├── 03.png
+│   ├── 04.png
+│   └── 05.png
+└── trajectory.json
+```
+
+`trajectory.json` 使用 OpenCV 世界到相机的 4×4 矩阵，内参是像素坐标系下的 3×3 矩阵。必填字段是 `source_w2c`、`source_intrinsics`、`target_w2c`、`target_intrinsics`。建议写上 `intrinsics_image_size: [832, 480]`，源图尺寸不一致时会直接报错。`target_w2c` 可以是 80 个姿态，其中第一帧和最后一帧相同，重建时会去掉这帧闭合重复；也可以直接给 79 个不重复姿态。
+
+掩码和初始点云不由生成脚本产生。掩码与生成帧使用同一编号，`00.png` 对应第 0 帧，分辨率 832×480，物体为白色、背景为黑色。也接受 `00_mask.png` 或 `frame_000_mask.png`。至少要有 0 到 78 号；第 79 帧是闭合重复，不参与训练。
+
+`initial_points.ply` 必须正好 21112 个顶点：前 17112 个是物体表面点，后 4000 个是体积种子。训练开始时体积种子的不透明度会被设成 0.01。场景范围和包围盒使用 `vggtdiff/recon/e1_defaults.json` 里的固定值（场景范围 `0.7391271937596919`）。这组数值来自白车 E1 实验；换物体时要同时换成该物体的点云、范围和包围盒。
+
+#### 运行
 
 ```bash
 python scripts/run_traj_e1.py \
+  --generate-python .venv-gen/bin/python \
+  --reconstruct-python .venv-e1/bin/python \
   --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
   --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
   --base-model-dir /path/to/Wan2.1-I2V-14B-480P \
@@ -147,7 +244,43 @@ python scripts/run_traj_e1.py \
   --threedgrut /path/to/3DGRUT
 ```
 
-Generation and reconstruction can use different environments with `--generate-python` and `--reconstruct-python`. Finished stages are skipped.
+生成的默认值是 832×480、50 步、种子 `20261030`、`--vram-limit-gib 46`。重建使用种子 `20261021`、每个视角 625 次更新、共 49375 步，损失是 `0.8 * L1 + 0.2 * SSIM + 0.5 * 外部不透明度 + 0.03 * 各向异性`，高斯数量上限 100000。固定白车实验的重建大约 21 分钟。
+
+也可以分开跑：
+
+```bash
+.venv-gen/bin/python scripts/generate_trajectory.py \
+  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
+  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
+  --base-model-dir /path/to/Wan2.1-I2V-14B-480P \
+  --example /path/to/my_scene \
+  --output outputs/traj_e1/trajectory
+
+.venv-e1/bin/python scripts/reconstruct_e1.py \
+  --frames outputs/traj_e1/trajectory/frames \
+  --trajectory outputs/traj_e1/trajectory/trajectory.json \
+  --masks /path/to/masks \
+  --init-ply /path/to/initial_points.ply \
+  --output outputs/traj_e1/e1 \
+  --threedgrut /path/to/3DGRUT
+```
+
+输出：
+
+```text
+outputs/traj_e1/
+├── trajectory/
+│   ├── frames/00.png … 79.png
+│   ├── prediction.mp4
+│   ├── trajectory.json
+│   └── result.json
+└── e1/
+    ├── model.ply
+    ├── training/result.json
+    └── evaluation/metrics.json
+```
+
+`evaluation/metrics.json` 里的 `median.foreground_psnr` 和 `median.silhouette_iou` 是 79 个训练视角的中位数。前景 PSNR 只在掩码像素上计算，轮廓 IoU 把透明度大于 0.5 的像素当成物体。
 
 ## Training
 
