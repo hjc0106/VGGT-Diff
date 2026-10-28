@@ -1,0 +1,27 @@
+{
+  "real_surface_points": 17112,
+  "volume_seed_points": 4000,
+  "seed_opacity": 0.01,
+  "scene_extent": 0.7391271937596919,
+  "bounds_world": [
+    [-0.24694442749023438, -0.07406234741210938, 0.5400390625],
+    [-0.044525146484375, 0.031524658203125, 0.8369140625]
+  ],
+  "training_seed": 20261021,
+  "updates_per_image": 625,
+  "outside_weight": 0.5,
+  "anisotropy_weight": 0.03,
+  "gaussian_cap": 100000,
+  "image_size": [832, 480],
+  "schedule": {
+    "densify_frequency": 2961,
+    "densify_start": 4934,
+    "densify_end": 29605,
+    "prune_frequency": 987,
+    "prune_start": 4934,
+    "prune_end": 44408,
+    "increase_frequency": 9868,
+    "checkpoints": [16447, 32895, 49375],
+    "position_max_steps": 49375
+  }
+}

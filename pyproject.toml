@@ -35,6 +35,9 @@ dev = ["pytest>=8", "ruff>=0.8"]
 [tool.setuptools.packages.find]
 include = ["vggtdiff*", "diffsynth*"]
 
+[tool.setuptools.package-data]
+vggtdiff = ["recon/*.yaml", "recon/*.json"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"

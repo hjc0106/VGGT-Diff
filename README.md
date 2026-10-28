@@ -131,6 +131,24 @@ python scripts/infer.py \
   --output outputs/my_scene
 ```
 
+### Trajectory orbit and E1 reconstruction
+
+`scripts/generate_trajectory.py` writes the frozen orbit: Trajectory checkpoint, 832×480, 50 steps, seed `20261030`. Frames are `00.png`, `01.png`, and so on. `scripts/reconstruct_e1.py` then trains the E1 3DGS recipe on the 79 unique views (the closure frame of an 80-view orbit is held out): 625 updates per view, outside-opacity weight 0.5, anisotropy weight 0.03, and a 100k Gaussian cap. Masks are a separate directory, indexed the same way as the frames. Reconstruction needs [gsplat](https://github.com/nerfstudio-project/gsplat) and a 3DGRUT checkout; pass that checkout with `--threedgrut`. The initialization ply must contain 17112 surface points followed by 4000 volume seeds.
+
+```bash
+python scripts/run_traj_e1.py \
+  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
+  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
+  --base-model-dir /path/to/Wan2.1-I2V-14B-480P \
+  --example /path/to/my_scene \
+  --output outputs/traj_e1 \
+  --masks /path/to/masks \
+  --init-ply /path/to/initial_points.ply \
+  --threedgrut /path/to/3DGRUT
+```
+
+Generation and reconstruction can use different environments with `--generate-python` and `--reconstruct-python`. Finished stages are skipped.
+
 ## Training
 
 Training scenes follow the folder-form DL3DV convention:
