@@ -20,10 +20,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--omega-checkpoint", required=True)
     parser.add_argument("--base-model-dir", default=None)
-    parser.add_argument("--example", type=Path, required=True)
+    parser.add_argument("--example", type=Path)
+    parser.add_argument("--video", type=Path)
+    parser.add_argument("--prompt", default="white car")
+    parser.add_argument("--sam3-checkpoint")
+    parser.add_argument("--sam3-root")
+    parser.add_argument("--colmap", default="colmap")
+    parser.add_argument("--work", type=Path)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--masks", type=Path, required=True)
-    parser.add_argument("--init-ply", type=Path, required=True)
+    parser.add_argument("--masks", type=Path)
+    parser.add_argument("--init-ply", type=Path)
     parser.add_argument("--threedgrut", type=Path, required=True)
     parser.add_argument("--height", type=int, default=480)
     parser.add_argument("--width", type=int, default=832)
@@ -37,6 +43,26 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.video:
+        work = args.work or (args.output / "preprocess")
+        command = [
+            args.generate_python, "-m", "gen_pro", "run",
+            "--work", str(work),
+            "--video", str(args.video),
+            "--prompt", args.prompt,
+            "--omega-checkpoint", args.omega_checkpoint,
+            "--colmap", args.colmap,
+            "--until", "orbit",
+        ]
+        if args.sam3_checkpoint:
+            command.extend(["--sam3-checkpoint", args.sam3_checkpoint])
+        if args.sam3_root:
+            command.extend(["--sam3-root", args.sam3_root])
+        subprocess.check_call(command, cwd=ROOT)
+        args.example = work / "scene"
+        args.init_ply = args.example / "initial_points.ply"
+    if args.example is None or args.init_ply is None:
+        raise SystemExit("Pass --video, or both --example and --init-ply")
     generated = args.output / "trajectory"
     reconstruction = args.output / "e1"
     generate = [
@@ -64,6 +90,29 @@ def main() -> None:
     if args.base_model_dir:
         generate.extend(["--base-model-dir", args.base_model_dir])
     subprocess.check_call(generate)
+    masks = args.masks
+    if masks is None:
+        if not args.video:
+            raise SystemExit("Pass --masks, or --video so the generated frames can be segmented")
+        work = args.work or (args.output / "preprocess")
+        mask_command = [
+            args.generate_python, "-m", "gen_pro", "frame-masks",
+            "--work", str(work),
+            "--prompt", args.prompt,
+            "--generated-frames", str(generated / "frames"),
+        ]
+        if args.sam3_checkpoint:
+            mask_command.extend(["--sam3-checkpoint", args.sam3_checkpoint])
+        if args.sam3_root:
+            mask_command.extend(["--sam3-root", args.sam3_root])
+        try:
+            subprocess.check_call(mask_command, cwd=ROOT)
+        except subprocess.CalledProcessError as exc:
+            review = work / "6_frame_masks" / "overrides.json"
+            raise SystemExit(
+                f"Frame masks need a manual choice. Set candidates in {review} and rerun."
+            ) from exc
+        masks = work / "6_frame_masks" / "masks"
     subprocess.check_call(
         [
             args.reconstruct_python,
@@ -73,7 +122,7 @@ def main() -> None:
             "--trajectory",
             str(generated / "trajectory.json"),
             "--masks",
-            str(args.masks),
+            str(masks),
             "--init-ply",
             str(args.init_ply),
             "--output",

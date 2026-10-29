@@ -33,7 +33,7 @@ train = ["deepspeed>=0.15"]
 dev = ["pytest>=8", "ruff>=0.8"]
 
 [tool.setuptools.packages.find]
-include = ["vggtdiff*", "diffsynth*"]
+include = ["vggtdiff*", "diffsynth*", "gen_pro*"]
 
 [tool.setuptools.package-data]
 vggtdiff = ["recon/*.yaml", "recon/*.json"]

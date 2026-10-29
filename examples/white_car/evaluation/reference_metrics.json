@@ -1,0 +1,876 @@
+{
+  "training": {
+    "frames": [
+      {
+        "orbit_index": 0,
+        "angle": 209.30878558474953,
+        "foreground_psnr": 18.601808995996123,
+        "foreground_mae": 0.06454806804881931,
+        "silhouette_iou": 0.9161869058776275,
+        "foreground_mean_opacity": 0.9772031307220459,
+        "outside_opacity_over_mask_area": 0.08021201479111299
+      },
+      {
+        "orbit_index": 1,
+        "angle": 213.865747610066,
+        "foreground_psnr": 23.43780957815315,
+        "foreground_mae": 0.03465833818594866,
+        "silhouette_iou": 0.907361963190184,
+        "foreground_mean_opacity": 0.9735222458839417,
+        "outside_opacity_over_mask_area": 0.08412373694152503
+      },
+      {
+        "orbit_index": 2,
+        "angle": 218.42270963538243,
+        "foreground_psnr": 23.841141193691552,
+        "foreground_mae": 0.03172940629591744,
+        "silhouette_iou": 0.9058523371550964,
+        "foreground_mean_opacity": 0.974414050579071,
+        "outside_opacity_over_mask_area": 0.08946100705934025
+      },
+      {
+        "orbit_index": 3,
+        "angle": 222.9796716606989,
+        "foreground_psnr": 27.56819043447756,
+        "foreground_mae": 0.022706673569272574,
+        "silhouette_iou": 0.915280954441491,
+        "foreground_mean_opacity": 0.9799713492393494,
+        "outside_opacity_over_mask_area": 0.08374108798512371
+      },
+      {
+        "orbit_index": 4,
+        "angle": 227.53663368601536,
+        "foreground_psnr": 25.493610168546752,
+        "foreground_mae": 0.027811872673885078,
+        "silhouette_iou": 0.9167448192406595,
+        "foreground_mean_opacity": 0.9785948395729065,
+        "outside_opacity_over_mask_area": 0.07952182210484657
+      },
+      {
+        "orbit_index": 5,
+        "angle": 232.0935957113318,
+        "foreground_psnr": 20.240202166621696,
+        "foreground_mae": 0.04742702863971296,
+        "silhouette_iou": 0.9264314148035079,
+        "foreground_mean_opacity": 0.9839127063751221,
+        "outside_opacity_over_mask_area": 0.07669569219615305
+      },
+      {
+        "orbit_index": 6,
+        "angle": 236.65055773664827,
+        "foreground_psnr": 23.517351226320223,
+        "foreground_mae": 0.032920086595337385,
+        "silhouette_iou": 0.9068664978505389,
+        "foreground_mean_opacity": 0.9814404845237732,
+        "outside_opacity_over_mask_area": 0.09486989849057813
+      },
+      {
+        "orbit_index": 7,
+        "angle": 241.20751976196473,
+        "foreground_psnr": 22.346526277357455,
+        "foreground_mae": 0.03778380497244869,
+        "silhouette_iou": 0.8925110641867461,
+        "foreground_mean_opacity": 0.9744149446487427,
+        "outside_opacity_over_mask_area": 0.10401022731898071
+      },
+      {
+        "orbit_index": 8,
+        "angle": 245.76448178728117,
+        "foreground_psnr": 26.812105628476907,
+        "foreground_mae": 0.02423400301875475,
+        "silhouette_iou": 0.8914909551791681,
+        "foreground_mean_opacity": 0.9796233773231506,
+        "outside_opacity_over_mask_area": 0.11173559634860876
+      },
+      {
+        "orbit_index": 9,
+        "angle": 250.32144381259764,
+        "foreground_psnr": 25.851321326503474,
+        "foreground_mae": 0.026633151816214076,
+        "silhouette_iou": 0.8979807500071402,
+        "foreground_mean_opacity": 0.9780380129814148,
+        "outside_opacity_over_mask_area": 0.10321665621621251
+      },
+      {
+        "orbit_index": 10,
+        "angle": 254.8784058379141,
+        "foreground_psnr": 24.45793243233649,
+        "foreground_mae": 0.029842521351369045,
+        "silhouette_iou": 0.9036323202372127,
+        "foreground_mean_opacity": 0.9798222184181213,
+        "outside_opacity_over_mask_area": 0.09920996690142628
+      },
+      {
+        "orbit_index": 11,
+        "angle": 259.43536786323057,
+        "foreground_psnr": 25.62587686458608,
+        "foreground_mae": 0.026467699736577126,
+        "silhouette_iou": 0.9062597853625209,
+        "foreground_mean_opacity": 0.9826889634132385,
+        "outside_opacity_over_mask_area": 0.0983316885144147
+      },
+      {
+        "orbit_index": 12,
+        "angle": 263.99232988854703,
+        "foreground_psnr": 21.70148896413928,
+        "foreground_mae": 0.03981809036805911,
+        "silhouette_iou": 0.8902748772365524,
+        "foreground_mean_opacity": 0.9761251211166382,
+        "outside_opacity_over_mask_area": 0.11038972517393592
+      },
+      {
+        "orbit_index": 13,
+        "angle": 268.54929191386344,
+        "foreground_psnr": 24.51785303847377,
+        "foreground_mae": 0.028618471792510928,
+        "silhouette_iou": 0.8871264172816468,
+        "foreground_mean_opacity": 0.9796549081802368,
+        "outside_opacity_over_mask_area": 0.11890873212965003
+      },
+      {
+        "orbit_index": 14,
+        "angle": 273.1062539391799,
+        "foreground_psnr": 19.064581737105247,
+        "foreground_mae": 0.055134686584230125,
+        "silhouette_iou": 0.897704081632653,
+        "foreground_mean_opacity": 0.9825505018234253,
+        "outside_opacity_over_mask_area": 0.11130429297131982
+      },
+      {
+        "orbit_index": 15,
+        "angle": 277.6632159644964,
+        "foreground_psnr": 24.54369562947773,
+        "foreground_mae": 0.030913919177040897,
+        "silhouette_iou": 0.9014351629065587,
+        "foreground_mean_opacity": 0.9820745587348938,
+        "outside_opacity_over_mask_area": 0.10358598976706736
+      },
+      {
+        "orbit_index": 16,
+        "angle": 282.22017798981284,
+        "foreground_psnr": 26.394821671931176,
+        "foreground_mae": 0.025435329421486456,
+        "silhouette_iou": 0.9066016610448142,
+        "foreground_mean_opacity": 0.9827187657356262,
+        "outside_opacity_over_mask_area": 0.10036104664254998
+      },
+      {
+        "orbit_index": 17,
+        "angle": 286.77714001512925,
+        "foreground_psnr": 25.575029418587974,
+        "foreground_mae": 0.026023401917004883,
+        "silhouette_iou": 0.9016514177265388,
+        "foreground_mean_opacity": 0.9819825887680054,
+        "outside_opacity_over_mask_area": 0.10485119101172227
+      },
+      {
+        "orbit_index": 18,
+        "angle": 291.3341020404457,
+        "foreground_psnr": 24.271385326319788,
+        "foreground_mae": 0.03133519433477158,
+        "silhouette_iou": 0.9074327405380757,
+        "foreground_mean_opacity": 0.985585629940033,
+        "outside_opacity_over_mask_area": 0.1030484306349287
+      },
+      {
+        "orbit_index": 19,
+        "angle": 295.8910640657622,
+        "foreground_psnr": 23.118732191715146,
+        "foreground_mae": 0.036681114577938344,
+        "silhouette_iou": 0.917982518985528,
+        "foreground_mean_opacity": 0.9843456745147705,
+        "outside_opacity_over_mask_area": 0.09210632819298334
+      },
+      {
+        "orbit_index": 20,
+        "angle": 300.44802609107865,
+        "foreground_psnr": 24.331068598329594,
+        "foreground_mae": 0.03069842231046224,
+        "silhouette_iou": 0.9135063589802612,
+        "foreground_mean_opacity": 0.9830580353736877,
+        "outside_opacity_over_mask_area": 0.09388175104026597
+      },
+      {
+        "orbit_index": 21,
+        "angle": 305.0049881163951,
+        "foreground_psnr": 20.237963041550266,
+        "foreground_mae": 0.050834511025036645,
+        "silhouette_iou": 0.9009852641254704,
+        "foreground_mean_opacity": 0.9761084318161011,
+        "outside_opacity_over_mask_area": 0.0941472783043715
+      },
+      {
+        "orbit_index": 22,
+        "angle": 309.5619501417116,
+        "foreground_psnr": 21.094730826568036,
+        "foreground_mae": 0.04530388970666441,
+        "silhouette_iou": 0.9197752412332314,
+        "foreground_mean_opacity": 0.9864972233772278,
+        "outside_opacity_over_mask_area": 0.08871887043814863
+      },
+      {
+        "orbit_index": 23,
+        "angle": 314.11891216702804,
+        "foreground_psnr": 23.929705620147384,
+        "foreground_mae": 0.0328643860158631,
+        "silhouette_iou": 0.9263151609243446,
+        "foreground_mean_opacity": 0.9850699305534363,
+        "outside_opacity_over_mask_area": 0.08416463693008508
+      },
+      {
+        "orbit_index": 24,
+        "angle": 318.6758741923445,
+        "foreground_psnr": 22.02022502352048,
+        "foreground_mae": 0.039841530120335644,
+        "silhouette_iou": 0.9123374659812519,
+        "foreground_mean_opacity": 0.9829770922660828,
+        "outside_opacity_over_mask_area": 0.09478294093556794
+      },
+      {
+        "orbit_index": 25,
+        "angle": 323.2328362176609,
+        "foreground_psnr": 27.040397507628548,
+        "foreground_mae": 0.024321680420676117,
+        "silhouette_iou": 0.905717120357165,
+        "foreground_mean_opacity": 0.989702582359314,
+        "outside_opacity_over_mask_area": 0.10794609556363512
+      },
+      {
+        "orbit_index": 26,
+        "angle": 327.7897982429774,
+        "foreground_psnr": 26.84913153144564,
+        "foreground_mae": 0.026185954361416852,
+        "silhouette_iou": 0.9044337165724449,
+        "foreground_mean_opacity": 0.9897112250328064,
+        "outside_opacity_over_mask_area": 0.11144669634566193
+      },
+      {
+        "orbit_index": 27,
+        "angle": 332.34676026829385,
+        "foreground_psnr": 21.814286339193934,
+        "foreground_mae": 0.04247658001235368,
+        "silhouette_iou": 0.90770533446232,
+        "foreground_mean_opacity": 0.9861099123954773,
+        "outside_opacity_over_mask_area": 0.10809017376029459
+      },
+      {
+        "orbit_index": 28,
+        "angle": 336.9037222936103,
+        "foreground_psnr": 24.868344747731356,
+        "foreground_mae": 0.03166216005636082,
+        "silhouette_iou": 0.9003351206434317,
+        "foreground_mean_opacity": 0.9867198467254639,
+        "outside_opacity_over_mask_area": 0.11436904165029128
+      },
+      {
+        "orbit_index": 29,
+        "angle": 341.4606843189267,
+        "foreground_psnr": 27.367878172611213,
+        "foreground_mae": 0.025040388309473475,
+        "silhouette_iou": 0.8836594945948765,
+        "foreground_mean_opacity": 0.9900779724121094,
+        "outside_opacity_over_mask_area": 0.14191681418466423
+      },
+      {
+        "orbit_index": 30,
+        "angle": 346.0176463442432,
+        "foreground_psnr": 21.696723101424105,
+        "foreground_mae": 0.0443833499971397,
+        "silhouette_iou": 0.8632099299992784,
+        "foreground_mean_opacity": 0.9909066557884216,
+        "outside_opacity_over_mask_area": 0.17281242335250283
+      },
+      {
+        "orbit_index": 31,
+        "angle": 350.57460836955966,
+        "foreground_psnr": 23.800678737839448,
+        "foreground_mae": 0.03796525080004075,
+        "silhouette_iou": 0.8483905619142867,
+        "foreground_mean_opacity": 0.9835907220840454,
+        "outside_opacity_over_mask_area": 0.17966456174438689
+      },
+      {
+        "orbit_index": 32,
+        "angle": 355.1315703948761,
+        "foreground_psnr": 27.174826137599403,
+        "foreground_mae": 0.028198962969658972,
+        "silhouette_iou": 0.8331928910678719,
+        "foreground_mean_opacity": 0.9840371012687683,
+        "outside_opacity_over_mask_area": 0.19992447887094028
+      },
+      {
+        "orbit_index": 33,
+        "angle": 359.6885324201926,
+        "foreground_psnr": 26.376186595508422,
+        "foreground_mae": 0.027620480376139803,
+        "silhouette_iou": 0.8217117856166256,
+        "foreground_mean_opacity": 0.9818693399429321,
+        "outside_opacity_over_mask_area": 0.21643165501384262
+      },
+      {
+        "orbit_index": 34,
+        "angle": 4.245494445509053,
+        "foreground_psnr": 29.356003733796182,
+        "foreground_mae": 0.02142164013376637,
+        "silhouette_iou": 0.8328300850947021,
+        "foreground_mean_opacity": 0.9847903847694397,
+        "outside_opacity_over_mask_area": 0.2047618312059654
+      },
+      {
+        "orbit_index": 35,
+        "angle": 8.802456470825518,
+        "foreground_psnr": 28.078655884170626,
+        "foreground_mae": 0.024979614960680057,
+        "silhouette_iou": 0.8473300127418048,
+        "foreground_mean_opacity": 0.9858939051628113,
+        "outside_opacity_over_mask_area": 0.1839700769571648
+      },
+      {
+        "orbit_index": 36,
+        "angle": 13.359418496141984,
+        "foreground_psnr": 24.975183873575144,
+        "foreground_mae": 0.031144621457134015,
+        "silhouette_iou": 0.8864734299516909,
+        "foreground_mean_opacity": 0.9887717962265015,
+        "outside_opacity_over_mask_area": 0.13331393871199254
+      },
+      {
+        "orbit_index": 37,
+        "angle": 17.916380521458393,
+        "foreground_psnr": 23.73921023346852,
+        "foreground_mae": 0.032968985572556085,
+        "silhouette_iou": 0.9118559244378657,
+        "foreground_mean_opacity": 0.9844169020652771,
+        "outside_opacity_over_mask_area": 0.09872114793530207
+      },
+      {
+        "orbit_index": 38,
+        "angle": 22.47334254677486,
+        "foreground_psnr": 24.59686221376801,
+        "foreground_mae": 0.031486646231673715,
+        "silhouette_iou": 0.9081741685588353,
+        "foreground_mean_opacity": 0.9817860722541809,
+        "outside_opacity_over_mask_area": 0.09873094084513122
+      },
+      {
+        "orbit_index": 39,
+        "angle": 27.030304572091325,
+        "foreground_psnr": 26.44307418502782,
+        "foreground_mae": 0.028502474571872043,
+        "silhouette_iou": 0.9081034864941891,
+        "foreground_mean_opacity": 0.9751086831092834,
+        "outside_opacity_over_mask_area": 0.09052310218579937
+      },
+      {
+        "orbit_index": 40,
+        "angle": 31.587266597407734,
+        "foreground_psnr": 25.75671531550968,
+        "foreground_mae": 0.02995121206548812,
+        "silhouette_iou": 0.908093028897177,
+        "foreground_mean_opacity": 0.9739695191383362,
+        "outside_opacity_over_mask_area": 0.08876542826120772
+      },
+      {
+        "orbit_index": 41,
+        "angle": 36.1442286227242,
+        "foreground_psnr": 25.601706067137336,
+        "foreground_mae": 0.030712452610520385,
+        "silhouette_iou": 0.9193169815749325,
+        "foreground_mean_opacity": 0.9791853427886963,
+        "outside_opacity_over_mask_area": 0.0822957926911466
+      },
+      {
+        "orbit_index": 42,
+        "angle": 40.701190648040665,
+        "foreground_psnr": 24.540269842664564,
+        "foreground_mae": 0.032382760786148684,
+        "silhouette_iou": 0.9229786146374712,
+        "foreground_mean_opacity": 0.9821606278419495,
+        "outside_opacity_over_mask_area": 0.08174148172895346
+      },
+      {
+        "orbit_index": 43,
+        "angle": 45.25815267335713,
+        "foreground_psnr": 26.321561837322843,
+        "foreground_mae": 0.027097924902622018,
+        "silhouette_iou": 0.9211702448520742,
+        "foreground_mean_opacity": 0.9770699739456177,
+        "outside_opacity_over_mask_area": 0.07695330521452737
+      },
+      {
+        "orbit_index": 44,
+        "angle": 49.8151146986736,
+        "foreground_psnr": 24.196925210810775,
+        "foreground_mae": 0.03206797693236953,
+        "silhouette_iou": 0.9168670835337502,
+        "foreground_mean_opacity": 0.9781090021133423,
+        "outside_opacity_over_mask_area": 0.08119590815771913
+      },
+      {
+        "orbit_index": 45,
+        "angle": 54.37207672399006,
+        "foreground_psnr": 27.708747093726387,
+        "foreground_mae": 0.023776454094522798,
+        "silhouette_iou": 0.9204949322100829,
+        "foreground_mean_opacity": 0.9842052459716797,
+        "outside_opacity_over_mask_area": 0.0866981583237225
+      },
+      {
+        "orbit_index": 46,
+        "angle": 58.92903874930653,
+        "foreground_psnr": 26.46047242129985,
+        "foreground_mae": 0.026751886227517164,
+        "silhouette_iou": 0.9205651003932933,
+        "foreground_mean_opacity": 0.9849308133125305,
+        "outside_opacity_over_mask_area": 0.0884726406992073
+      },
+      {
+        "orbit_index": 47,
+        "angle": 63.486000774622994,
+        "foreground_psnr": 27.404438806234054,
+        "foreground_mae": 0.025267874303198316,
+        "silhouette_iou": 0.916564698684613,
+        "foreground_mean_opacity": 0.9851367473602295,
+        "outside_opacity_over_mask_area": 0.09339838699466577
+      },
+      {
+        "orbit_index": 48,
+        "angle": 68.04296279993946,
+        "foreground_psnr": 24.799918590595155,
+        "foreground_mae": 0.03223995023212657,
+        "silhouette_iou": 0.9150080824408972,
+        "foreground_mean_opacity": 0.9865937829017639,
+        "outside_opacity_over_mask_area": 0.09679991512775303
+      },
+      {
+        "orbit_index": 49,
+        "angle": 72.59992482525587,
+        "foreground_psnr": 26.046528701998156,
+        "foreground_mae": 0.02928929920548474,
+        "silhouette_iou": 0.9120004019393574,
+        "foreground_mean_opacity": 0.988922119140625,
+        "outside_opacity_over_mask_area": 0.1036072264335312
+      },
+      {
+        "orbit_index": 50,
+        "angle": 77.15688685057233,
+        "foreground_psnr": 24.393882581476944,
+        "foreground_mae": 0.03082772901057637,
+        "silhouette_iou": 0.9107432651736449,
+        "foreground_mean_opacity": 0.9872710108757019,
+        "outside_opacity_over_mask_area": 0.10353150992543536
+      },
+      {
+        "orbit_index": 51,
+        "angle": 81.71384887588874,
+        "foreground_psnr": 24.009184992622213,
+        "foreground_mae": 0.030664945784936854,
+        "silhouette_iou": 0.9045828144458281,
+        "foreground_mean_opacity": 0.9859812259674072,
+        "outside_opacity_over_mask_area": 0.10945833865101826
+      },
+      {
+        "orbit_index": 52,
+        "angle": 86.27081090120521,
+        "foreground_psnr": 28.053377777778298,
+        "foreground_mae": 0.022767814266046956,
+        "silhouette_iou": 0.901397921806085,
+        "foreground_mean_opacity": 0.9874439239501953,
+        "outside_opacity_over_mask_area": 0.11347858137972444
+      },
+      {
+        "orbit_index": 53,
+        "angle": 90.82777292652167,
+        "foreground_psnr": 26.38730554380883,
+        "foreground_mae": 0.02740769468839925,
+        "silhouette_iou": 0.8996036000099723,
+        "foreground_mean_opacity": 0.9877499938011169,
+        "outside_opacity_over_mask_area": 0.1136711881335333
+      },
+      {
+        "orbit_index": 54,
+        "angle": 95.38473495183814,
+        "foreground_psnr": 28.359205474233757,
+        "foreground_mae": 0.022165939315104913,
+        "silhouette_iou": 0.9032991752061984,
+        "foreground_mean_opacity": 0.9868093729019165,
+        "outside_opacity_over_mask_area": 0.10902243980606831
+      },
+      {
+        "orbit_index": 55,
+        "angle": 99.9416969771546,
+        "foreground_psnr": 26.114976809341712,
+        "foreground_mae": 0.02609116517208265,
+        "silhouette_iou": 0.9050788706922536,
+        "foreground_mean_opacity": 0.9847186207771301,
+        "outside_opacity_over_mask_area": 0.10493250403030063
+      },
+      {
+        "orbit_index": 56,
+        "angle": 104.49865900247107,
+        "foreground_psnr": 25.805149126951022,
+        "foreground_mae": 0.02781849040486499,
+        "silhouette_iou": 0.9055327557379541,
+        "foreground_mean_opacity": 0.9864338040351868,
+        "outside_opacity_over_mask_area": 0.10528225463181742
+      },
+      {
+        "orbit_index": 57,
+        "angle": 109.05562102778754,
+        "foreground_psnr": 22.582566791838307,
+        "foreground_mae": 0.03918009593246278,
+        "silhouette_iou": 0.9078981022047163,
+        "foreground_mean_opacity": 0.9852213859558105,
+        "outside_opacity_over_mask_area": 0.10200107748634386
+      },
+      {
+        "orbit_index": 58,
+        "angle": 113.612583053104,
+        "foreground_psnr": 25.077615633232647,
+        "foreground_mae": 0.030529585163513912,
+        "silhouette_iou": 0.9115198049337242,
+        "foreground_mean_opacity": 0.9863476157188416,
+        "outside_opacity_over_mask_area": 0.09889436361188343
+      },
+      {
+        "orbit_index": 59,
+        "angle": 118.16954507842047,
+        "foreground_psnr": 22.83071431535256,
+        "foreground_mae": 0.036335298384462054,
+        "silhouette_iou": 0.9141301202283549,
+        "foreground_mean_opacity": 0.9862911701202393,
+        "outside_opacity_over_mask_area": 0.09747272475713549
+      },
+      {
+        "orbit_index": 60,
+        "angle": 122.72650710373694,
+        "foreground_psnr": 26.058409442025088,
+        "foreground_mae": 0.027099922142241207,
+        "silhouette_iou": 0.9205486057164287,
+        "foreground_mean_opacity": 0.986396074295044,
+        "outside_opacity_over_mask_area": 0.08985147556615665
+      },
+      {
+        "orbit_index": 61,
+        "angle": 127.2834691290534,
+        "foreground_psnr": 21.87358696435098,
+        "foreground_mae": 0.040930174040005186,
+        "silhouette_iou": 0.9128889374965823,
+        "foreground_mean_opacity": 0.9857194423675537,
+        "outside_opacity_over_mask_area": 0.09705422621121937
+      },
+      {
+        "orbit_index": 62,
+        "angle": 131.84043115436975,
+        "foreground_psnr": 21.37279470264605,
+        "foreground_mae": 0.042578150187818395,
+        "silhouette_iou": 0.9096920619798817,
+        "foreground_mean_opacity": 0.984541118144989,
+        "outside_opacity_over_mask_area": 0.09973730983391675
+      },
+      {
+        "orbit_index": 63,
+        "angle": 136.39739317968622,
+        "foreground_psnr": 21.659455873433377,
+        "foreground_mae": 0.04194643469848709,
+        "silhouette_iou": 0.9158418690298078,
+        "foreground_mean_opacity": 0.9828656911849976,
+        "outside_opacity_over_mask_area": 0.09340516882433732
+      },
+      {
+        "orbit_index": 64,
+        "angle": 140.95435520500268,
+        "foreground_psnr": 22.38924789331079,
+        "foreground_mae": 0.04112418630701,
+        "silhouette_iou": 0.910412340551765,
+        "foreground_mean_opacity": 0.9810603260993958,
+        "outside_opacity_over_mask_area": 0.09487789767474486
+      },
+      {
+        "orbit_index": 65,
+        "angle": 145.51131723031915,
+        "foreground_psnr": 22.10505442625241,
+        "foreground_mae": 0.04033537802772666,
+        "silhouette_iou": 0.899984608280745,
+        "foreground_mean_opacity": 0.9832224249839783,
+        "outside_opacity_over_mask_area": 0.1056854171478733
+      },
+      {
+        "orbit_index": 66,
+        "angle": 150.06827925563562,
+        "foreground_psnr": 19.043075361373628,
+        "foreground_mae": 0.05687129926684648,
+        "silhouette_iou": 0.887831844185897,
+        "foreground_mean_opacity": 0.9834444522857666,
+        "outside_opacity_over_mask_area": 0.11871747123477794
+      },
+      {
+        "orbit_index": 67,
+        "angle": 154.62524128095208,
+        "foreground_psnr": 22.371769305693057,
+        "foreground_mae": 0.041557626937242555,
+        "silhouette_iou": 0.8977153494669149,
+        "foreground_mean_opacity": 0.9844920635223389,
+        "outside_opacity_over_mask_area": 0.11332105752150337
+      },
+      {
+        "orbit_index": 68,
+        "angle": 159.18220330626855,
+        "foreground_psnr": 20.319667929032697,
+        "foreground_mae": 0.04994271000436336,
+        "silhouette_iou": 0.8812749572162007,
+        "foreground_mean_opacity": 0.982399582862854,
+        "outside_opacity_over_mask_area": 0.13192061642191188
+      },
+      {
+        "orbit_index": 69,
+        "angle": 163.739165331585,
+        "foreground_psnr": 19.2152219951631,
+        "foreground_mae": 0.05447441792441123,
+        "silhouette_iou": 0.858856819468025,
+        "foreground_mean_opacity": 0.9778587818145752,
+        "outside_opacity_over_mask_area": 0.15771000479383473
+      },
+      {
+        "orbit_index": 70,
+        "angle": 168.29612735690148,
+        "foreground_psnr": 21.676930705836437,
+        "foreground_mae": 0.04301548356114309,
+        "silhouette_iou": 0.8424599147554293,
+        "foreground_mean_opacity": 0.9918979406356812,
+        "outside_opacity_over_mask_area": 0.1985297824388913
+      },
+      {
+        "orbit_index": 71,
+        "angle": 172.85308938221795,
+        "foreground_psnr": 25.39583752276139,
+        "foreground_mae": 0.029270411213730623,
+        "silhouette_iou": 0.8295852928601967,
+        "foreground_mean_opacity": 0.9937547445297241,
+        "outside_opacity_over_mask_area": 0.22162924491084743
+      },
+      {
+        "orbit_index": 72,
+        "angle": 177.4100514075344,
+        "foreground_psnr": 22.89928948686873,
+        "foreground_mae": 0.032107037934752954,
+        "silhouette_iou": 0.8302864107251676,
+        "foreground_mean_opacity": 0.9900450706481934,
+        "outside_opacity_over_mask_area": 0.21672884457451247
+      },
+      {
+        "orbit_index": 73,
+        "angle": 181.96701343285076,
+        "foreground_psnr": 23.889253128731593,
+        "foreground_mae": 0.03269553540863678,
+        "silhouette_iou": 0.8712055507372073,
+        "foreground_mean_opacity": 0.9905665516853333,
+        "outside_opacity_over_mask_area": 0.1595755036904821
+      },
+      {
+        "orbit_index": 74,
+        "angle": 186.52397545816723,
+        "foreground_psnr": 25.347146079919,
+        "foreground_mae": 0.028380542416048805,
+        "silhouette_iou": 0.8908869885982562,
+        "foreground_mean_opacity": 0.9936748743057251,
+        "outside_opacity_over_mask_area": 0.1332722036821194
+      },
+      {
+        "orbit_index": 75,
+        "angle": 191.0809374834837,
+        "foreground_psnr": 23.921930684049872,
+        "foreground_mae": 0.03408900029015618,
+        "silhouette_iou": 0.9046217484686978,
+        "foreground_mean_opacity": 0.9874154329299927,
+        "outside_opacity_over_mask_area": 0.10661364389175454
+      },
+      {
+        "orbit_index": 76,
+        "angle": 195.63789950880016,
+        "foreground_psnr": 24.09565317332674,
+        "foreground_mae": 0.03349731028928845,
+        "silhouette_iou": 0.8999771984494945,
+        "foreground_mean_opacity": 0.9883483052253723,
+        "outside_opacity_over_mask_area": 0.11072369044971746
+      },
+      {
+        "orbit_index": 77,
+        "angle": 200.19486153411663,
+        "foreground_psnr": 21.348009233624843,
+        "foreground_mae": 0.04619056747599315,
+        "silhouette_iou": 0.912225819359063,
+        "foreground_mean_opacity": 0.9873188734054565,
+        "outside_opacity_over_mask_area": 0.09483749953671675
+      },
+      {
+        "orbit_index": 78,
+        "angle": 204.7518235594331,
+        "foreground_psnr": 19.76983289886707,
+        "foreground_mae": 0.05023667081373602,
+        "silhouette_iou": 0.9282578923341644,
+        "foreground_mean_opacity": 0.9901196956634521,
+        "outside_opacity_over_mask_area": 0.08108379236564936
+      }
+    ],
+    "median": {
+      "foreground_psnr": 24.393882581476944,
+      "silhouette_iou": 0.9058523371550964,
+      "outside_opacity_over_mask_area": 0.10321665621621251
+    }
+  },
+  "real": {
+    "frames": [
+      {
+        "orbit_index": 1421,
+        "angle": 215.551649181382,
+        "foreground_psnr": 18.687049885224035,
+        "foreground_mae": 0.06491615860025411,
+        "silhouette_iou": 0.8897105890364317,
+        "foreground_mean_opacity": 0.963890552520752,
+        "outside_opacity_over_mask_area": 0.10144525860260666
+      },
+      {
+        "orbit_index": 1361,
+        "angle": 222.3012002215551,
+        "foreground_psnr": 19.87865304943725,
+        "foreground_mae": 0.057259830940786724,
+        "silhouette_iou": 0.8938290300598167,
+        "foreground_mean_opacity": 0.9677961468696594,
+        "outside_opacity_over_mask_area": 0.09883604814270283
+      },
+      {
+        "orbit_index": 1300,
+        "angle": 228.96298293886252,
+        "foreground_psnr": 20.272708962222037,
+        "foreground_mae": 0.05603835250458522,
+        "silhouette_iou": 0.8919892601026408,
+        "foreground_mean_opacity": 0.972113847732544,
+        "outside_opacity_over_mask_area": 0.10448802280176839
+      },
+      {
+        "orbit_index": 1179,
+        "angle": 240.49242389310558,
+        "foreground_psnr": 21.193083199553804,
+        "foreground_mae": 0.04830387860920651,
+        "silhouette_iou": 0.8904660270623096,
+        "foreground_mean_opacity": 0.9719176292419434,
+        "outside_opacity_over_mask_area": 0.10491698640323151
+      },
+      {
+        "orbit_index": 1119,
+        "angle": 245.93442963255637,
+        "foreground_psnr": 21.776699444483828,
+        "foreground_mae": 0.0440795525478913,
+        "silhouette_iou": 0.8877312259944373,
+        "foreground_mean_opacity": 0.9729703068733215,
+        "outside_opacity_over_mask_area": 0.10912813520196853
+      },
+      {
+        "orbit_index": 1058,
+        "angle": 251.79169176945206,
+        "foreground_psnr": 19.71992304167334,
+        "foreground_mae": 0.05741159437520985,
+        "silhouette_iou": 0.8868835608251858,
+        "foreground_mean_opacity": 0.9725089073181152,
+        "outside_opacity_over_mask_area": 0.1090597424469131
+      },
+      {
+        "orbit_index": 998,
+        "angle": 257.08702090546115,
+        "foreground_psnr": 18.68531894015003,
+        "foreground_mae": 0.06596952790567791,
+        "silhouette_iou": 0.8870139209945035,
+        "foreground_mean_opacity": 0.9725748300552368,
+        "outside_opacity_over_mask_area": 0.10955511032436036
+      },
+      {
+        "orbit_index": 877,
+        "angle": 266.6254579986463,
+        "foreground_psnr": 17.506762761643095,
+        "foreground_mae": 0.07789804630173887,
+        "silhouette_iou": 0.8902320680954889,
+        "foreground_mean_opacity": 0.9745229482650757,
+        "outside_opacity_over_mask_area": 0.10688043181188894
+      },
+      {
+        "orbit_index": 756,
+        "angle": 276.11121773854677,
+        "foreground_psnr": 17.973189215313027,
+        "foreground_mae": 0.07427317956660302,
+        "silhouette_iou": 0.8870426875320987,
+        "foreground_mean_opacity": 0.9710003733634949,
+        "outside_opacity_over_mask_area": 0.10745630039735071
+      },
+      {
+        "orbit_index": 695,
+        "angle": 280.51462174219455,
+        "foreground_psnr": 17.443926647629382,
+        "foreground_mae": 0.0778555812773569,
+        "silhouette_iou": 0.8861471185381852,
+        "foreground_mean_opacity": 0.9705862402915955,
+        "outside_opacity_over_mask_area": 0.1079597021390242
+      },
+      {
+        "orbit_index": 574,
+        "angle": 289.08567564014135,
+        "foreground_psnr": 16.607988022835155,
+        "foreground_mae": 0.09282832409379921,
+        "silhouette_iou": 0.8859810126582278,
+        "foreground_mean_opacity": 0.9710013270378113,
+        "outside_opacity_over_mask_area": 0.1102889614645229
+      },
+      {
+        "orbit_index": 454,
+        "angle": 297.1911280555471,
+        "foreground_psnr": 16.47845392572637,
+        "foreground_mae": 0.09155649001004028,
+        "silhouette_iou": 0.8841737882445039,
+        "foreground_mean_opacity": 0.9688424468040466,
+        "outside_opacity_over_mask_area": 0.10973245676856337
+      },
+      {
+        "orbit_index": 333,
+        "angle": 305.4714937769889,
+        "foreground_psnr": 16.64592922247695,
+        "foreground_mae": 0.09108366836432298,
+        "silhouette_iou": 0.8880430369468129,
+        "foreground_mean_opacity": 0.9720045924186707,
+        "outside_opacity_over_mask_area": 0.10863592976239882
+      },
+      {
+        "orbit_index": 212,
+        "angle": 313.87999717299607,
+        "foreground_psnr": 16.383792392110642,
+        "foreground_mae": 0.09281727347575786,
+        "silhouette_iou": 0.8779206665459156,
+        "foreground_mean_opacity": 0.9707928895950317,
+        "outside_opacity_over_mask_area": 0.1183583536063893
+      },
+      {
+        "orbit_index": 151,
+        "angle": 317.69631954796597,
+        "foreground_psnr": 16.123549211862287,
+        "foreground_mae": 0.096177425922896,
+        "silhouette_iou": 0.8750750075007501,
+        "foreground_mean_opacity": 0.9742411375045776,
+        "outside_opacity_over_mask_area": 0.12426540534415537
+      },
+      {
+        "orbit_index": 30,
+        "angle": 321.7992725210731,
+        "foreground_psnr": 15.641815491901687,
+        "foreground_mae": 0.10812800457364387,
+        "silhouette_iou": 0.8668298748737079,
+        "foreground_mean_opacity": 0.9699130058288574,
+        "outside_opacity_over_mask_area": 0.12884439364734404
+      }
+    ],
+    "median": {
+      "foreground_psnr": 17.73997598847806,
+      "silhouette_iou": 0.8870283042633011,
+      "outside_opacity_over_mask_area": 0.10884783610465595
+    }
+  },
+  "gaussians": 77270
+}

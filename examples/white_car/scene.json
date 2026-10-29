@@ -1,0 +1,18 @@
+{
+  "name": "white_car",
+  "image_size": [
+    832,
+    480
+  ],
+  "camera_convention": "OpenCV W2C",
+  "source_views": 6,
+  "target_views": 80,
+  "training_views": 79,
+  "closure_frame": 79,
+  "init_vertices": 21112,
+  "real_surface_points": 17112,
+  "volume_seed_points": 4000,
+  "init_ply_sha256": "20aa1c27d023c7804bb215782d68747007103c767e815d5a01f2044ff39bc19b",
+  "trajectory_sha256": "a130d9a80882ca94bfb3d9ccdc8530117324bc845d9dacd95f67815a8d55ff8d",
+  "masks": "SAM3 white-car masks for frames/00.png through frames/79.png"
+}

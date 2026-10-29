@@ -82,6 +82,7 @@ def _model_configs(base_model_dir: str | None):
         ),
     ]
     tokenizer_candidates = (
+        root / "google" / "umt5-xxl",
         root / "tokenizer",
         root.parent / "tokenizer" / "Wan2.1-T2V-1.3B" / "google" / "umt5-xxl",
         root / "Wan-AI" / "Wan2.1-T2V-1.3B" / "google" / "umt5-xxl",

@@ -1,353 +1,67 @@
-<div align="left">
+# VGGT-Diff · 白车 E1 复现
 
-<h3><strong>VGGT-Diff:</strong> <small>Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis</small></h3>
+`vggt-gen-v1` 在 VGGT-Diff 上封装了 80 帧 Trajectory 生成与物体 3DGS 重建，并提供旧白车 E1 实验的相机配置、输入校验清单、复现入口和验收结果。
 
-<sub>
-<strong><a href="https://github.com/chenkangjie1123">Kangjie Chen</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Xiangyu Li</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=U1cdnYUAAAAJ&amp;hl=zh-CN">Dongbin Zhang</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=3YuWG1QAAAAJ&amp;hl=en">Chaoda Zheng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Shijia Chen</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=4lD_AkgAAAAJ&amp;hl=en">Jinhao Deng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=LqX1k5QAAAAJ&amp;hl=en">Hongbin Lin</a></strong><sup>2</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=XM2n3scAAAAJ">Choo Sin Wai</a></strong><sup>3</sup>&nbsp;
-<strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Minqi Wang</a></strong><sup>2</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Minghao Yang</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Dake Zhong</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=qOOnZAoAAAAJ&amp;hl=en">Guorui Song</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Yu Zhang</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=697UEEIAAAAJ&amp;hl=en">Xianming Liu</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Boyang Wang</a></strong><sup>1&dagger;</sup>
-</sub>
+上游研究与模型归原作者所有：[原项目](https://github.com/chenkangjie1123/VGGT-Diff) · [项目主页](https://chenkangjie1123.github.io/VGGT-Diff/) · [论文](https://arxiv.org/abs/2609.33253)。
 
-<sub><strong><sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University</strong></sub>
+## 结果预览
 
-[![Project Page](https://img.shields.io/badge/Project-Page-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/)
-[![Paper PDF](https://img.shields.io/badge/Paper-PDF-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf?v=2)
-[![arXiv](https://img.shields.io/badge/arXiv-2609.33253-385d6e?style=flat-square)](https://arxiv.org/abs/2609.33253)
-[![Hugging Face](https://img.shields.io/badge/Hugging_Face-385d6e?style=flat-square)](https://huggingface.co/papers/2609.33253)
-[![Model Weights](https://img.shields.io/badge/Hugging_Face-Weights-385d6e?style=flat-square)](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff)
-[![YouTube Video](https://img.shields.io/badge/YouTube-Video-385d6e?style=flat-square)](https://youtu.be/XkzSSh-ysKs)
+![白车 E1 复现的八视角检查图](results/white_car_e1_v1/orbit_contact.jpg)
 
-<img src="assets/vggtdiff_demo_showcase.gif" alt="VGGT-Diff full-resolution novel-view synthesis across four scenes" width="100%">
+使用旧实验相同的 160 个独立环绕相机渲染，上图等间隔选取八个视角。仓库仅保留这张检查图与[逐视角指标 JSON](results/white_car_e1_v1/benchmark.json)。
 
-<sub>VGGT-Diff delivers strong novel-view synthesis across challenging in-domain and cross-domain viewpoints, outperforming existing generative NVS methods. Core model weights are now available on Hugging Face.</sub>
+| 指标（中位数） | 旧 E1 | 本分支实测 |
+| --- | ---: | ---: |
+| 79 个训练视角前景 PSNR | 24.3939 dB | 24.2480 dB |
+| 训练轮廓 IoU | 0.90585 | 0.90367 |
+| 16 张独立真实图前景 PSNR | 17.7400 dB | 17.7498 dB |
+| 独立真实图轮廓 IoU | 0.88703 | 0.88629 |
 
-</div>
+训练图、掩码、相机和初始化全部使用旧实验固定数据。训练集与真实留出集的 PSNR、IoU 和轮廓外不透明度共六项检查均通过预设容差。复现结果允许数值差异；未知侧面的真实几何尚无完整真值验证。
 
-## News
+[完整验证记录](docs/white_car_e1_v1_validation.md) · [结果文件说明](results/white_car_e1_v1/README.md)
 
-- 🎉 **Oct. 15, 2026: Stronger full-resolution NVS checkpoint released!** Our new [480x832 scaling checkpoint](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832-100K-6K), trained with 100K half-resolution steps followed by 6K full-resolution steps, is now available on Hugging Face. 🎉
-- 🎉 **Oct. 5, 2026: Model weights released!** All three core checkpoints are now on [Hugging Face](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff). 🎉
-- **Sep. 29, 2026:** [arXiv paper](https://arxiv.org/abs/2609.33253) and pose-free inference released.
-- **Sep. 27, 2026:** [Paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf?v=2), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code released.
+## 快速复现旧 E1
 
-## Model Zoo
-
-| <small>Model</small> | <small>Task</small> | <small>Release setting</small> | <small>Download</small> |
-| --- | --- | --- | --- |
-| <small>**VGGT-Diff NVS 192x336 (100K)**</small> | <small>Independent-view NVS</small> | <small>DL3DV clean-10K; 100K effective steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K)</small> |
-| <small>**VGGT-Diff NVS 480x832 (100K + 6K)**</small> | <small>Full-resolution independent-view NVS</small> | <small>DL3DV clean-10K; 100K half-resolution steps + 6K full-resolution steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832-100K-6K)</small> |
-| <small>**VGGT-Diff NVS 480x832**</small> | <small>Full-resolution NVS used for the paper's baseline comparison</small> | <small>DL3DV clean-1K; ~18K half-resolution steps + 7,380 full-resolution steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832)</small> |
-| <small>**VGGT-Diff Trajectory 480x832 (36K)**</small> | <small>80-frame continuous camera trajectories</small> | <small>Full-resolution trajectory adaptation</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832)</small> |
-
-The repositories contain the trained VGGT-Diff DiT and conditioning weights. Wan2.1, VGGT-Omega, and other external model components remain separate dependencies and are not redistributed with these checkpoints.
-
-Download a checkpoint with the Hugging Face CLI, for example:
+需要 Linux、NVIDIA CUDA GPU、重建环境和 3DGRUT 源码。环境安装步骤见 [环境与权重](docs/setup.md)。
 
 ```bash
-hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
-  vggt-diff.safetensors config.json LICENSE README.md \
-  --local-dir checkpoints/VGGT-Diff-Trajectory-480x832
-```
-
-Use `--training-mode nvs` with either NVS checkpoint. The trajectory checkpoint is the default model family for `scripts/infer.py` and `scripts/infer_pose_free.py`.
-
-## Installation
-
-```bash
-git clone https://github.com/chenkangjie1123/VGGT-Diff.git
+git clone --branch vggt-gen-v1 https://github.com/hjc0106/VGGT-Diff.git
 cd VGGT-Diff
 
-conda create -n vggtdiff python=3.10 -y
-conda activate vggtdiff
-pip install -e .
-pip install -U huggingface_hub
-pip install git+https://github.com/facebookresearch/vggt-omega.git@399d4d62935deb71cedb1e1c35b7a90413a6bee4
+# 仅检查固定输入，无需 GPU
+.venv-e1/bin/python scripts/reproduce_white_car_e1.py --example /path/to/white_car_fixture --verify-only
+
+# 从固定输入重新训练并验收
+CUDA_VISIBLE_DEVICES=0 .venv-e1/bin/python scripts/reproduce_white_car_e1.py \
+  --example /path/to/white_car_fixture \
+  --threedgrut /path/to/3DGRUT \
+  --output outputs/white_car_e1_v1
 ```
 
-Request access to the [VGGT-Omega checkpoint](https://huggingface.co/facebook/VGGT-Omega) and download `vggt_omega_1b_512.pt`. Wan2.1 weights are downloaded automatically on first use, or can be supplied through `--base-model-dir`. A local model root should contain `Wan-AI/Wan2.1-I2V-14B-480P/` and `Wan-AI/Wan2.1-T2V-1.3B/google/umt5-xxl/`; pointing to the `Wan2.1-I2V-14B-480P` directory itself is also supported when the tokenizer is available in the adjacent `tokenizer/` tree.
+完整固定输入未上传，需通过 `--example` 指定本地完整基准目录；目录结构与 SHA-256 见 [白车说明](examples/white_car/README.md)。运行前会校验 204 个文件，直接重建无需扩散模型权重。
 
-## Inference
+流程使用 79 个不同视角，每图更新 625 次，共 49,375 步；第 80 帧是首尾同相机复测，不参与训练。初始化为 17,112 个观测表面点与 4,000 个低不透明度体积种子。在 RTX A6000 上重建约需 21 分钟。
 
-The bundled example uses six source views, an 80-frame camera trajectory, and the released full-resolution trajectory checkpoint:
+输出包含 `e1/model.ply`、`evaluation/benchmark.json`、`evaluation/orbit360.mp4` 和检查图。输入发生变化会拒绝复用旧数据；训练中断后请使用新输出目录。
+
+## 重新生成与新场景
+
+- **检查生成入口**：使用固定六张参考图和原轨迹重新生成 80 帧，命令见 [白车说明](examples/white_car/README.md)。本次重新生成与旧 PNG 的全图 PSNR 中位数为 49.09 dB，存在小幅像素差异；上述 E1 指标来自固定旧图。新生成图需要自己的分割掩码。
+- **从视频开始**：`gen_pro` 保留选帧、虚拟相机重投影、点云和轨迹构建，见 [视频预处理](docs/video_pipeline.md)。这些步骤会建立新的实验条件，尚未纳入固定旧 E1 的复现验收。
+- **其他推理与训练**：见 [入口与参数说明](docs/upstream_usage.md)。
+
+目标相机统一使用 OpenCV W2C，内参使用图像分辨率下的像素单位。源图、位姿和内参需要成套保持一致。
+
+## 验证
 
 ```bash
-python scripts/infer.py \
-  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
-  --example examples/garden \
-  --height 480 \
-  --width 832 \
-  --steps 50 \
-  --seed 20263012 \
-  --fps 24 \
-  --output outputs/garden
+python -m pytest tests -q
 ```
 
-Outputs are saved to `outputs/garden/`. The model predicts 80 frames once and keeps those raw PNGs in `frames/`; `vggtdiff.mp4` appends the same frames in reverse order, producing a 160-frame, 24 fps forward-then-backward video without additional inference. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
+已完成 37 项测试、wheel 构建、49,375 步实际重训，以及原 16 张真实留出图和 160 机位环绕评估。机器可读运行记录见 [validation.json](docs/white_car_e1_v1_validation.json)。
 
-> [!NOTE]
-> The bundled Garden inputs and 80-camera path are the same scene used by the project-page trajectory demo. That demo used the effective-31K checkpoint and seed `20263012`; the released 36K successor uses the same protocol and produces a comparable trajectory. A repository revision published before October 18, 2026 accidentally paired the 832 x 480 PNGs with intrinsics still expressed at 336 x 192, which causes severe drift. Pull the latest revision before comparing results. CPU offloading changes memory use and runtime, not camera geometry or expected image content.
-
-### Pose-free inference from six RGB images
-
-VGGT-Omega first estimates the six source cameras, then VGGT-Diff generates 80 novel views. Defaults are 832 × 480, 12 fps, and route `0 → 1 → 2 → 3 → 4 → 5`; name inputs in physical walking order. The route interpolates camera centers and orientations without scene-collision checks.
-
-```bash
-python scripts/infer_pose_free.py \
-  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
-  --source-dir /path/to/six_rgb_images \
-  --output outputs/pose_free
-```
-
-No ground-truth poses or frames are read. Outputs are `prediction.mp4`, `camera_trajectory.mp4`, synchronized `prediction_with_trajectory.mp4`, 80 PNG frames, and `cameras.json` containing the estimated source cameras and target path used. Camera views use small antialiased frustums. Reorder the default path with `--route-order 0 2 1 3 4 5`.
-
-For a custom 80-camera path, pass `--trajectory-json /path/to/targets.json` with exactly one of:
-
-- `target_w2c`: 80 homogeneous 4 × 4 OpenCV world-to-camera matrices in the VGGT-Omega world saved in `cameras.json`.
-- `target_c2w_relative_to_source0`: 80 homogeneous 4 × 4 camera-to-world matrices relative to source camera 0.
-
-Optional `target_intrinsics` supplies 80 pixel-space 3 × 3 matrices; otherwise, the median of the six estimated source intrinsics is used. Keep custom paths collision-free and at a sensible distance from observed views.
-
-### Custom scenes
-
-Use this layout:
-
-```text
-my_scene/
-├── source_views/
-│   ├── 00.png
-│   ├── 01.png
-│   └── ...
-└── trajectory.json
-```
-
-`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics are OpenCV world-to-camera matrices; intrinsics are 3 × 3 pixel-space matrices at source-image resolution. Add `intrinsics_image_size: [width, height]` to make the loader reject an accidental image/intrinsics resolution mismatch.
-
-```bash
-python scripts/infer.py \
-  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
-  --example /path/to/my_scene \
-  --output outputs/my_scene
-```
-
-### Trajectory 生成与 E1 重建
-
-这条流程先用 Trajectory 权重生成 80 帧轨道，再用其中 79 个不重复视角做物体 3DGS 重建。生成和重建分两个环境：生成环境安装本仓库，重建环境安装 gsplat 和 3DGRUT 的 Python 依赖。光栅化走 gsplat，不调用 3DGRUT 的 Slang 光线追踪核。
-
-已完成的阶段会直接跳过。`outputs/traj_e1/trajectory/result.json` 存在就不再生成；`e1/experiment.json`、`e1/training/result.json`、`e1/evaluation/metrics.json` 存在就跳过对应步骤。训练中途失败后会留下 `e1/training/initial_state.json`，再次运行会拒绝覆盖，需要删掉整个 `e1/` 再重跑重建。
-
-#### 环境配置
-
-在 Linux 和带 CUDA 的 NVIDIA GPU 上运行。本流程在 Python 3.12、PyTorch 2.11（CUDA 12.8）、gsplat 1.4.0 上跑通。生成阶段默认把约 46 GiB 权重留在 GPU 上；显存更小的卡把 `--vram-limit-gib` 改成 `0`，权重会按块从 CPU 调入。
-
-| 环境 | 用途 | 关键包 |
-| --- | --- | --- |
-| `.venv-gen` | 生成 80 帧 | 本仓库、`huggingface_hub`、VGGT-Omega |
-| `.venv-e1` | E1 重建 | 与生成环境同一套 PyTorch、`gsplat`、3DGRUT 的 Python 依赖 |
-
-两个环境使用同一主版本的 PyTorch 和 CUDA，避免 gsplat 对着另一套 CUDA 重新编译。
-
-#### 安装
-
-```bash
-git clone https://github.com/hjc0106/VGGT-Diff.git
-cd VGGT-Diff
-git checkout vggt-gen
-
-python -m venv .venv-gen
-source .venv-gen/bin/activate
-pip install -U pip
-pip install -e .
-pip install -U huggingface_hub
-pip install git+https://github.com/facebookresearch/vggt-omega.git@399d4d62935deb71cedb1e1c35b7a90413a6bee4
-deactivate
-
-python -m venv .venv-e1
-source .venv-e1/bin/activate
-pip install -U pip
-pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
-pip install gsplat==1.4.0
-pip install plyfile omegaconf hydra-core addict rich torchmetrics \
-  "opencv-python<4.12" imageio numpy pillow tensorboard scikit-learn tqdm polyscope
-deactivate
-```
-
-3DGRUT 只需要源码在 `--threedgrut` 指向的目录里，该目录下应能看到 `threedgrut/` 和 `threedgut_tracer/`。使用 [3DGRUT](https://github.com/nv-tlabs/3dgrut) 或 ArtiFixer 维护的 3DGRUT 分支都可以。`requirements.txt` 里的 `slangtorch` 和 `fused-ssim` 是原版光线追踪和融合 SSIM，这条 E1 路径不调用它们。
-
-权重：
-
-```bash
-source .venv-gen/bin/activate
-hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
-  vggt-diff.safetensors config.json LICENSE README.md \
-  --local-dir checkpoints/VGGT-Diff-Trajectory-480x832
-```
-
-另外准备 `vggt_omega_1b_512.pt`。需要先申请 [VGGT-Omega](https://huggingface.co/facebook/VGGT-Omega) 的访问权限。Wan2.1 可以在第一次生成时自动下载，也可以用 `--base-model-dir` 指向本地的 `Wan2.1-I2V-14B-480P` 目录。
-
-#### 环境测试
-
-生成环境确认 CUDA 和包可以导入：
-
-```bash
-source .venv-gen/bin/activate
-python -c "import torch; from vggtdiff import VGGTDiff; assert torch.cuda.is_available(); print('gen', torch.__version__, torch.cuda.get_device_name(0))"
-python tests/test_e1_recipe.py
-```
-
-`tests/test_e1_recipe.py` 不加载模型。它检查 80 帧闭合轨道会留出最后一帧、训练步数是 49375，并用一张假图把数据集准备跑一遍。打印 `OK` 即通过。
-
-重建环境确认 gsplat 和 3DGRUT 可以导入。把下面的路径换成自己的 3DGRUT 检出目录：
-
-```bash
-source .venv-e1/bin/activate
-export THREEDGRUT=/path/to/3DGRUT
-python -c "import sys; sys.path.insert(0, '$THREEDGRUT'); import torch, gsplat, threedgut_tracer, threedgrut.trainer; assert torch.cuda.is_available(); print('e1', torch.__version__, gsplat.__version__)"
-```
-
-#### 数据准备
-
-场景目录要有 6 张参考图和相机文件。参考图按文件名排序后正好 6 张：
-
-```text
-my_scene/
-├── source_views/
-│   ├── 00.png
-│   ├── 01.png
-│   ├── 02.png
-│   ├── 03.png
-│   ├── 04.png
-│   └── 05.png
-└── trajectory.json
-```
-
-`trajectory.json` 使用 OpenCV 世界到相机的 4×4 矩阵，内参是像素坐标系下的 3×3 矩阵。必填字段是 `source_w2c`、`source_intrinsics`、`target_w2c`、`target_intrinsics`。建议写上 `intrinsics_image_size: [832, 480]`，源图尺寸不一致时会直接报错。`target_w2c` 可以是 80 个姿态，其中第一帧和最后一帧相同，重建时会去掉这帧闭合重复；也可以直接给 79 个不重复姿态。
-
-掩码和初始点云不由生成脚本产生。掩码与生成帧使用同一编号，`00.png` 对应第 0 帧，分辨率 832×480，物体为白色、背景为黑色。也接受 `00_mask.png` 或 `frame_000_mask.png`。至少要有 0 到 78 号；第 79 帧是闭合重复，不参与训练。
-
-`initial_points.ply` 必须正好 21112 个顶点：前 17112 个是物体表面点，后 4000 个是体积种子。训练开始时体积种子的不透明度会被设成 0.01。场景范围和包围盒使用 `vggtdiff/recon/e1_defaults.json` 里的固定值（场景范围 `0.7391271937596919`）。这组数值来自白车 E1 实验；换物体时要同时换成该物体的点云、范围和包围盒。
-
-#### 运行
-
-```bash
-python scripts/run_traj_e1.py \
-  --generate-python .venv-gen/bin/python \
-  --reconstruct-python .venv-e1/bin/python \
-  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
-  --base-model-dir /path/to/Wan2.1-I2V-14B-480P \
-  --example /path/to/my_scene \
-  --output outputs/traj_e1 \
-  --masks /path/to/masks \
-  --init-ply /path/to/initial_points.ply \
-  --threedgrut /path/to/3DGRUT
-```
-
-生成的默认值是 832×480、50 步、种子 `20261030`、`--vram-limit-gib 46`。重建使用种子 `20261021`、每个视角 625 次更新、共 49375 步，损失是 `0.8 * L1 + 0.2 * SSIM + 0.5 * 外部不透明度 + 0.03 * 各向异性`，高斯数量上限 100000。固定白车实验的重建大约 21 分钟。
-
-也可以分开跑：
-
-```bash
-.venv-gen/bin/python scripts/generate_trajectory.py \
-  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
-  --base-model-dir /path/to/Wan2.1-I2V-14B-480P \
-  --example /path/to/my_scene \
-  --output outputs/traj_e1/trajectory
-
-.venv-e1/bin/python scripts/reconstruct_e1.py \
-  --frames outputs/traj_e1/trajectory/frames \
-  --trajectory outputs/traj_e1/trajectory/trajectory.json \
-  --masks /path/to/masks \
-  --init-ply /path/to/initial_points.ply \
-  --output outputs/traj_e1/e1 \
-  --threedgrut /path/to/3DGRUT
-```
-
-输出：
-
-```text
-outputs/traj_e1/
-├── trajectory/
-│   ├── frames/00.png … 79.png
-│   ├── prediction.mp4
-│   ├── trajectory.json
-│   └── result.json
-└── e1/
-    ├── model.ply
-    ├── training/result.json
-    └── evaluation/metrics.json
-```
-
-`evaluation/metrics.json` 里的 `median.foreground_psnr` 和 `median.silhouette_iou` 是 79 个训练视角的中位数。前景 PSNR 只在掩码像素上计算，轮廓 IoU 把透明度大于 0.5 的像素当成物体。
-
-## Training
-
-Training scenes follow the folder-form DL3DV convention:
-
-```text
-dataset_root/
-└── scene_id/
-    ├── images_4/
-    └── transforms.json
-```
-
-First cache the frozen VGGT-Omega source features:
-
-```bash
-python scripts/prepare_omega_cache.py \
-  --dataset-root /path/to/dataset_root \
-  --cache-root /path/to/omega_cache \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt
-```
-
-### Training recipes
-
-Both recipes freeze the Wan2.1 VAE and VGGT-Omega while training the DiT and conditioning modules. Their latent layouts differ, so their checkpoints are separate model families.
-
-| <small>Recipe</small> | <small>Targets</small> | <small>Latent layout</small> | <small>Plucker poses</small> |
-| --- | --- | --- | --- |
-| <small>**Paper NVS**</small> | <small>Variable `N`-view set</small> | <small>Independent source/target encoding; `6 + N` slots</small> | <small>1 per target slot</small> |
-| <small>**Continuous trajectory**</small> | <small>80 ordered, contiguous frames</small> | <small>Independent sources; causal target VAE; `6 + 21` slots</small> | <small>4 ordered poses per compressed slot</small> |
-
-#### Paper NVS model
-
-This is the independent-view protocol used for the quantitative results in the [paper](https://arxiv.org/abs/2609.33253). Six sources and `N` targets produce `6 + N` one-to-one image, camera, Plucker, and geometry slots without temporal VAE compression.
-
-```bash
-accelerate launch scripts/train.py \
-  --training-mode nvs \
-  --dataset-root /path/to/dataset_root \
-  --omega-cache /path/to/omega_cache \
-  --target-frames 1 2 4 \
-  --height 192 --width 336 \
-  --backbone-lr 1e-5 \
-  --condition-lr 1e-4 \
-  --output outputs/nvs_training_run
-```
-
-The paper progresses the half-resolution target curriculum through `{1,2,4}` -> `{2,4,8}` -> `{4,8,12}` -> `{4,8,12,16}`, then trains at `480x832` with `{4,8}` -> `{4,8,12}` -> `{4,8,12,16}` and a `5e-6` backbone learning rate. Resume the previous stage and change `--target-frames`, resolution, and learning rate accordingly.
-
-#### Continuous 80-frame trajectories
-
-An 80-frame target is padded to 81 frames and causally compressed into 21 target slots. Camera conditions bypass the VAE; the four ordered Plucker maps in each causal window are packed and projected by the temporal Plucker adapter.
-
-```bash
-accelerate launch scripts/train.py \
-  --training-mode trajectory \
-  --dataset-root /path/to/dataset_root \
-  --omega-cache /path/to/omega_cache \
-  --resume /path/to/vggtdiff_trajectory.safetensors \
-  --target-frames 80 \
-  --height 480 \
-  --width 832 \
-  --output outputs/trajectory_training_run
-```
-
-The paper's original trajectory adaptation uses `192x336`; the command above selects the full-resolution continuation. Both recipes use source-anchor camera normalization and point-track residual consistency.
-
-## Citation
+## 引用与许可
 
 ```bibtex
 @article{chen2026vggtdiff,
@@ -358,10 +72,6 @@ The paper's original trajectory adaptation uses `192x336`; the command above sel
 }
 ```
 
-## Acknowledgements
+本项目基于 [Wan2.1](https://github.com/Wan-Video/Wan2.1)、[VGGT-Omega](https://github.com/facebookresearch/vggt-omega)、[FrameCrafter](https://github.com/szqwu/FrameCrafter) 与 [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)。
 
-This project builds on [Wan2.1](https://github.com/Wan-Video/Wan2.1), [VGGT-Omega](https://github.com/facebookresearch/vggt-omega), [FrameCrafter](https://github.com/szqwu/FrameCrafter), and [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio). We thank their authors for releasing their work.
-
-## License
-
-VGGT-Diff is released under the [VGGT-Diff Research License](LICENSE) for non-commercial research and educational use. Third-party components and dependencies remain subject to their respective licenses and terms; see [NOTICE](NOTICE).
+VGGT-Diff 使用 [VGGT-Diff Research License](LICENSE)，限非商业研究和教育用途。第三方组件遵循各自许可，见 [NOTICE](NOTICE)。

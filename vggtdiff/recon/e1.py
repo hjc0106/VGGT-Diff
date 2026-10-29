@@ -88,15 +88,31 @@ def _save(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n")
 
 
+def initialization_values(init_ply: Path) -> dict:
+    """Read the cloud sidecar when it exists, otherwise the frozen white-car defaults."""
+    defaults = load_defaults()
+    sidecar = Path(init_ply).with_name("initialization.json")
+    supplied = json.loads(sidecar.read_text()) if sidecar.exists() else {}
+    return dict(
+        real_surface_points=int(supplied.get("real_surface_points", defaults["real_surface_points"])),
+        volume_seed_points=int(supplied.get("volume_seed_points", defaults["volume_seed_points"])),
+        bounds_world=supplied.get("bounds_world", defaults["bounds_world"]),
+        scene_extent=float(supplied.get("scene_extent", defaults["scene_extent"])),
+        seed_opacity=float(supplied.get("seed_opacity", defaults["seed_opacity"])),
+    )
+
+
 def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init_ply: Path) -> dict:
-    """Write the COLMAP dataset, sampling plan, and experiment record. Skip if present."""
+    """Write the dataset, or reuse it only when the supplied inputs still match."""
     output = output.resolve()
     experiment_path = output / "experiment.json"
-    if experiment_path.exists():
-        print("ALREADY_PREPARED", output, flush=True)
-        return json.loads(experiment_path.read_text())
-
     defaults = load_defaults()
+    supplied = initialization_values(init_ply)
+    surface_points = supplied["real_surface_points"]
+    seed_points = supplied["volume_seed_points"]
+    bounds = supplied["bounds_world"]
+    scene_extent = supplied["scene_extent"]
+    seed_opacity = supplied["seed_opacity"]
     trajectory = json.loads(trajectory_path.read_text())
     target_w2c = np.asarray(trajectory["target_w2c"], dtype=np.float64)
     target_k = np.asarray(trajectory["target_intrinsics"], dtype=np.float64)
@@ -131,16 +147,33 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
         rows.append(row)
 
     vertices = ply_vertex_count(init_ply)
-    expected_vertices = defaults["real_surface_points"] + defaults["volume_seed_points"]
+    expected_vertices = surface_points + seed_points
     if vertices != expected_vertices:
         raise ValueError(
-            f"Initialization ply has {vertices} vertices; E1 expects "
-            f"{defaults['real_surface_points']} surface points plus "
-            f"{defaults['volume_seed_points']} volume seeds."
+            f"Initialization ply has {vertices} vertices; expected "
+            f"{surface_points} surface points plus {seed_points} volume seeds."
         )
     steps = len(rows) * UPDATES_PER_IMAGE
     if steps != defaults["schedule"]["position_max_steps"]:
         raise ValueError(f"E1 runs {defaults['schedule']['position_max_steps']} steps, got {steps}")
+
+    if experiment_path.exists():
+        previous = json.loads(experiment_path.read_text())
+        saved = json.loads((output / "inputs.json").read_text())["frames"]
+        keys = ("orbit_index", "sha256", "mask_sha256", "w2c", "k")
+        if len(saved) != len(rows) or any(
+            old.get(key) != new[key] for old, new in zip(saved, rows) for key in keys
+        ):
+            raise ValueError("Prepared E1 inputs changed; choose a new output directory")
+        initialization = json.loads((output / "shared/initialization.json").read_text())
+        expected_init = dict(real_surface_points=surface_points, volume_seed_points=seed_points,
+                             seed_opacity=seed_opacity, bounds_world=bounds)
+        if (any(initialization.get(key) != value for key, value in expected_init.items())
+                or previous["scene_extent"] != scene_extent
+                or sha256(output / "shared/initial_points.ply") != sha256(init_ply)):
+            raise ValueError("Prepared E1 initialization changed; choose a new output directory")
+        print("ALREADY_PREPARED", output, flush=True)
+        return previous
 
     shared = output / "shared"
     shared.mkdir(parents=True, exist_ok=True)
@@ -148,10 +181,11 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
     _save(
         shared / "initialization.json",
         dict(
-            real_surface_points=defaults["real_surface_points"],
-            volume_seed_points=defaults["volume_seed_points"],
-            seed_opacity=defaults["seed_opacity"],
-            bounds_world=defaults["bounds_world"],
+            real_surface_points=surface_points,
+            volume_seed_points=seed_points,
+            seed_opacity=seed_opacity,
+            bounds_world=bounds,
+            scene_extent=scene_extent,
             ply_sha256=sha256(init_ply),
         ),
     )
@@ -192,7 +226,7 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
         anisotropy_weight=defaults["anisotropy_weight"],
         gaussian_cap=defaults["gaussian_cap"],
         schedule=defaults["schedule"],
-        scene_extent=defaults["scene_extent"],
+        scene_extent=scene_extent,
         loss="0.8 L1 + 0.2 SSIM + 0.5 outside opacity + 0.03 anisotropy",
     )
     _save(experiment_path, experiment)
@@ -395,7 +429,8 @@ def train(output: Path, threedgrut: Path) -> dict:
     np.random.seed(experiment["training_seed"])
     trainer = _trainer_class()(_load_conf(output), output)
     trainer.n_epochs = 1
-    expected = load_defaults()["real_surface_points"] + load_defaults()["volume_seed_points"]
+    initial = json.loads((output / "shared" / "initialization.json").read_text())
+    expected = int(initial["real_surface_points"]) + int(initial["volume_seed_points"])
     if trainer.model.num_gaussians != expected:
         raise RuntimeError(
             f"Expected {expected} initial Gaussians, found {trainer.model.num_gaussians}"
@@ -467,6 +502,8 @@ def score_views(model, rows: list[dict]) -> dict:
         gt = np.asarray(Image.open(row["image"]).convert("RGB"), dtype=np.float64) / 255.0
         mask = np.asarray(Image.open(row["mask"]).convert("L")) > 127
         error = (rgb - gt)[mask]
+        if not mask.any() or not np.isfinite(rgb).all() or not np.isfinite(alpha).all():
+            raise ValueError(f"Invalid render or empty foreground mask for view {row['orbit_index']}")
         mse = float(np.mean(error**2))
         silhouette = alpha > 0.5
         records.append(
@@ -474,6 +511,7 @@ def score_views(model, rows: list[dict]) -> dict:
                 orbit_index=row["orbit_index"],
                 foreground_psnr=-10 * math.log10(max(mse, 1e-12)),
                 silhouette_iou=float((silhouette & mask).sum() / max((silhouette | mask).sum(), 1)),
+                outside_opacity_over_mask_area=float(alpha[~mask].sum() / mask.sum()),
             )
         )
     return dict(
@@ -481,6 +519,9 @@ def score_views(model, rows: list[dict]) -> dict:
         median=dict(
             foreground_psnr=float(np.median([row["foreground_psnr"] for row in records])),
             silhouette_iou=float(np.median([row["silhouette_iou"] for row in records])),
+            outside_opacity_over_mask_area=float(np.median([
+                row["outside_opacity_over_mask_area"] for row in records
+            ])),
         ),
     )
 
@@ -505,6 +546,10 @@ def evaluate(output: Path, threedgrut: Path) -> dict:
     )
     model.eval()
     rows = json.loads((output / "inputs.json").read_text())["frames"]
+    # Score the same frozen copies the trainer used, even if the source directory moved.
+    for row in rows:
+        image = output / "dataset/images" / row["name"]
+        row.update(image=str(image), mask=str(image.with_name(f"{image.stem}_mask.png")))
     metrics = score_views(model, rows)
     _save(metrics_path, metrics)
     print(

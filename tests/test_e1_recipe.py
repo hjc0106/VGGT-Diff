@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from vggtdiff.recon.colmap import rotation_to_quat_wxyz
-from vggtdiff.recon.e1 import prepare, training_indices
+from vggtdiff.recon.e1 import initialization_values, load_defaults, prepare, training_indices
 
 
 def test_closed_orbit_holds_out_the_last_frame():
@@ -94,8 +94,36 @@ def test_prepare_holds_out_the_closure_frame():
         assert (output / "dataset/images/00_mask.png").is_file()
         plan = json.loads((output / "sampling_plan.json").read_text())
         assert len(plan["stems"]) == 49375
+        copied = json.loads((output / "shared" / "initialization.json").read_text())
+        assert copied["scene_extent"] == experiment["scene_extent"]
         again = prepare(output, frames, trajectory, masks, ply)
         assert again["steps"] == experiment["steps"]
+        Image.new("RGB", image.size, "black").save(frames / "00.png")
+        try:
+            prepare(output, frames, trajectory, masks, ply)
+        except ValueError as error:
+            assert "inputs changed" in str(error)
+        else:
+            raise AssertionError("Changed input was silently reused from the prepared dataset")
+
+
+def test_initialization_sidecar_overrides_the_defaults():
+    defaults = load_defaults()
+    with tempfile.TemporaryDirectory() as tmp:
+        ply = Path(tmp) / "initial_points.ply"
+        ply.write_bytes(b"")
+        assert initialization_values(ply)["real_surface_points"] == defaults["real_surface_points"]
+        (Path(tmp) / "initialization.json").write_text(json.dumps(dict(
+            real_surface_points=10,
+            volume_seed_points=4,
+            bounds_world=[[0, 0, 0], [1, 1, 1]],
+            scene_extent=1.5,
+            seed_opacity=0.02,
+        )))
+        values = initialization_values(ply)
+        assert values["real_surface_points"] == 10
+        assert values["scene_extent"] == 1.5
+        assert values["seed_opacity"] == 0.02
 
 
 if __name__ == "__main__":
@@ -105,4 +133,5 @@ if __name__ == "__main__":
     test_config_template_has_no_machine_paths()
     test_identity_rotation_is_a_unit_quaternion()
     test_prepare_holds_out_the_closure_frame()
+    test_initialization_sidecar_overrides_the_defaults()
     print("OK")

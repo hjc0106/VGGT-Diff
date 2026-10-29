@@ -1,0 +1,13 @@
+{
+  "scope": "Frozen old-input E1 reconstruction, not regenerated-input end-to-end validation",
+  "files": {
+    "benchmark.json": {
+      "bytes": 20867,
+      "sha256": "45f2d1e19ff8afb4f151aa0337d6e0165992fe15a5939004de734972361e564c"
+    },
+    "orbit_contact.jpg": {
+      "bytes": 58259,
+      "sha256": "ed34b0d25d20f5bce96f832dcd32db59bce61e1dc1bbc764cf1de9b790476bd6"
+    }
+  }
+}

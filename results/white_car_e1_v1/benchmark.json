@@ -1,0 +1,650 @@
+{
+  "benchmark": "white_car_old_e1",
+  "training": {
+    "views": [
+      {
+        "orbit_index": 0,
+        "foreground_psnr": 18.596347312768536,
+        "silhouette_iou": 0.9132731527917085,
+        "outside_opacity_over_mask_area": 0.08128070433991615
+      },
+      {
+        "orbit_index": 1,
+        "foreground_psnr": 23.31695609575632,
+        "silhouette_iou": 0.9054996127033308,
+        "outside_opacity_over_mask_area": 0.08504192371826129
+      },
+      {
+        "orbit_index": 2,
+        "foreground_psnr": 23.970121012956056,
+        "silhouette_iou": 0.9035192646688491,
+        "outside_opacity_over_mask_area": 0.08991380904815105
+      },
+      {
+        "orbit_index": 3,
+        "foreground_psnr": 27.441886533365285,
+        "silhouette_iou": 0.9141682635841009,
+        "outside_opacity_over_mask_area": 0.08377683392525641
+      },
+      {
+        "orbit_index": 4,
+        "foreground_psnr": 25.471834408797854,
+        "silhouette_iou": 0.916401924298811,
+        "outside_opacity_over_mask_area": 0.0791767827062023
+      },
+      {
+        "orbit_index": 5,
+        "foreground_psnr": 20.323589522903237,
+        "silhouette_iou": 0.926306641093263,
+        "outside_opacity_over_mask_area": 0.07637720508869122
+      },
+      {
+        "orbit_index": 6,
+        "foreground_psnr": 23.677929896589703,
+        "silhouette_iou": 0.9085036722413946,
+        "outside_opacity_over_mask_area": 0.09362631011599074
+      },
+      {
+        "orbit_index": 7,
+        "foreground_psnr": 22.21600610987015,
+        "silhouette_iou": 0.894120715134305,
+        "outside_opacity_over_mask_area": 0.10303294351908476
+      },
+      {
+        "orbit_index": 8,
+        "foreground_psnr": 26.739300077989828,
+        "silhouette_iou": 0.8931672002538145,
+        "outside_opacity_over_mask_area": 0.11058886721860765
+      },
+      {
+        "orbit_index": 9,
+        "foreground_psnr": 25.896921746384507,
+        "silhouette_iou": 0.8979230351684141,
+        "outside_opacity_over_mask_area": 0.10236704163842882
+      },
+      {
+        "orbit_index": 10,
+        "foreground_psnr": 24.247975178136425,
+        "silhouette_iou": 0.9027381631488877,
+        "outside_opacity_over_mask_area": 0.09844519985482099
+      },
+      {
+        "orbit_index": 11,
+        "foreground_psnr": 25.555313930732837,
+        "silhouette_iou": 0.9064324155015804,
+        "outside_opacity_over_mask_area": 0.09779061620224912
+      },
+      {
+        "orbit_index": 12,
+        "foreground_psnr": 21.86005765828627,
+        "silhouette_iou": 0.888052548488949,
+        "outside_opacity_over_mask_area": 0.11079260668800671
+      },
+      {
+        "orbit_index": 13,
+        "foreground_psnr": 24.440925890196432,
+        "silhouette_iou": 0.8842788597233983,
+        "outside_opacity_over_mask_area": 0.11956717572248536
+      },
+      {
+        "orbit_index": 14,
+        "foreground_psnr": 18.98498258033983,
+        "silhouette_iou": 0.8964647895303383,
+        "outside_opacity_over_mask_area": 0.11162354731700917
+      },
+      {
+        "orbit_index": 15,
+        "foreground_psnr": 24.460698897954472,
+        "silhouette_iou": 0.9009780642243329,
+        "outside_opacity_over_mask_area": 0.10491587855294648
+      },
+      {
+        "orbit_index": 16,
+        "foreground_psnr": 26.545373958381408,
+        "silhouette_iou": 0.9055135930295057,
+        "outside_opacity_over_mask_area": 0.10190460711103362
+      },
+      {
+        "orbit_index": 17,
+        "foreground_psnr": 25.70322562149625,
+        "silhouette_iou": 0.8998671302971193,
+        "outside_opacity_over_mask_area": 0.10639918041576535
+      },
+      {
+        "orbit_index": 18,
+        "foreground_psnr": 24.374538915445125,
+        "silhouette_iou": 0.9054627231062655,
+        "outside_opacity_over_mask_area": 0.10480838388892363
+      },
+      {
+        "orbit_index": 19,
+        "foreground_psnr": 23.115285686449308,
+        "silhouette_iou": 0.9147244702450742,
+        "outside_opacity_over_mask_area": 0.09396114290681232
+      },
+      {
+        "orbit_index": 20,
+        "foreground_psnr": 24.22273017169758,
+        "silhouette_iou": 0.9104661844069354,
+        "outside_opacity_over_mask_area": 0.09590742805600726
+      },
+      {
+        "orbit_index": 21,
+        "foreground_psnr": 20.281380351240564,
+        "silhouette_iou": 0.8996356124293461,
+        "outside_opacity_over_mask_area": 0.09591965953684557
+      },
+      {
+        "orbit_index": 22,
+        "foreground_psnr": 21.025989353544098,
+        "silhouette_iou": 0.9178102318474333,
+        "outside_opacity_over_mask_area": 0.08968620732622087
+      },
+      {
+        "orbit_index": 23,
+        "foreground_psnr": 23.928491957789944,
+        "silhouette_iou": 0.9252325304078226,
+        "outside_opacity_over_mask_area": 0.08492436931840985
+      },
+      {
+        "orbit_index": 24,
+        "foreground_psnr": 22.00069865712669,
+        "silhouette_iou": 0.9097819201882182,
+        "outside_opacity_over_mask_area": 0.09567090531017743
+      },
+      {
+        "orbit_index": 25,
+        "foreground_psnr": 26.956552448191367,
+        "silhouette_iou": 0.903671144679007,
+        "outside_opacity_over_mask_area": 0.10885507181728372
+      },
+      {
+        "orbit_index": 26,
+        "foreground_psnr": 26.58159934657574,
+        "silhouette_iou": 0.9019626494181807,
+        "outside_opacity_over_mask_area": 0.11261648907542136
+      },
+      {
+        "orbit_index": 27,
+        "foreground_psnr": 21.841622421458872,
+        "silhouette_iou": 0.9068904938512591,
+        "outside_opacity_over_mask_area": 0.10860133556122267
+      },
+      {
+        "orbit_index": 28,
+        "foreground_psnr": 24.744750834863392,
+        "silhouette_iou": 0.8958055036067326,
+        "outside_opacity_over_mask_area": 0.11555159977806546
+      },
+      {
+        "orbit_index": 29,
+        "foreground_psnr": 27.40427983733099,
+        "silhouette_iou": 0.8795118061093582,
+        "outside_opacity_over_mask_area": 0.14246844474276826
+      },
+      {
+        "orbit_index": 30,
+        "foreground_psnr": 21.652125383266526,
+        "silhouette_iou": 0.8583288409703504,
+        "outside_opacity_over_mask_area": 0.17381538439209077
+      },
+      {
+        "orbit_index": 31,
+        "foreground_psnr": 23.948531158961647,
+        "silhouette_iou": 0.845602629926495,
+        "outside_opacity_over_mask_area": 0.17990743739205528
+      },
+      {
+        "orbit_index": 32,
+        "foreground_psnr": 27.04473929486323,
+        "silhouette_iou": 0.8290050718834611,
+        "outside_opacity_over_mask_area": 0.20141937581620487
+      },
+      {
+        "orbit_index": 33,
+        "foreground_psnr": 26.573284035981185,
+        "silhouette_iou": 0.8196887554116775,
+        "outside_opacity_over_mask_area": 0.21811295003167377
+      },
+      {
+        "orbit_index": 34,
+        "foreground_psnr": 29.092833459872004,
+        "silhouette_iou": 0.8307138947533036,
+        "outside_opacity_over_mask_area": 0.2067426601066746
+      },
+      {
+        "orbit_index": 35,
+        "foreground_psnr": 27.959052653578684,
+        "silhouette_iou": 0.8463378868565254,
+        "outside_opacity_over_mask_area": 0.1876510511928149
+      },
+      {
+        "orbit_index": 36,
+        "foreground_psnr": 25.064125009577335,
+        "silhouette_iou": 0.8835735724608145,
+        "outside_opacity_over_mask_area": 0.13787204784407303
+      },
+      {
+        "orbit_index": 37,
+        "foreground_psnr": 23.497826799771193,
+        "silhouette_iou": 0.908854532677442,
+        "outside_opacity_over_mask_area": 0.10144251532032926
+      },
+      {
+        "orbit_index": 38,
+        "foreground_psnr": 24.20389434507331,
+        "silhouette_iou": 0.9046429523048228,
+        "outside_opacity_over_mask_area": 0.10082698110994748
+      },
+      {
+        "orbit_index": 39,
+        "foreground_psnr": 26.715045861045596,
+        "silhouette_iou": 0.9067694835977498,
+        "outside_opacity_over_mask_area": 0.09260364959024284
+      },
+      {
+        "orbit_index": 40,
+        "foreground_psnr": 25.995748427852853,
+        "silhouette_iou": 0.9050368847502721,
+        "outside_opacity_over_mask_area": 0.09130277345412942
+      },
+      {
+        "orbit_index": 41,
+        "foreground_psnr": 25.664485502403647,
+        "silhouette_iou": 0.9177428328794401,
+        "outside_opacity_over_mask_area": 0.08428160404580198
+      },
+      {
+        "orbit_index": 42,
+        "foreground_psnr": 24.443405444504187,
+        "silhouette_iou": 0.9209398677601521,
+        "outside_opacity_over_mask_area": 0.08321745725635432
+      },
+      {
+        "orbit_index": 43,
+        "foreground_psnr": 26.24933949968495,
+        "silhouette_iou": 0.918115842804327,
+        "outside_opacity_over_mask_area": 0.0783135387222092
+      },
+      {
+        "orbit_index": 44,
+        "foreground_psnr": 24.16126519372827,
+        "silhouette_iou": 0.9154195617316943,
+        "outside_opacity_over_mask_area": 0.08262850533300327
+      },
+      {
+        "orbit_index": 45,
+        "foreground_psnr": 27.631025974511235,
+        "silhouette_iou": 0.9175962955167333,
+        "outside_opacity_over_mask_area": 0.08822564346389283
+      },
+      {
+        "orbit_index": 46,
+        "foreground_psnr": 26.418882050028717,
+        "silhouette_iou": 0.9177405164829477,
+        "outside_opacity_over_mask_area": 0.08946082537059995
+      },
+      {
+        "orbit_index": 47,
+        "foreground_psnr": 27.384902277446233,
+        "silhouette_iou": 0.9115443425076453,
+        "outside_opacity_over_mask_area": 0.09445919482289535
+      },
+      {
+        "orbit_index": 48,
+        "foreground_psnr": 24.956045005959258,
+        "silhouette_iou": 0.9099083171267648,
+        "outside_opacity_over_mask_area": 0.0977441886891996
+      },
+      {
+        "orbit_index": 49,
+        "foreground_psnr": 26.038021032952088,
+        "silhouette_iou": 0.9080075424261471,
+        "outside_opacity_over_mask_area": 0.1040779222502992
+      },
+      {
+        "orbit_index": 50,
+        "foreground_psnr": 24.626055323424247,
+        "silhouette_iou": 0.9063687262547491,
+        "outside_opacity_over_mask_area": 0.10396498150834495
+      },
+      {
+        "orbit_index": 51,
+        "foreground_psnr": 24.207895138525647,
+        "silhouette_iou": 0.9018057564722901,
+        "outside_opacity_over_mask_area": 0.10978347582587572
+      },
+      {
+        "orbit_index": 52,
+        "foreground_psnr": 27.881386707349268,
+        "silhouette_iou": 0.8981086940270614,
+        "outside_opacity_over_mask_area": 0.11421273045874969
+      },
+      {
+        "orbit_index": 53,
+        "foreground_psnr": 26.29632561631327,
+        "silhouette_iou": 0.8971883342065214,
+        "outside_opacity_over_mask_area": 0.1141176244009447
+      },
+      {
+        "orbit_index": 54,
+        "foreground_psnr": 28.126527897819567,
+        "silhouette_iou": 0.9016508254127064,
+        "outside_opacity_over_mask_area": 0.10896832075771185
+      },
+      {
+        "orbit_index": 55,
+        "foreground_psnr": 25.985593999691787,
+        "silhouette_iou": 0.9030660970092989,
+        "outside_opacity_over_mask_area": 0.10498018632770541
+      },
+      {
+        "orbit_index": 56,
+        "foreground_psnr": 25.798811294492126,
+        "silhouette_iou": 0.9012867926440042,
+        "outside_opacity_over_mask_area": 0.10526372046695183
+      },
+      {
+        "orbit_index": 57,
+        "foreground_psnr": 22.654890423338294,
+        "silhouette_iou": 0.9031078142985036,
+        "outside_opacity_over_mask_area": 0.10184571651229926
+      },
+      {
+        "orbit_index": 58,
+        "foreground_psnr": 24.963072268137964,
+        "silhouette_iou": 0.9092728312282343,
+        "outside_opacity_over_mask_area": 0.09794996215015422
+      },
+      {
+        "orbit_index": 59,
+        "foreground_psnr": 22.77919993374923,
+        "silhouette_iou": 0.9114624505928853,
+        "outside_opacity_over_mask_area": 0.09617694503175507
+      },
+      {
+        "orbit_index": 60,
+        "foreground_psnr": 25.95872169966837,
+        "silhouette_iou": 0.9169660571612419,
+        "outside_opacity_over_mask_area": 0.08925348703191559
+      },
+      {
+        "orbit_index": 61,
+        "foreground_psnr": 21.761540168206434,
+        "silhouette_iou": 0.909576069405293,
+        "outside_opacity_over_mask_area": 0.09545235273001894
+      },
+      {
+        "orbit_index": 62,
+        "foreground_psnr": 21.10694183255696,
+        "silhouette_iou": 0.9088434992424668,
+        "outside_opacity_over_mask_area": 0.09751411763846973
+      },
+      {
+        "orbit_index": 63,
+        "foreground_psnr": 21.92616761889246,
+        "silhouette_iou": 0.9121205138544847,
+        "outside_opacity_over_mask_area": 0.09219852299767904
+      },
+      {
+        "orbit_index": 64,
+        "foreground_psnr": 22.391310049664817,
+        "silhouette_iou": 0.9056514261993714,
+        "outside_opacity_over_mask_area": 0.09464551345809918
+      },
+      {
+        "orbit_index": 65,
+        "foreground_psnr": 22.237363696166113,
+        "silhouette_iou": 0.896655879180151,
+        "outside_opacity_over_mask_area": 0.10389599897436767
+      },
+      {
+        "orbit_index": 66,
+        "foreground_psnr": 19.110089495316526,
+        "silhouette_iou": 0.8877583875330027,
+        "outside_opacity_over_mask_area": 0.11541888829971794
+      },
+      {
+        "orbit_index": 67,
+        "foreground_psnr": 22.317617486126572,
+        "silhouette_iou": 0.8970942257484827,
+        "outside_opacity_over_mask_area": 0.11121507529099664
+      },
+      {
+        "orbit_index": 68,
+        "foreground_psnr": 20.49771584610101,
+        "silhouette_iou": 0.880488763442781,
+        "outside_opacity_over_mask_area": 0.13078444568169542
+      },
+      {
+        "orbit_index": 69,
+        "foreground_psnr": 19.40150190291372,
+        "silhouette_iou": 0.8575197889182058,
+        "outside_opacity_over_mask_area": 0.1581551360490975
+      },
+      {
+        "orbit_index": 70,
+        "foreground_psnr": 21.688539487525837,
+        "silhouette_iou": 0.8407865396310562,
+        "outside_opacity_over_mask_area": 0.19905203067279553
+      },
+      {
+        "orbit_index": 71,
+        "foreground_psnr": 25.57829595100387,
+        "silhouette_iou": 0.8286190394804307,
+        "outside_opacity_over_mask_area": 0.22502318501086285
+      },
+      {
+        "orbit_index": 72,
+        "foreground_psnr": 23.0347483541577,
+        "silhouette_iou": 0.8264832255544464,
+        "outside_opacity_over_mask_area": 0.21982458538103555
+      },
+      {
+        "orbit_index": 73,
+        "foreground_psnr": 23.962176248476716,
+        "silhouette_iou": 0.8676438794482639,
+        "outside_opacity_over_mask_area": 0.16151290769695975
+      },
+      {
+        "orbit_index": 74,
+        "foreground_psnr": 25.02943523970357,
+        "silhouette_iou": 0.8932811315988886,
+        "outside_opacity_over_mask_area": 0.13328199679656344
+      },
+      {
+        "orbit_index": 75,
+        "foreground_psnr": 23.750517268590606,
+        "silhouette_iou": 0.9040899306386032,
+        "outside_opacity_over_mask_area": 0.10694128531267702
+      },
+      {
+        "orbit_index": 76,
+        "foreground_psnr": 24.107104877388746,
+        "silhouette_iou": 0.8997070349655671,
+        "outside_opacity_over_mask_area": 0.11096688067379133
+      },
+      {
+        "orbit_index": 77,
+        "foreground_psnr": 21.32674677025644,
+        "silhouette_iou": 0.9127221089426157,
+        "outside_opacity_over_mask_area": 0.09605224754151018
+      },
+      {
+        "orbit_index": 78,
+        "foreground_psnr": 19.788395759067924,
+        "silhouette_iou": 0.9284484878288665,
+        "outside_opacity_over_mask_area": 0.08191303734662793
+      }
+    ],
+    "median": {
+      "foreground_psnr": 24.247975178136425,
+      "silhouette_iou": 0.903671144679007,
+      "outside_opacity_over_mask_area": 0.10303294351908476
+    }
+  },
+  "real": {
+    "views": [
+      {
+        "orbit_index": 1421,
+        "foreground_psnr": 18.703728706951996,
+        "silhouette_iou": 0.8890993839611842,
+        "outside_opacity_over_mask_area": 0.10084422254903788
+      },
+      {
+        "orbit_index": 1361,
+        "foreground_psnr": 19.908786838807806,
+        "silhouette_iou": 0.8934483385884066,
+        "outside_opacity_over_mask_area": 0.09825092219496499
+      },
+      {
+        "orbit_index": 1300,
+        "foreground_psnr": 19.962171553014382,
+        "silhouette_iou": 0.891568314002925,
+        "outside_opacity_over_mask_area": 0.10345900515292553
+      },
+      {
+        "orbit_index": 1179,
+        "foreground_psnr": 21.296747867188067,
+        "silhouette_iou": 0.8917814470627282,
+        "outside_opacity_over_mask_area": 0.10366687249763645
+      },
+      {
+        "orbit_index": 1119,
+        "foreground_psnr": 21.75816300522516,
+        "silhouette_iou": 0.8895053269086247,
+        "outside_opacity_over_mask_area": 0.10797586948941432
+      },
+      {
+        "orbit_index": 1058,
+        "foreground_psnr": 19.720807708679157,
+        "silhouette_iou": 0.8879368118717089,
+        "outside_opacity_over_mask_area": 0.10784646290846223
+      },
+      {
+        "orbit_index": 998,
+        "foreground_psnr": 18.80170805051589,
+        "silhouette_iou": 0.8864769048964702,
+        "outside_opacity_over_mask_area": 0.10923389234200374
+      },
+      {
+        "orbit_index": 877,
+        "foreground_psnr": 17.570728924624348,
+        "silhouette_iou": 0.8887688685777593,
+        "outside_opacity_over_mask_area": 0.1077275319016384
+      },
+      {
+        "orbit_index": 756,
+        "foreground_psnr": 17.928779069416407,
+        "silhouette_iou": 0.8858185767293131,
+        "outside_opacity_over_mask_area": 0.10917126083920305
+      },
+      {
+        "orbit_index": 695,
+        "foreground_psnr": 17.4606138269652,
+        "silhouette_iou": 0.8841170974774214,
+        "outside_opacity_over_mask_area": 0.11003162801117977
+      },
+      {
+        "orbit_index": 574,
+        "foreground_psnr": 16.594474421698546,
+        "silhouette_iou": 0.8824810606060606,
+        "outside_opacity_over_mask_area": 0.11230647098097256
+      },
+      {
+        "orbit_index": 454,
+        "foreground_psnr": 16.476428890810627,
+        "silhouette_iou": 0.8817113274509165,
+        "outside_opacity_over_mask_area": 0.11181749667385549
+      },
+      {
+        "orbit_index": 333,
+        "foreground_psnr": 16.630704649426423,
+        "silhouette_iou": 0.8861080149964535,
+        "outside_opacity_over_mask_area": 0.10997986438651751
+      },
+      {
+        "orbit_index": 212,
+        "foreground_psnr": 16.391825930873893,
+        "silhouette_iou": 0.8756690293649646,
+        "outside_opacity_over_mask_area": 0.11952011503844061
+      },
+      {
+        "orbit_index": 151,
+        "foreground_psnr": 16.110263395925166,
+        "silhouette_iou": 0.8730901737567406,
+        "outside_opacity_over_mask_area": 0.1250789477870104
+      },
+      {
+        "orbit_index": 30,
+        "foreground_psnr": 15.635872370117488,
+        "silhouette_iou": 0.8657707694100284,
+        "outside_opacity_over_mask_area": 0.12959136243010658
+      }
+    ],
+    "median": {
+      "foreground_psnr": 17.749753997020377,
+      "silhouette_iou": 0.8862924599464619,
+      "outside_opacity_over_mask_area": 0.1092025765906034
+    }
+  },
+  "gaussians": 76451,
+  "step": 49375,
+  "passed": true,
+  "checks": [
+    {
+      "category": "training",
+      "metric": "foreground_psnr",
+      "reference": 24.393882581476944,
+      "actual": 24.247975178136425,
+      "difference": -0.14590740334051944,
+      "tolerance": 0.5,
+      "passed": true
+    },
+    {
+      "category": "training",
+      "metric": "silhouette_iou",
+      "reference": 0.9058523371550964,
+      "actual": 0.903671144679007,
+      "difference": -0.0021811924760893886,
+      "tolerance": 0.02,
+      "passed": true
+    },
+    {
+      "category": "training",
+      "metric": "outside_opacity_over_mask_area",
+      "reference": 0.10321665621621251,
+      "actual": 0.10303294351908476,
+      "difference": -0.00018371269712774696,
+      "tolerance": 0.03,
+      "passed": true
+    },
+    {
+      "category": "real",
+      "metric": "foreground_psnr",
+      "reference": 17.73997598847806,
+      "actual": 17.749753997020377,
+      "difference": 0.00977800854231603,
+      "tolerance": 0.5,
+      "passed": true
+    },
+    {
+      "category": "real",
+      "metric": "silhouette_iou",
+      "reference": 0.8870283042633011,
+      "actual": 0.8862924599464619,
+      "difference": -0.0007358443168392625,
+      "tolerance": 0.02,
+      "passed": true
+    },
+    {
+      "category": "real",
+      "metric": "outside_opacity_over_mask_area",
+      "reference": 0.10884783610465595,
+      "actual": 0.1092025765906034,
+      "difference": 0.00035474048594744123,
+      "tolerance": 0.03,
+      "passed": true
+    }
+  ]
+}

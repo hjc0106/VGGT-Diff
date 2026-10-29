@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-28",
+  "branch": "vggt-gen-v1",
+  "scope": "Frozen original generated frames, masks, cameras and initialization; generator checked separately.",
+  "environment": {
+    "python": "3.12.13",
+    "pytorch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "gsplat": "1.4.0",
+    "gpu": "NVIDIA RTX A6000"
+  },
+  "tests": {
+    "passed": 37,
+    "wheel_build": true,
+    "fixture_files": 204
+  },
+  "reconstruction": {
+    "passed": true,
+    "step": 49375,
+    "gaussians": 76451,
+    "training": {
+      "foreground_psnr": 24.247975178136425,
+      "silhouette_iou": 0.903671144679007,
+      "outside_opacity_over_mask_area": 0.10303294351908476
+    },
+    "real": {
+      "foreground_psnr": 17.749753997020377,
+      "silhouette_iou": 0.8862924599464619,
+      "outside_opacity_over_mask_area": 0.1092025765906034
+    },
+    "checks": [
+      {
+        "category": "training",
+        "metric": "foreground_psnr",
+        "reference": 24.393882581476944,
+        "actual": 24.247975178136425,
+        "difference": -0.14590740334051944,
+        "tolerance": 0.5,
+        "passed": true
+      },
+      {
+        "category": "training",
+        "metric": "silhouette_iou",
+        "reference": 0.9058523371550964,
+        "actual": 0.903671144679007,
+        "difference": -0.0021811924760893886,
+        "tolerance": 0.02,
+        "passed": true
+      },
+      {
+        "category": "training",
+        "metric": "outside_opacity_over_mask_area",
+        "reference": 0.10321665621621251,
+        "actual": 0.10303294351908476,
+        "difference": -0.00018371269712774696,
+        "tolerance": 0.03,
+        "passed": true
+      },
+      {
+        "category": "real",
+        "metric": "foreground_psnr",
+        "reference": 17.73997598847806,
+        "actual": 17.749753997020377,
+        "difference": 0.00977800854231603,
+        "tolerance": 0.5,
+        "passed": true
+      },
+      {
+        "category": "real",
+        "metric": "silhouette_iou",
+        "reference": 0.8870283042633011,
+        "actual": 0.8862924599464619,
+        "difference": -0.0007358443168392625,
+        "tolerance": 0.02,
+        "passed": true
+      },
+      {
+        "category": "real",
+        "metric": "outside_opacity_over_mask_area",
+        "reference": 0.10884783610465595,
+        "actual": 0.1092025765906034,
+        "difference": 0.00035474048594744123,
+        "tolerance": 0.03,
+        "passed": true
+      }
+    ]
+  },
+  "generation": {
+    "frames": 80,
+    "seed": 20261030,
+    "steps": 50,
+    "pixel_identical_frames": 0,
+    "median_full_image_psnr": 49.09433373928394,
+    "minimum_full_image_psnr": 46.310559461165255,
+    "maximum_full_image_psnr": 52.097923530564415,
+    "reused_frozen_masks": false
+  },
+  "limitations": [
+    "The frozen E1 reconstruction passes the recorded regression tolerances; results are not bit-identical training outputs.",
+    "Regenerated images have small pixel differences and are not used with frozen masks. This release does not claim an independently retrained E1 from regenerated frames.",
+    "The video preprocessing and generic orbit workflow are retained but are not the frozen old-E1 benchmark."
+  ]
+}

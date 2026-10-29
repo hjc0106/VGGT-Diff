@@ -7,9 +7,17 @@ __pycache__/
 .venv/
 checkpoints/
 outputs/
+work/
 wandb/
 *.safetensors
 *.pt
 *.pth
 *.ckpt
 *.log
+
+# Full white-car fixture and render artifacts remain local.
+examples/white_car/**/*.png
+examples/white_car/*.ply
+results/white_car_e1_v1/*.ply
+results/white_car_e1_v1/*.mp4
+results/white_car_e1_v1/*.gif
