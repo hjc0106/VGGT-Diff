@@ -20,14 +20,114 @@ from PIL import Image
 
 from vggtdiff.recon.colmap import write_colmap
 
-DEFAULTS_PATH = Path(__file__).with_name("e1_defaults.json")
-TEMPLATE = Path(__file__).with_name("e1_config.yaml")
+DEFAULTS_PATH = Path(__file__).with_name("reconstruction_defaults.json")
+TEMPLATE = Path(__file__).with_name("reconstruction_config.yaml")
 UPDATES_PER_IMAGE = 625
 TRAINING_VIEWS = 79
+POSE_REFINE = dict(
+    rotation_max_deg=1.0,
+    translation_max_ratio=0.02,
+    start_step=1000,
+    lr_init=1e-2,
+    lr_final=1e-4,
+    prior_weight=1e-3,
+    fixed_view=0,
+)
 
 
 def load_defaults() -> dict:
     return json.loads(DEFAULTS_PATH.read_text())
+
+
+def _camera_center(w2c) -> np.ndarray:
+    pose = np.asarray(w2c, dtype=np.float64)
+    return -pose[:3, :3].T @ pose[:3, 3]
+
+
+def _bound_vector(raw, limit):
+    """Scale a vector so its length is ``limit * tanh(||raw||)``. Zero stays zero and keeps a gradient."""
+    import torch
+
+    norm = torch.linalg.vector_norm(raw)
+    # Both branches stay finite. Dividing by the raw norm at zero is NaN and poisons the backward.
+    safe = torch.where(norm > 1e-8, norm, torch.ones((), device=raw.device, dtype=raw.dtype))
+    unit_scale = torch.where(norm > 1e-8, torch.tanh(norm) / safe, torch.ones_like(norm))
+    return limit * unit_scale * raw
+
+
+class PoseCorrection:
+    """One bounded camera-frame correction per training view. View 0 stays fixed."""
+
+    def __init__(self, count: int, rotation_max: float, translation_max: float, device):
+        import torch
+
+        self.raw = torch.nn.Parameter(torch.zeros(count, 6, device=device))
+        self.rotation_max = float(rotation_max)
+        self.translation_max = float(translation_max)
+        self.m = torch.zeros(count, 6, device=device)
+        self.v = torch.zeros(count, 6, device=device)
+        self.steps = torch.zeros(count, dtype=torch.long, device=device)
+
+    def motion(self, index: int):
+        omega = _bound_vector(self.raw[index, :3], self.rotation_max)
+        translation = _bound_vector(self.raw[index, 3:], self.translation_max)
+        return omega, translation
+
+    def delta(self, index: int):
+        import torch
+
+        omega, translation = self.motion(index)
+        wx, wy, wz = omega.unbind()
+        zero = omega.new_zeros(())
+        skew = torch.stack((
+            torch.stack((zero, -wz, wy)),
+            torch.stack((wz, zero, -wx)),
+            torch.stack((-wy, wx, zero)),
+        ))
+        rotation = torch.linalg.matrix_exp(skew)
+        bottom = omega.new_tensor([0.0, 0.0, 0.0, 1.0])
+        return torch.cat((torch.cat((rotation, translation[:, None]), dim=1), bottom[None]), dim=0)
+
+    def penalty(self, index: int):
+        import torch
+
+        normalized = torch.tanh(self.raw[index])
+        return (normalized ** 2).sum()
+
+    def step(self, index: int, lr: float, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> None:
+        import torch
+
+        grad = self.raw.grad
+        if grad is None or index == self.fixed_index():
+            self.raw.grad = None
+            return
+        row = grad[index].detach().clone()
+        self.raw.grad = None
+        with torch.no_grad():
+            self.steps[index] += 1
+            n = int(self.steps[index])
+            self.m[index] = beta1 * self.m[index] + (1 - beta1) * row
+            self.v[index] = beta2 * self.v[index] + (1 - beta2) * row * row
+            m_hat = self.m[index] / (1 - beta1 ** n)
+            v_hat = self.v[index] / (1 - beta2 ** n)
+            self.raw[index] -= lr * m_hat / (v_hat.sqrt() + eps)
+
+    @staticmethod
+    def fixed_index() -> int:
+        return int(POSE_REFINE["fixed_view"])
+
+
+def pose_refine_settings(rows: list[dict], bounds, enabled: bool) -> dict | None:
+    if not enabled:
+        return None
+    low, high = np.asarray(bounds, dtype=np.float64)
+    center = (low + high) / 2
+    centers = np.stack([_camera_center(row["w2c"]) for row in rows])
+    distances = np.linalg.norm(centers - center, axis=1)
+    radius = round(float(np.median(distances)), 8)
+    if radius <= 0:
+        raise ValueError("Pose refinement needs a positive orbit radius")
+    return dict(POSE_REFINE, orbit_radius=radius)
 
 
 def training_indices(target_w2c: np.ndarray) -> list[int]:
@@ -102,7 +202,14 @@ def initialization_values(init_ply: Path) -> dict:
     )
 
 
-def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init_ply: Path) -> dict:
+def prepare(
+    output: Path,
+    frames: Path,
+    trajectory_path: Path,
+    masks: Path,
+    init_ply: Path,
+    pose_refine: bool = False,
+) -> dict:
     """Write the dataset, or reuse it only when the supplied inputs still match."""
     output = output.resolve()
     experiment_path = output / "experiment.json"
@@ -156,6 +263,7 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
     steps = len(rows) * UPDATES_PER_IMAGE
     if steps != defaults["schedule"]["position_max_steps"]:
         raise ValueError(f"E1 runs {defaults['schedule']['position_max_steps']} steps, got {steps}")
+    refine = pose_refine_settings(rows, bounds, pose_refine)
 
     if experiment_path.exists():
         previous = json.loads(experiment_path.read_text())
@@ -172,6 +280,8 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
                 or previous["scene_extent"] != scene_extent
                 or sha256(output / "shared/initial_points.ply") != sha256(init_ply)):
             raise ValueError("Prepared E1 initialization changed; choose a new output directory")
+        if previous.get("pose_refine") != refine:
+            raise ValueError("Prepared E1 pose refinement changed; choose a new output directory")
         print("ALREADY_PREPARED", output, flush=True)
         return previous
 
@@ -227,7 +337,9 @@ def prepare(output: Path, frames: Path, trajectory_path: Path, masks: Path, init
         gaussian_cap=defaults["gaussian_cap"],
         schedule=defaults["schedule"],
         scene_extent=scene_extent,
-        loss="0.8 L1 + 0.2 SSIM + 0.5 outside opacity + 0.03 anisotropy",
+        loss="0.8 L1 + 0.2 SSIM + 0.5 outside opacity + 0.03 anisotropy"
+        + (" + 0.001 pose prior" if refine else ""),
+        pose_refine=refine,
     )
     _save(experiment_path, experiment)
     _save(output / "status.json", dict(state="prepared", steps=steps))
@@ -289,7 +401,7 @@ def _trainer_class():
 
     from vggtdiff.recon.loss import object_losses
 
-    class E1Trainer(Trainer3DGRUT):
+    class ReconstructionTrainer(Trainer3DGRUT):
         def __init__(self, conf, output: Path):
             self.output = output
             self.experiment = json.loads((output / "experiment.json").read_text())
@@ -297,6 +409,8 @@ def _trainer_class():
             self.initialization = json.loads(init_path.read_text())
             self.plan = json.loads((output / "sampling_plan.json").read_text())
             self.sample_counts = Counter()
+            self.pose_correction = None
+            self.current_view = 0
             super().__init__(conf)
 
         def init_dataloaders(self, conf):
@@ -324,6 +438,20 @@ def _trainer_class():
                 sampler=FixedSampler(),
                 pin_memory=False,
             )
+            if self.experiment.get("pose_refine"):
+                original = self.train_dataset.get_gpu_batch_with_intrinsics
+
+                def corrected(batch):
+                    gpu_batch = original(batch)
+                    name = gpu_batch.image_name
+                    if isinstance(name, (list, tuple)):
+                        name = name[0]
+                    self.current_view = int(Path(str(name)).stem)
+                    delta = self.pose_correction.delta(self.current_view)
+                    gpu_batch.T_to_world = gpu_batch.T_to_world @ delta
+                    return gpu_batch
+
+                self.train_dataset.get_gpu_batch_with_intrinsics = corrected
 
         def init_scene_extents(self, dataset):
             del dataset
@@ -366,6 +494,29 @@ def _trainer_class():
             opacity = float(self.initialization["seed_opacity"])
             with torch.no_grad():
                 model.density[count:] = float(np.log(opacity / (1.0 - opacity)))
+            settings = self.experiment.get("pose_refine")
+            if not settings:
+                return
+            self.pose_correction = PoseCorrection(
+                self.experiment["images"],
+                math.radians(settings["rotation_max_deg"]),
+                settings["translation_max_ratio"] * settings["orbit_radius"],
+                self.device,
+            )
+            schedule = model.scheduler_step
+
+            def stepped(step):
+                schedule(step)
+                if step >= settings["start_step"]:
+                    progress = (step - settings["start_step"]) / max(
+                        self.experiment["steps"] - settings["start_step"], 1
+                    )
+                    lr = settings["lr_init"] * (settings["lr_final"] / settings["lr_init"]) ** progress
+                    self.pose_correction.step(self.current_view, lr)
+                else:
+                    self.pose_correction.raw.grad = None
+
+            model.scheduler_step = stepped
 
         def get_losses(self, batch, outputs):
             name = batch.image_name
@@ -391,6 +542,9 @@ def _trainer_class():
                 + float(self.experiment["outside_weight"]) * alpha
                 + float(self.experiment["anisotropy_weight"]) * anisotropy
             )
+            settings = self.experiment.get("pose_refine")
+            if settings:
+                total = total + float(settings["prior_weight"]) * self.pose_correction.penalty(self.current_view)
             zero = total.new_zeros(())
             return dict(
                 total_loss=total,
@@ -402,7 +556,40 @@ def _trainer_class():
                 lpips_loss=zero,
             )
 
-    return E1Trainer
+        def save_checkpoint(self, last_checkpoint: bool = False):
+            Trainer3DGRUT.save_checkpoint(self, last_checkpoint)
+            if self.pose_correction is not None:
+                self._write_corrections()
+
+        def _write_corrections(self) -> None:
+            import torch
+
+            rows = json.loads((self.output / "inputs.json").read_text())["frames"]
+            radius = float(self.experiment["pose_refine"]["orbit_radius"])
+            views = []
+            with torch.no_grad():
+                for row in rows:
+                    index = int(row["orbit_index"])
+                    omega, translation = self.pose_correction.motion(index)
+                    delta = self.pose_correction.delta(index).detach().float().cpu().numpy()
+                    corrected = np.linalg.inv(delta) @ np.asarray(row["w2c"], dtype=np.float64)
+                    omega_np = omega.detach().float().cpu().numpy()
+                    translation_np = translation.detach().float().cpu().numpy()
+                    raw = self.pose_correction.raw[index].detach().float().cpu().numpy()
+                    views.append(dict(
+                        orbit_index=index,
+                        raw=raw.tolist(),
+                        rotation_deg=np.degrees(omega_np).tolist(),
+                        rotation_angle_deg=float(np.degrees(np.linalg.norm(omega_np))),
+                        translation=translation_np.tolist(),
+                        translation_ratio=float(np.linalg.norm(translation_np) / radius),
+                        at_bound=bool(np.any(np.abs(np.tanh(np.linalg.norm(raw[:3]))) > 0.95)
+                                      or np.any(np.abs(np.tanh(np.linalg.norm(raw[3:]))) > 0.95)),
+                        w2c=corrected.tolist(),
+                    ))
+            _save(self.output / "training" / "camera_corrections.json", dict(views=views))
+
+    return ReconstructionTrainer
 
 
 def _load_conf(output: Path):
@@ -551,6 +738,11 @@ def evaluate(output: Path, threedgrut: Path) -> dict:
         image = output / "dataset/images" / row["name"]
         row.update(image=str(image), mask=str(image.with_name(f"{image.stem}_mask.png")))
     metrics = score_views(model, rows)
+    corrections = output / "training" / "camera_corrections.json"
+    if corrections.exists():
+        saved = {row["orbit_index"]: row["w2c"] for row in json.loads(corrections.read_text())["views"]}
+        refined = [dict(row, w2c=saved[row["orbit_index"]]) for row in rows]
+        metrics["refined"] = score_views(model, refined)
     _save(metrics_path, metrics)
     print(
         "EVALUATED",
@@ -560,6 +752,15 @@ def evaluate(output: Path, threedgrut: Path) -> dict:
         round(metrics["median"]["silhouette_iou"], 3),
         flush=True,
     )
+    if "refined" in metrics:
+        print(
+            "EVALUATED_REFINED",
+            "psnr",
+            round(metrics["refined"]["median"]["foreground_psnr"], 2),
+            "iou",
+            round(metrics["refined"]["median"]["silhouette_iou"], 3),
+            flush=True,
+        )
     return metrics
 
 
@@ -570,7 +771,8 @@ def reconstruct(
     masks: Path,
     init_ply: Path,
     threedgrut: Path,
+    pose_refine: bool = False,
 ) -> None:
-    prepare(output, frames, trajectory, masks, init_ply)
+    prepare(output, frames, trajectory, masks, init_ply, pose_refine=pose_refine)
     train(output, threedgrut)
     evaluate(output, threedgrut)

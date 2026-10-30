@@ -13,6 +13,16 @@ class Config:
     prompt: str = "white car"
     omega_checkpoint: str | None = None
     colmap_bin: str = "colmap"
+    colmap_python: str | None = None
+    sfm_device: str = "auto"
+    sfm_gpu_index: str = "0"
+    sfm_num_threads: int = 16
+    sfm_ba_backend: str = "ceres"
+    sfm_profile: str = "reference"
+    sfm_keyframes: int = 60
+    sfm_keyframe_min_register_ratio: float = 0.95
+    sfm_final_ba_iterations: int | None = None
+    sfm_ba_device: str = "cpu"
     sam3_checkpoint: str | None = None
     sam3_root: str | None = None
     device: str = "cuda"

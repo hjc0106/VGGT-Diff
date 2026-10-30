@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+from dataclasses import replace
 from pathlib import Path
 
 import cv2
@@ -10,6 +12,7 @@ from PIL import Image
 
 from gen_pro.colmap_io import register_new_images, run_colmap
 from gen_pro.geometry import camera_axes, camera_center, fit_plane, ray_convergence, unwrap_angles
+from gen_pro.sfm_profiles import profile_settings
 
 
 def run(ws, cfg) -> dict:
@@ -17,6 +20,7 @@ def run(ws, cfg) -> dict:
     if not video.is_file():
         raise FileNotFoundError(video)
     overrides = ws.overrides("video")
+    required = list(ws.overrides("select").get("frames") or cfg.manual_frames)
     params = dict(
         video=_identity(video),
         candidates=cfg.candidate_count,
@@ -25,19 +29,35 @@ def run(ws, cfg) -> dict:
         overlap=cfg.sfm_overlap,
         center=overrides.get("center"),
         up=overrides.get("up"),
+        required_frames=required,
+        sfm=dict(
+            binary=cfg.colmap_bin, python=cfg.colmap_python, device=cfg.sfm_device,
+            gpu_index=cfg.sfm_gpu_index, num_threads=cfg.sfm_num_threads,
+            ba_backend=cfg.sfm_ba_backend,
+            settings=profile_settings(cfg.sfm_profile, cfg.sfm_final_ba_iterations),
+            keyframes=cfg.sfm_keyframes, ba_device=cfg.sfm_ba_device,
+            keyframe_min_register_ratio=cfg.sfm_keyframe_min_register_ratio,
+        ),
     )
     if ws.fresh("video", params):
         print("VIDEO_EXISTS", ws.step_dir("video"), flush=True)
         return ws.record("video")["metrics"]
     directory = ws.step_dir("video")
     saved = directory / "frames.json"
+    extraction_start = time.monotonic()
     if saved.exists() and ws.read_json(saved).get("identity") == params["video"]:
         frames = ws.read_json(saved)["frames"]
         print("FRAMES_EXIST", len(frames), flush=True)
     else:
         frames = _extract(video, directory / "frames", cfg)
         ws.write_json(directory / "frames.json", dict(identity=params["video"], frames=frames))
-    model = run_colmap(directory / "frames", directory, cfg)
+    missing = [frame for frame in required if frame not in {row["video_frame"] for row in frames}]
+    if missing:
+        frames.extend(_extract_exact(video, directory / "frames", frames, missing, cfg))
+        ws.write_json(saved, dict(identity=params["video"], frames=frames))
+    extraction_seconds = time.monotonic() - extraction_start
+    print("FRAME_EXTRACTION_DONE", round(extraction_seconds, 3), "seconds", flush=True)
+    model = run_colmap(directory / "frames", directory, replace(cfg, manual_frames=tuple(required)))
     by_name = {image["name"]: image for image in model["images"]}
     camera = next(iter(model["cameras"].values()))
     if camera["model"] != "OPENCV":
@@ -51,9 +71,15 @@ def run(ws, cfg) -> dict:
         if image is not None:
             frame["w2c"] = image["w2c"]
             registered.append(frame)
+    runtime_path = directory / "colmap_result.json"
+    runtime = ws.read_json(runtime_path) if cfg.colmap_python and runtime_path.exists() else {}
     ratio = len(registered) / max(len(frames), 1)
-    if ratio < cfg.sfm_min_register_ratio:
-        raise RuntimeError(f"SfM registered {ratio:.0%} of the candidate frames")
+    mapping_ratio = len(registered) / max(runtime.get("mapping_frames", len(frames)), 1)
+    if mapping_ratio < cfg.sfm_min_register_ratio:
+        raise RuntimeError(f"SfM registered {mapping_ratio:.0%} of the mapping frames")
+    missing = set(required) - {row["video_frame"] for row in registered}
+    if missing:
+        raise RuntimeError(f"SfM did not register required reference frames: {sorted(missing)}")
     axes = _axes(registered, overrides)
     for frame in frames:
         frame["azimuth_deg"] = None
@@ -84,7 +110,11 @@ def run(ws, cfg) -> dict:
         warnings.append("camera rays do not meet tightly")
     metrics = dict(
         candidates=len(frames),
+        frame_extraction_seconds=extraction_seconds,
         registered=len(registered),
+        mapping_frames=runtime.get("mapping_frames", len(frames)),
+        mapping_register_ratio=mapping_ratio,
+        effective_sfm_profile=runtime.get("effective_profile", cfg.sfm_profile),
         register_ratio=ratio,
         points=model["points"],
         azimuth_span_deg=axes["summary"]["azimuth_span_deg"],
@@ -99,14 +129,18 @@ def add_manual_frames(ws, cfg, frame_ids: list[int]) -> None:
     """Register exact video frames that the uniform sample did not keep."""
     directory = ws.step_dir("video")
     payload = ws.read_json(directory / "frames.json")
-    have = {int(row["video_frame"]) for row in payload["frames"]}
-    missing = [int(frame) for frame in frame_ids if int(frame) not in have]
+    by_frame = {int(row["video_frame"]): row for row in payload["frames"]}
+    missing = [int(frame) for frame in frame_ids
+               if int(frame) not in by_frame or not by_frame[int(frame)].get("registered")]
     if not missing:
         return
-    rows = _extract_exact(Path(cfg.video), directory / "frames", payload["frames"], missing, cfg)
-    model = register_new_images(directory / "frames", directory, [row["name"] for row in rows], cfg)
+    rows = _extract_exact(Path(cfg.video), directory / "frames", payload["frames"],
+                          [frame for frame in missing if frame not in by_frame], cfg)
+    by_frame.update({int(row["video_frame"]): row for row in rows})
+    model = register_new_images(directory / "frames", directory,
+                                [by_frame[frame]["name"] for frame in missing], cfg)
     by_name = {image["name"]: image for image in model["images"]}
-    failed = [row["name"] for row in rows if row["name"] not in by_name]
+    failed = [by_frame[frame]["name"] for frame in missing if by_frame[frame]["name"] not in by_name]
     if failed:
         raise RuntimeError(f"COLMAP did not register {failed}")
     payload["frames"].extend(rows)

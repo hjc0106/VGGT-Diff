@@ -12,9 +12,9 @@ gsplat 1.4.0 and a 3DGRUT checkout. No diffusion weights or original ArtiFixer d
 directories are needed for this command:
 
 ```bash
-python scripts/reproduce_white_car_e1.py --example /path/to/white_car_fixture --verify-only
+python scripts/reproduce_white_car_reconstruction.py --example /path/to/white_car_fixture --verify-only
 
-CUDA_VISIBLE_DEVICES=0 python scripts/reproduce_white_car_e1.py --example /path/to/white_car_fixture \
+CUDA_VISIBLE_DEVICES=0 python scripts/reproduce_white_car_reconstruction.py --example /path/to/white_car_fixture \
   --threedgrut /path/to/3DGRUT \
   --output outputs/white_car_e1_v1
 ```
@@ -71,7 +71,7 @@ CUDA_VISIBLE_DEVICES=0 python scripts/generate_trajectory.py \
   --output outputs/white_car_generation_v1 \
   --height 480 --width 832 --steps 50 --seed 20261030 --vram-limit-gib 46
 
-python scripts/reproduce_white_car_e1.py --example /path/to/white_car_fixture --verify-only \
+python scripts/reproduce_white_car_reconstruction.py --example /path/to/white_car_fixture --verify-only \
   --generated-frames outputs/white_car_generation_v1/frames \
   --output outputs/white_car_generation_v1
 ```

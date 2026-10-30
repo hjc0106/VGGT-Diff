@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from vggtdiff.recon.e1 import reconstruct  # noqa: E402
+from vggtdiff.recon.reconstruction import reconstruct  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -26,6 +26,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--init-ply", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--threedgrut", type=Path, required=True)
+    parser.add_argument(
+        "--pose-refine",
+        action="store_true",
+        help="Learn a bounded per-frame camera correction during training",
+    )
     return parser.parse_args()
 
 
@@ -38,6 +43,7 @@ def main() -> None:
         args.masks,
         args.init_ply,
         args.threedgrut,
+        pose_refine=args.pose_refine,
     )
     print("E1_DONE", args.output.resolve(), flush=True)
 

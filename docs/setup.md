@@ -18,7 +18,7 @@
 ```bash
 git clone https://github.com/hjc0106/VGGT-Diff.git
 cd VGGT-Diff
-git checkout vggt-gen-v1
+git checkout vggt-gen-v2
 
 python -m venv .venv-gen
 source .venv-gen/bin/activate
@@ -58,10 +58,10 @@ hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
 ```bash
 source .venv-gen/bin/activate
 python -c "import torch; from vggtdiff import VGGTDiff; assert torch.cuda.is_available(); print('gen', torch.__version__, torch.cuda.get_device_name(0))"
-python tests/test_e1_recipe.py
+python tests/test_reconstruction_recipe.py
 ```
 
-`tests/test_e1_recipe.py` 不加载模型。它检查 80 帧闭合轨道会留出最后一帧、训练步数是 49375，并用一张假图把数据集准备跑一遍。打印 `OK` 即通过。
+`tests/test_reconstruction_recipe.py` 不加载模型。它检查 80 帧闭合轨道会留出最后一帧、训练步数是 49375，并用一张假图把数据集准备跑一遍。打印 `OK` 即通过。
 
 重建环境确认 gsplat 和 3DGRUT 可以导入。把下面的路径换成自己的 3DGRUT 检出目录：
 

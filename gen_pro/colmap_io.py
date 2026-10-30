@@ -2,16 +2,99 @@
 
 from __future__ import annotations
 
+import json
+import re
+import shlex
 import shutil
 import subprocess
+import time
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
 
+from gen_pro.colmap_gpu import resolve_device
 from gen_pro.config import Config
+from gen_pro.sfm_profiles import profile_settings
+
+
+@lru_cache(maxsize=8)
+def _probe_colmap(binary: str, python: str | None) -> dict:
+    if python:
+        command = [python, str(Path(__file__).with_name("colmap_gpu.py")), "--probe"]
+    else:
+        command = [binary, "-h"]
+    result = subprocess.run(command, capture_output=True, text=True, timeout=30)
+    if result.returncode:
+        raise RuntimeError(f"Cannot inspect COLMAP: {result.stderr.strip() or result.stdout.strip()}")
+    if python:
+        return json.loads(result.stdout)
+    text = result.stdout + result.stderr
+    version = re.search(r"COLMAP\s+(\d+)\.(\d+)", text)
+    modern = bool(version and tuple(map(int, version.groups())) >= (4, 2))
+    return dict(has_cuda="with CUDA" in text and "without CUDA" not in text, modern_options=modern)
+
+
+def _cli_groups(cfg: Config) -> tuple[str, str, str]:
+    modern = _probe_colmap(cfg.colmap_bin, None).get("modern_options", False)
+    return (("FeatureExtraction", "FeatureMatching", "fix_existing_frames") if modern
+            else ("SiftExtraction", "SiftMatching", "fix_existing_images"))
+
+
+def _device(cfg: Config) -> str:
+    if cfg.sfm_num_threads < 1:
+        raise ValueError("sfm_num_threads must be positive")
+    profile_settings(cfg.sfm_profile, cfg.sfm_final_ba_iterations)
+    if cfg.sfm_keyframes < 2 or not 0 < cfg.sfm_keyframe_min_register_ratio <= 1:
+        raise ValueError("Invalid keyframe count or registration ratio")
+    if not cfg.colmap_python and (cfg.sfm_profile != "reference" or cfg.sfm_final_ba_iterations
+                                  or cfg.sfm_ba_device != "cpu"):
+        raise ValueError("SfM profiles and GPU BA require --colmap-python")
+    info = _probe_colmap(cfg.colmap_bin, cfg.colmap_python)
+    if cfg.sfm_ba_device == "cuda" and not info.get("has_ceres_cuda", False):
+        raise RuntimeError("This runtime has no Ceres CUDA support; use --sfm-ba-device cpu")
+    device = resolve_device(cfg.sfm_device, info["has_cuda"])
+    if cfg.sfm_ba_backend == "caspar" and (not cfg.colmap_python or device != "cuda"):
+        raise ValueError("Caspar requires --colmap-python and a CUDA-enabled PyCOLMAP runtime")
+    if cfg.sfm_ba_backend == "caspar" and not info.get("has_caspar", False):
+        raise RuntimeError("This PyCOLMAP build has no Caspar GPU BA; use --sfm-ba-backend ceres")
+    if cfg.sfm_ba_backend == "caspar":
+        raise ValueError("Caspar does not support the OPENCV camera model used by this video pipeline")
+    print("COLMAP_DEVICE", device, "BA", cfg.sfm_ba_backend, flush=True)
+    return device
+
+
+def _run_pycolmap(image_dir: Path, work: Path, cfg: Config, input_model=None, names=None) -> dict:
+    device = _device(cfg)
+    frames_path = work / "frames.json"
+    rows = json.loads(frames_path.read_text())["frames"] if frames_path.exists() else []
+    required = [row["name"] for row in rows if row.get("video_frame") in cfg.manual_frames]
+    payload = dict(
+        images=str(image_dir.resolve()), work=str(work.resolve()), device=device,
+        gpu_index=cfg.sfm_gpu_index, num_threads=cfg.sfm_num_threads,
+        max_image_size=cfg.sfm_max_image_size, overlap=cfg.sfm_overlap,
+        ba_backend=cfg.sfm_ba_backend,
+        input_model=str(input_model.resolve()) if input_model else None,
+        image_names=names or [],
+        profile=cfg.sfm_profile, keyframes=cfg.sfm_keyframes,
+        keyframe_min_register_ratio=cfg.sfm_keyframe_min_register_ratio,
+        min_register_ratio=cfg.sfm_min_register_ratio,
+        final_ba_iterations=cfg.sfm_final_ba_iterations, ba_device=cfg.sfm_ba_device,
+        candidate_frames=rows, required_names=required,
+    )
+    path = work / ("colmap_register_config.json" if input_model else "colmap_config.json")
+    path.write_text(json.dumps(payload, indent=2) + "\n")
+    _run([cfg.colmap_python, str(Path(__file__).with_name("colmap_gpu.py")), "--config", str(path)],
+         work / "colmap.log")
+    result = json.loads((work / "colmap_result.json").read_text())
+    return read_text_model(Path(result["model_path"]))
 
 
 def run_colmap(image_dir: Path, work: Path, cfg: Config) -> dict:
+    if cfg.colmap_python:
+        return _run_pycolmap(image_dir, work, cfg)
+    device = _device(cfg)
+    extraction, matching, _ = _cli_groups(cfg)
     database = work / "database.db"
     sparse = work / "sparse"
     if database.exists():
@@ -33,12 +116,14 @@ def run_colmap(image_dir: Path, work: Path, cfg: Config) -> dict:
             "1",
             "--ImageReader.camera_model",
             "OPENCV",
-            "--SiftExtraction.max_image_size",
+            f"--{extraction}.max_image_size",
             str(cfg.sfm_max_image_size),
-            "--SiftExtraction.use_gpu",
-            "0",
-            "--SiftExtraction.num_threads",
-            "16",
+            f"--{extraction}.use_gpu",
+            str(int(device == "cuda")),
+            f"--{extraction}.gpu_index",
+            cfg.sfm_gpu_index,
+            f"--{extraction}.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -52,10 +137,12 @@ def run_colmap(image_dir: Path, work: Path, cfg: Config) -> dict:
             str(cfg.sfm_overlap),
             "--SequentialMatching.quadratic_overlap",
             "1",
-            "--SiftMatching.use_gpu",
-            "0",
-            "--SiftMatching.num_threads",
-            "16",
+            f"--{matching}.use_gpu",
+            str(int(device == "cuda")),
+            f"--{matching}.gpu_index",
+            cfg.sfm_gpu_index,
+            f"--{matching}.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -69,6 +156,8 @@ def run_colmap(image_dir: Path, work: Path, cfg: Config) -> dict:
             str(image_dir),
             "--output_path",
             str(sparse),
+            "--Mapper.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -91,6 +180,13 @@ def run_colmap(image_dir: Path, work: Path, cfg: Config) -> dict:
 
 def register_new_images(image_dir: Path, work: Path, names: list[str], cfg: Config) -> dict:
     """Add named frames to an existing reconstruction without moving the current cameras."""
+    if cfg.colmap_python:
+        result_path = work / "colmap_result.json"
+        model = (Path(json.loads(result_path.read_text())["model_path"])
+                 if result_path.exists() else _model_dir(work / "sparse"))
+        return _run_pycolmap(image_dir, work, cfg, model, names)
+    device = _device(cfg)
+    extraction, matching, fixed_frames = _cli_groups(cfg)
     database = work / "database.db"
     listing = work / "extra_images.txt"
     listing.write_text("\n".join(names) + "\n")
@@ -108,12 +204,14 @@ def register_new_images(image_dir: Path, work: Path, names: list[str], cfg: Conf
             str(listing),
             "--ImageReader.existing_camera_id",
             "1",
-            "--SiftExtraction.max_image_size",
+            f"--{extraction}.max_image_size",
             str(cfg.sfm_max_image_size),
-            "--SiftExtraction.use_gpu",
-            "0",
-            "--SiftExtraction.num_threads",
-            "16",
+            f"--{extraction}.use_gpu",
+            str(int(device == "cuda")),
+            f"--{extraction}.gpu_index",
+            cfg.sfm_gpu_index,
+            f"--{extraction}.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -127,10 +225,12 @@ def register_new_images(image_dir: Path, work: Path, names: list[str], cfg: Conf
             str(cfg.sfm_overlap),
             "--SequentialMatching.quadratic_overlap",
             "1",
-            "--SiftMatching.use_gpu",
-            "0",
-            "--SiftMatching.num_threads",
-            "16",
+            f"--{matching}.use_gpu",
+            str(int(device == "cuda")),
+            f"--{matching}.gpu_index",
+            cfg.sfm_gpu_index,
+            f"--{matching}.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -148,8 +248,10 @@ def register_new_images(image_dir: Path, work: Path, names: list[str], cfg: Conf
             str(model),
             "--output_path",
             str(output),
-            "--Mapper.fix_existing_images",
+            f"--Mapper.{fixed_frames}",
             "1",
+            "--Mapper.num_threads",
+            str(cfg.sfm_num_threads),
         ],
         log,
     )
@@ -191,9 +293,18 @@ def _largest_model(sparse: Path) -> Path:
 
 
 def _run(command: list[str], log: Path) -> None:
+    start = time.monotonic()
     with log.open("a") as handle:
-        handle.write("\n$ " + " ".join(command) + "\n")
+        handle.write("\n$ " + shlex.join(command) + "\n")
+        handle.flush()
         result = subprocess.run(command, stdout=handle, stderr=subprocess.STDOUT)
+        seconds = time.monotonic() - start
+        handle.write(f"\nCOMMAND_DONE seconds={seconds:.3f} returncode={result.returncode}\n")
+    path = log.with_name("colmap_commands.json")
+    records = json.loads(path.read_text()) if path.exists() else []
+    records.append(dict(command=command, seconds=seconds, returncode=result.returncode))
+    path.write_text(json.dumps(records, indent=2) + "\n")
+    print("COLMAP_COMMAND_DONE", command[1], round(seconds, 3), "seconds", flush=True)
     if result.returncode != 0:
         raise RuntimeError(f"Command failed ({result.returncode}): {command[1]}. See {log}")
 
@@ -215,7 +326,7 @@ def _read_cameras(path: Path) -> dict:
 
 
 def _read_images(path: Path) -> list[dict]:
-    lines = [line for line in path.read_text().splitlines() if line and not line.startswith("#")]
+    lines = [line for line in path.read_text().splitlines() if not line.startswith("#")]
     images = []
     for line in lines[::2]:
         parts = line.split()

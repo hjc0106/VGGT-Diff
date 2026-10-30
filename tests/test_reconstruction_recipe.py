@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from vggtdiff.recon.colmap import rotation_to_quat_wxyz
-from vggtdiff.recon.e1 import initialization_values, load_defaults, prepare, training_indices
+from vggtdiff.recon.reconstruction import initialization_values, load_defaults, prepare, training_indices
 
 
 def test_closed_orbit_holds_out_the_last_frame():
@@ -28,7 +28,7 @@ def test_seventy_nine_views_are_kept():
 
 
 def test_schedule_matches_the_trained_e1_run():
-    defaults = json.loads((ROOT / "vggtdiff/recon/e1_defaults.json").read_text())
+    defaults = json.loads((ROOT / "vggtdiff/recon/reconstruction_defaults.json").read_text())
     schedule = defaults["schedule"]
     assert defaults["updates_per_image"] == 625
     assert defaults["outside_weight"] == 0.5
@@ -43,7 +43,7 @@ def test_schedule_matches_the_trained_e1_run():
 
 
 def test_config_template_has_no_machine_paths():
-    text = (ROOT / "vggtdiff/recon/e1_config.yaml").read_text()
+    text = (ROOT / "vggtdiff/recon/reconstruction_config.yaml").read_text()
     assert "/home/" not in text
     assert "n_iterations: 49375" in text
 
@@ -54,7 +54,7 @@ def test_identity_rotation_is_a_unit_quaternion():
 
 
 def test_prepare_holds_out_the_closure_frame():
-    defaults = json.loads((ROOT / "vggtdiff/recon/e1_defaults.json").read_text())
+    defaults = json.loads((ROOT / "vggtdiff/recon/reconstruction_defaults.json").read_text())
     vertices = defaults["real_surface_points"] + defaults["volume_seed_points"]
     with tempfile.TemporaryDirectory() as temporary:
         root = Path(temporary)
@@ -107,6 +107,45 @@ def test_prepare_holds_out_the_closure_frame():
             raise AssertionError("Changed input was silently reused from the prepared dataset")
 
 
+def test_pose_refine_refuses_to_reuse_a_prepared_run():
+    defaults = json.loads((ROOT / "vggtdiff/recon/reconstruction_defaults.json").read_text())
+    vertices = defaults["real_surface_points"] + defaults["volume_seed_points"]
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        frames, masks = root / "frames", root / "masks"
+        frames.mkdir()
+        masks.mkdir()
+        image = Image.new("RGB", tuple(defaults["image_size"]), "white")
+        mask = Image.new("L", tuple(defaults["image_size"]), 255)
+        poses, intrinsics = [], []
+        for index in range(80):
+            image.save(frames / f"{index:02d}.png")
+            mask.save(masks / f"{index:02d}.png")
+            pose = np.eye(4)
+            pose[0, 3] = index
+            poses.append(pose.tolist())
+            intrinsics.append(np.eye(3).tolist())
+        poses[-1] = poses[0]
+        trajectory = root / "trajectory.json"
+        trajectory.write_text(json.dumps(dict(target_w2c=poses, target_intrinsics=intrinsics)))
+        ply = root / "initial_points.ply"
+        header = (
+            "ply\nformat binary_little_endian 1.0\n"
+            f"element vertex {vertices}\n"
+            "property float x\nproperty float y\nproperty float z\nend_header\n"
+        )
+        ply.write_bytes(header.encode() + b"\0" * (vertices * 12))
+        output = root / "e1"
+        plain = prepare(output, frames, trajectory, masks, ply)
+        assert plain["pose_refine"] is None
+        try:
+            prepare(output, frames, trajectory, masks, ply, pose_refine=True)
+        except ValueError as error:
+            assert "pose refinement changed" in str(error)
+        else:
+            raise AssertionError("Enabling pose refinement reused the prepared dataset")
+
+
 def test_initialization_sidecar_overrides_the_defaults():
     defaults = load_defaults()
     with tempfile.TemporaryDirectory() as tmp:
@@ -134,4 +173,5 @@ if __name__ == "__main__":
     test_identity_rotation_is_a_unit_quaternion()
     test_prepare_holds_out_the_closure_frame()
     test_initialization_sidecar_overrides_the_defaults()
+    test_pose_refine_refuses_to_reuse_a_prepared_run()
     print("OK")

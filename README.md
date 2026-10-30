@@ -1,10 +1,21 @@
-# VGGT-Diff · 白车 E1 复现
+# VGGT-Diff · 视频生成与 3DGS 重建
 
-`vggt-gen-v1` 在 VGGT-Diff 上封装了 80 帧 Trajectory 生成与物体 3DGS 重建，并提供旧白车 E1 实验的相机配置、输入校验清单、复现入口和验收结果。
+`vggt-gen-v2` 在 VGGT-Diff 上封装了 80 帧 Trajectory 生成与物体 3DGS 重建，加入 GPU COLMAP、可切换的 SfM 调度和可选相机位姿修正，同时保留旧白车 E1 的固定输入复现入口。
 
 上游研究与模型归原作者所有：[原项目](https://github.com/chenkangjie1123/VGGT-Diff) · [项目主页](https://chenkangjie1123.github.io/VGGT-Diff/) · [论文](https://arxiv.org/abs/2609.33253)。
 
-## 结果预览
+## v2 更新
+
+- **一个 SfM 开关**：`--sfm-profile reference` 保留原 BA 调度，`--sfm-profile balanced` 保留全帧并减少重复全局 BA。配合 `--sfm-device cuda` 使用 GPU 提取/匹配，两版默认均使用 CPU BA；省略开关会沿用工作目录中保存的配置，新目录默认为 reference。
+- **相机位姿修正**：`scripts/reconstruction.py --pose-refine`，或完整流水线 `scripts/run_traj_reconstruction.py --pose-refine`。
+- **代码入口改名**：重建模块和脚本使用 `reconstruction` 命名，历史 E1 实验 ID 和输出目录保持兼容。
+- **实测**：在同样使用 GPU SIFT 的对照中，balanced 相比 reference 的 SfM 耗时下降约 31%（白车）和 14%（tank），通过相机一致性检查。
+
+[更新日志](CHANGELOG.md) · [SfM 参数与切换示例](docs/video_pipeline.md#sfm-速度配置) · [v2 实验与限制](docs/sfm_v2_validation.md)
+
+## 历史 E1 结果预览
+
+下面是 v1 固定旧输入的复现结果，不是本轮新生成数据的指标。
 
 ![白车 E1 复现的八视角检查图](results/white_car_e1_v1/orbit_contact.jpg)
 
@@ -26,14 +37,14 @@
 需要 Linux、NVIDIA CUDA GPU、重建环境和 3DGRUT 源码。环境安装步骤见 [环境与权重](docs/setup.md)。
 
 ```bash
-git clone --branch vggt-gen-v1 https://github.com/hjc0106/VGGT-Diff.git
+git clone --branch vggt-gen-v2 https://github.com/hjc0106/VGGT-Diff.git
 cd VGGT-Diff
 
 # 仅检查固定输入，无需 GPU
-.venv-e1/bin/python scripts/reproduce_white_car_e1.py --example /path/to/white_car_fixture --verify-only
+.venv-e1/bin/python scripts/reproduce_white_car_reconstruction.py --example /path/to/white_car_fixture --verify-only
 
 # 从固定输入重新训练并验收
-CUDA_VISIBLE_DEVICES=0 .venv-e1/bin/python scripts/reproduce_white_car_e1.py \
+CUDA_VISIBLE_DEVICES=0 .venv-e1/bin/python scripts/reproduce_white_car_reconstruction.py \
   --example /path/to/white_car_fixture \
   --threedgrut /path/to/3DGRUT \
   --output outputs/white_car_e1_v1
@@ -49,6 +60,7 @@ CUDA_VISIBLE_DEVICES=0 .venv-e1/bin/python scripts/reproduce_white_car_e1.py \
 
 - **检查生成入口**：使用固定六张参考图和原轨迹重新生成 80 帧，命令见 [白车说明](examples/white_car/README.md)。本次重新生成与旧 PNG 的全图 PSNR 中位数为 49.09 dB，存在小幅像素差异；上述 E1 指标来自固定旧图。新生成图需要自己的分割掩码。
 - **从视频开始**：`gen_pro` 保留选帧、虚拟相机重投影、点云和轨迹构建，见 [视频预处理](docs/video_pipeline.md)。这些步骤会建立新的实验条件，尚未纳入固定旧 E1 的复现验收。
+- **吸收生成抖动**：`scripts/reconstruction.py --pose-refine` 给每张训练图一个相机修正，旋转不超过 1°，平移不超过轨道半径的 2%，第 0 帧固定。修正写在 `training/camera_corrections.json`。环绕渲染仍用规划轨迹。不加这个参数时训练与固定配方一致，开关变化会拒绝复用已准备的输出目录。
 - **其他推理与训练**：见 [入口与参数说明](docs/upstream_usage.md)。
 
 目标相机统一使用 OpenCV W2C，内参使用图像分辨率下的像素单位。源图、位姿和内参需要成套保持一致。
@@ -59,7 +71,7 @@ CUDA_VISIBLE_DEVICES=0 .venv-e1/bin/python scripts/reproduce_white_car_e1.py \
 python -m pytest tests -q
 ```
 
-已完成 37 项测试、wheel 构建、49,375 步实际重训，以及原 16 张真实留出图和 160 机位环绕评估。机器可读运行记录见 [validation.json](docs/white_car_e1_v1_validation.json)。
+v2 已完成 62 项 CPU 回归测试、wheel 构建、两场景 SfM 对照，以及白车新生成数据的 49,375 步 pose_refine 训练，见 [v2 验证](docs/sfm_v2_validation.md)。v1 固定输入的 16 张真实留出图和 160 机位环绕验收单独保存在 [validation.json](docs/white_car_e1_v1_validation.json)。
 
 ## 引用与许可
 

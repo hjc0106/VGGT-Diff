@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-from . import e1
+from . import reconstruction
 
 
 def read(path: Path) -> dict:
@@ -31,12 +31,12 @@ def verify_example(example: Path) -> dict:
         path = (example / relative).resolve()
         if not path.is_relative_to(example):
             raise ValueError(f"Benchmark path escapes the example: {relative}")
-        if not path.is_file() or e1.sha256(path) != expected:
+        if not path.is_file() or reconstruction.sha256(path) != expected:
             raise ValueError(f"Frozen benchmark input is missing or changed: {relative}")
     trajectory = read(example / "trajectory.json")
     if trajectory["source_frames"] != manifest["source_frames"]:
         raise ValueError("The frozen source-frame order changed")
-    e1.training_indices(np.asarray(trajectory["target_w2c"]))
+    reconstruction.training_indices(np.asarray(trajectory["target_w2c"]))
     return manifest
 
 
@@ -88,7 +88,7 @@ def compare_generation(example: Path, generated: Path) -> dict:
         equal = bool(np.array_equal(reference, actual))
         difference = (actual.astype(np.float64) - reference.astype(np.float64)) / 255.0
         mse = float(np.mean(difference ** 2))
-        records.append(dict(index=index, pixels_equal=equal, sha256=e1.sha256(path),
+        records.append(dict(index=index, pixels_equal=equal, sha256=reconstruction.sha256(path),
                             psnr=float(-10 * np.log10(max(mse, 1e-12))),
                             mae=float(np.abs(difference).mean())))
     return dict(passed=all(row["pixels_equal"] for row in records),
@@ -104,24 +104,24 @@ def _validate_training_copy(output: Path, fixture: Path) -> list[dict]:
         index = row["orbit_index"]
         image = output / "dataset/images" / f"{index:02d}.png"
         mask = image.with_name(f"{index:02d}_mask.png")
-        if e1.sha256(image) != e1.sha256(fixture / "frames" / image.name):
+        if reconstruction.sha256(image) != reconstruction.sha256(fixture / "frames" / image.name):
             raise ValueError(f"Training image {index} differs from the frozen benchmark")
-        if e1.sha256(mask) != e1.sha256(fixture / "masks" / image.name):
+        if reconstruction.sha256(mask) != reconstruction.sha256(fixture / "masks" / image.name):
             raise ValueError(f"Training mask {index} differs from the frozen benchmark")
         if not np.array_equal(row["w2c"], trajectory["target_w2c"][index]):
             raise ValueError(f"Training pose {index} differs from the frozen benchmark")
         if not np.array_equal(row["k"], trajectory["target_intrinsics"][index]):
             raise ValueError(f"Training intrinsics {index} differ from the frozen benchmark")
         row.update(image=str(image), mask=str(mask))
-    if e1.sha256(output / "shared/initial_points.ply") != e1.sha256(fixture / "initial_points.ply"):
+    if reconstruction.sha256(output / "shared/initial_points.ply") != reconstruction.sha256(fixture / "initial_points.ply"):
         raise ValueError("Training initialization differs from the frozen benchmark")
-    initialization = e1.initialization_values(fixture / "initial_points.ply")
+    initialization = reconstruction.initialization_values(fixture / "initial_points.ply")
     saved_init = read(output / "shared/initialization.json")
     for key in ("real_surface_points", "volume_seed_points", "seed_opacity", "bounds_world"):
         if saved_init.get(key) != initialization[key]:
             raise ValueError(f"Training initialization metadata changed: {key}")
     experiment = read(output / "experiment.json")
-    defaults = e1.load_defaults()
+    defaults = reconstruction.load_defaults()
     for key in ("training_seed", "updates_per_image", "outside_weight", "anisotropy_weight", "gaussian_cap", "schedule"):
         if experiment[key] != defaults[key]:
             raise ValueError(f"Training recipe changed: {key}")
@@ -134,18 +134,18 @@ def evaluate_benchmark(output: Path, fixture: Path, threedgrut: Path, manifest: 
     import imageio.v2 as imageio
     import torch
 
-    e1.use_threedgrut(threedgrut)
+    reconstruction.use_threedgrut(threedgrut)
     from threedgrut.model.model import MixtureOfGaussians
 
     run = output / "e1"
     rows = _validate_training_copy(run, fixture)
     result = read(run / "training/result.json")
-    if result["step"] != e1.load_defaults()["schedule"]["position_max_steps"]:
+    if result["step"] != reconstruction.load_defaults()["schedule"]["position_max_steps"]:
         raise ValueError("E1 did not complete all 49,375 training steps")
-    if e1.sha256(run / "model.ply") != result["ply_sha256"]:
+    if reconstruction.sha256(run / "model.ply") != result["ply_sha256"]:
         raise ValueError("The exported model differs from its training record")
     checkpoint = run / "training/E1/dataset" / f"ours_{result['step']}" / f"ckpt_{result['step']}.pt"
-    model = MixtureOfGaussians(e1._load_conf(run))
+    model = MixtureOfGaussians(reconstruction._load_conf(run))
     model.init_from_checkpoint(torch.load(checkpoint, map_location="cuda", weights_only=False), setup_optimizer=False)
     model.eval()
     if model.num_gaussians != result["gaussians"]:
@@ -153,7 +153,7 @@ def evaluate_benchmark(output: Path, fixture: Path, threedgrut: Path, manifest: 
     cameras = read(fixture / "evaluation/cameras.json")
     real = [dict(row, image=str(fixture / row["image"]), mask=str(fixture / row["mask"]))
             for row in cameras["heldout_real"]]
-    actual = dict(training=e1.score_views(model, rows), real=e1.score_views(model, real),
+    actual = dict(training=reconstruction.score_views(model, rows), real=reconstruction.score_views(model, real),
                   gaussians=result["gaussians"], step=result["step"])
     report = dict(benchmark=manifest["name"], **actual, **compare_metrics(actual, manifest))
     evaluation = output / "evaluation"
@@ -163,7 +163,7 @@ def evaluate_benchmark(output: Path, fixture: Path, threedgrut: Path, manifest: 
                             macro_block_size=None) as writer:
         selected = []
         for index, row in enumerate(cameras["orbit360"]):
-            rgb, _alpha = e1.render_view(model, dict(row, image=rows[0]["image"]))
+            rgb, _alpha = reconstruction.render_view(model, dict(row, image=rows[0]["image"]))
             frame = Image.fromarray((rgb * 255).astype(np.uint8))
             writer.append_data(np.asarray(frame))
             if index % 20 == 0:
@@ -189,7 +189,7 @@ def reproduce(example: Path, output: Path, threedgrut: Path) -> dict:
     run = output / "e1"
     if (run / "experiment.json").exists():
         _validate_training_copy(run, fixture)
-    e1.reconstruct(run, fixture / "frames", fixture / "trajectory.json", fixture / "masks",
+    reconstruction.reconstruct(run, fixture / "frames", fixture / "trajectory.json", fixture / "masks",
                    fixture / "initial_points.ply", threedgrut)
     report = evaluate_benchmark(output, fixture, threedgrut, manifest)
     if not report["passed"]:

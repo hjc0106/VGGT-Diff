@@ -31,7 +31,21 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--omega-checkpoint")
     parser.add_argument("--sam3-checkpoint")
     parser.add_argument("--sam3-root")
-    parser.add_argument("--colmap", default="colmap")
+    parser.add_argument("--colmap", default=None)
+    parser.add_argument("--colmap-python", type=Path, help="Python with pycolmap-cuda12 installed")
+    parser.add_argument("--sfm-device", choices=["auto", "cpu", "cuda"])
+    parser.add_argument("--sfm-gpu-index", help="COLMAP CUDA device index, relative to CUDA_VISIBLE_DEVICES")
+    parser.add_argument("--sfm-num-threads", type=int)
+    parser.add_argument("--sfm-ba-backend", choices=["ceres", "caspar"])
+    parser.add_argument(
+        "--sfm-profile", choices=["reference", "balanced", "keyframe"],
+        help="SfM schedule: reference (default), balanced (fewer global BAs + final BA), "
+             "or experimental keyframe. Saved in config.json; omitted flags keep the saved profile.",
+    )
+    parser.add_argument("--sfm-keyframes", type=int)
+    parser.add_argument("--sfm-keyframe-min-register-ratio", type=float)
+    parser.add_argument("--sfm-final-ba-iterations", type=int)
+    parser.add_argument("--sfm-ba-device", choices=["cpu", "cuda"])
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--from", dest="start", choices=list(PIPELINE), default="video")
     parser.add_argument("--until", dest="stop", choices=list(PIPELINE), default="orbit")
@@ -50,7 +64,16 @@ def main(argv: list[str] | None = None) -> None:
         cfg.sam3_checkpoint = args.sam3_checkpoint
     if args.sam3_root:
         cfg.sam3_root = args.sam3_root
-    cfg.colmap_bin = args.colmap
+    if args.colmap:
+        cfg.colmap_bin = args.colmap
+    if args.colmap_python:
+        cfg.colmap_python = str(args.colmap_python.absolute())
+    for name in ("sfm_device", "sfm_gpu_index", "sfm_num_threads", "sfm_ba_backend",
+                 "sfm_profile", "sfm_keyframes", "sfm_keyframe_min_register_ratio",
+                 "sfm_final_ba_iterations", "sfm_ba_device"):
+        value = getattr(args, name)
+        if value is not None:
+            setattr(cfg, name, value)
     cfg.device = args.device
     if args.frames:
         cfg.manual_frames = tuple(args.frames)
